@@ -1,0 +1,24 @@
+export function _assert<T>(
+  value: T,
+  message?: string
+): asserts value is NonNullable<T> {
+  if (value !== undefined && value !== null) {
+    return;
+  }
+  const defaultMessage = `assertion failed for value '${value}' : it should not be null nor undefined`;
+  throw new Error(message ?? defaultMessage);
+}
+
+export function _assertTrue(value: boolean, message?: string): asserts value {
+  if (!value) {
+    throw new Error(
+      message ??
+        `assertion failed for value '${value}' : it should not be false`
+    );
+  }
+}
+
+export const _assertedValue = <T>(value: T | null | undefined): T => {
+  _assert(value);
+  return value;
+};
