@@ -1,12 +1,12 @@
 import { Alert } from "@mui/material";
 import { useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
-import privateAxios from "../../axios/privateAxios";
-import { CenteredSpinner } from "../../components/CenteredSpinner";
-import { PageHeading } from "../../components/PageHeading";
-import { ModelData } from "./model.types";
-import { EditModelForm } from "./update/EditModelForm";
-import { useModelConfigData } from "./useModelConfigData";
+import privateAxios from "../../../axios/privateAxios";
+import { CenteredSpinner } from "../../../components/CenteredSpinner";
+import { PageHeading } from "../../../components/PageHeading";
+import { ModelData } from "../model.types";
+import { useModelConfigData } from "../useModelConfigData";
+import { EditModelForm } from "./EditModelForm";
 
 const EditModelPage = () => {
   const { model, primaryKeyValue } = useParams<{

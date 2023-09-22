@@ -70,13 +70,11 @@ export const ModelGrid = ({
           </Box>
         )}
         renderTopToolbarCustomActions={() => (
-          <IconButton
-            onClick={() => {
-              // setCreateModalOpen(true)
-            }}
-          >
-            <Add />
-          </IconButton>
+          <Link to={`/adomin/${modelName}/create`}>
+            <IconButton>
+              <Add />
+            </IconButton>
+          </Link>
         )}
       />
       <DeleteModelModal {...deleteModelProps} />
