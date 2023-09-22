@@ -1,7 +1,7 @@
-import { CenteredSpinner } from "../../components/CenteredSpinner";
-import { PageHeading } from "../../components/PageHeading";
+import { CenteredSpinner } from "../../../components/CenteredSpinner";
+import { PageHeading } from "../../../components/PageHeading";
+import { useModelConfigData } from "../useModelConfigData";
 import { ModelGrid } from "./ModelGrid";
-import { useModelConfigData } from "./useModelConfigData";
 
 const ModelListPage = () => {
   const modelConfig = useModelConfigData();

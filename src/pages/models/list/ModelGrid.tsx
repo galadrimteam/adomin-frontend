@@ -4,12 +4,12 @@ import MaterialReactTable, { MRT_ColumnDef } from "material-react-table";
 import { MRT_Localization_FR } from "material-react-table/locales/fr";
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { CenteredSpinner } from "../../components/CenteredSpinner";
-import { DeleteModelModal } from "./delete/DeleteModelModal";
-import { useDeleteModel } from "./delete/useDeleteModel";
-import { getColumn } from "./getColumn";
-import { useModelsListQuery } from "./list/useModelsListQuery";
-import { ModelFieldsConfig } from "./model.types";
+import { CenteredSpinner } from "../../../components/CenteredSpinner";
+import { DeleteModelModal } from "../delete/DeleteModelModal";
+import { useDeleteModel } from "../delete/useDeleteModel";
+import { getColumn } from "../getColumn";
+import { ModelFieldsConfig } from "../model.types";
+import { useModelsListQuery } from "./useModelsListQuery";
 
 interface ModelGridProps {
   modelConfig: ModelFieldsConfig;

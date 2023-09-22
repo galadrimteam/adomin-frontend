@@ -5,7 +5,7 @@ import privateAxios from "../../axios/privateAxios";
 import { CenteredSpinner } from "../../components/CenteredSpinner";
 import { ModelFieldsConfig } from "./model.types";
 
-const ModelsPage = () => {
+const ModelsPageLayout = () => {
   const { model } = useParams<{ model: string }>();
   const navigate = useNavigate();
 
@@ -43,4 +43,4 @@ const ModelsPage = () => {
   );
 };
 
-export default ModelsPage;
+export default ModelsPageLayout;
