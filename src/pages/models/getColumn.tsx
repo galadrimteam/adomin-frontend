@@ -1,11 +1,25 @@
 import { MRT_ColumnDef } from "material-react-table";
+import { DateCell } from "../../components/cells/DateCell";
 import { ModelField } from "./model.types";
+
+interface ValidationErrors {
+  [cellId: string]: string;
+}
+
+const getMuiTableBodyCellEditTextFieldProps = (
+  validationErrors: ValidationErrors,
+  type?: string
+): MRT_ColumnDef["muiTableBodyCellEditTextFieldProps"] => {
+  return ({ cell }) => ({
+    error: !!validationErrors[cell.id],
+    helperText: validationErrors[cell.id],
+    type,
+  });
+};
 
 export const getColumn = (
   field: ModelField,
-  validationErrors: {
-    [cellId: string]: string;
-  }
+  validationErrors: ValidationErrors
 ): MRT_ColumnDef => {
   const baseColumn = {
     accessorKey: field.name,
@@ -16,22 +30,29 @@ export const getColumn = (
   if (field.type === "number") {
     return {
       ...baseColumn,
-      muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
-        error: !!validationErrors[cell.id],
-        helperText: validationErrors[cell.id],
-        type: "number",
-      }),
+      muiTableBodyCellEditTextFieldProps: getMuiTableBodyCellEditTextFieldProps(
+        validationErrors,
+        "number"
+      ),
     };
   }
 
   if (field.type === "string") {
     return {
       ...baseColumn,
-      muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
-        error: !!validationErrors[cell.id],
-        helperText: validationErrors[cell.id],
-        type: "text",
-      }),
+      muiTableBodyCellEditTextFieldProps: getMuiTableBodyCellEditTextFieldProps(
+        validationErrors,
+        "text"
+      ),
+    };
+  }
+
+  if (field.type === "date") {
+    return {
+      ...baseColumn,
+      muiTableBodyCellEditTextFieldProps:
+        getMuiTableBodyCellEditTextFieldProps(validationErrors),
+      Cell: DateCell,
     };
   }
 

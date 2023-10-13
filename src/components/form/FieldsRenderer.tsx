@@ -1,5 +1,7 @@
+import { SxProps } from "@mui/material";
 import { Control, FieldValues } from "react-hook-form";
 import { ModelFieldsConfig } from "../../pages/models/model.types";
+import DatePickerRhf from "./DatePickerRhf";
 import { DoubleFields } from "./MultipleFields";
 import { TextFieldRhf } from "./TextFieldRhf";
 import { numberToString, stringToNumber } from "./TextFieldRhfUtils";
@@ -17,16 +19,43 @@ export const FieldsRender = ({ config, control }: Props) => {
   return (
     <DoubleFields my={2}>
       {fieldsToUse.map((field, index) => {
-        return (
+        const key = field.name;
+        const label = field.adomin.label ?? field.name;
+        const sx: SxProps = { mb: index !== fieldsToUse.length - 1 ? 4 : 0 };
+
+        if (field.type === "date") {
+          return (
+            <DatePickerRhf
+              key={key}
+              label={label}
+              name={field.name}
+              control={control}
+              sx={sx}
+            />
+          );
+        }
+
+        if (field.type === "number") {
           <TextFieldRhf
-            key={field.name}
-            label={field.adomin.label ?? field.name}
-            type={field.type === "string" ? "text" : "number"}
+            key={key}
+            label={label}
+            type="number"
             name={field.name}
             control={control}
-            stringToValue={field.type === "number" ? stringToNumber : undefined}
-            valueToString={field.type === "number" ? numberToString : undefined}
-            sx={{ mb: index !== fieldsToUse.length - 1 ? 4 : 0 }}
+            stringToValue={stringToNumber}
+            valueToString={numberToString}
+            sx={sx}
+          />;
+        }
+
+        return (
+          <TextFieldRhf
+            key={key}
+            label={label}
+            type="text"
+            name={field.name}
+            control={control}
+            sx={sx}
           />
         );
       })}

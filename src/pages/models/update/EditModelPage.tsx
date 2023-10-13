@@ -1,4 +1,5 @@
 import { Alert } from "@mui/material";
+import { useMemo } from "react";
 import { useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import privateAxios from "../../../axios/privateAxios";
@@ -34,11 +35,26 @@ const EditModelPage = () => {
     }
   );
 
+  const modelQueryData = useMemo(() => {
+    if (!modelQuery.data) return undefined;
+    if (!modelConfig) return modelQuery.data;
+
+    const dataToReturn = { ...modelQuery.data };
+
+    for (const modelField of modelConfig.fields) {
+      if (modelField.type === "date") {
+        dataToReturn[modelField.name] = new Date(dataToReturn[modelField.name]);
+      }
+    }
+
+    return dataToReturn;
+  }, [modelConfig, modelQuery.data]);
+
   if (modelQuery.isLoading || !modelConfig) {
     return <CenteredSpinner />;
   }
 
-  if (!modelQuery.data || modelQuery.isError) {
+  if (!modelQueryData || modelQuery.isError) {
     return <Alert severity="error">Erreur lors du chargement du model</Alert>;
   }
 
@@ -48,7 +64,7 @@ const EditModelPage = () => {
       <div className="flex justify-center">
         <EditModelForm
           modelConfig={modelConfig}
-          defaultValues={modelQuery.data}
+          defaultValues={modelQueryData}
         />
       </div>
     </div>

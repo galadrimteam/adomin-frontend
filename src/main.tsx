@@ -1,3 +1,6 @@
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import fr from "date-fns/locale/fr";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "react-query";
@@ -17,8 +20,10 @@ const queryClient = new QueryClient({
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <ToastContainer />
-    <QueryClientProvider client={queryClient}>
-      <App />
-    </QueryClientProvider>
+    <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={fr}>
+      <QueryClientProvider client={queryClient}>
+        <App />
+      </QueryClientProvider>
+    </LocalizationProvider>
   </React.StrictMode>
 );

@@ -6,10 +6,16 @@ export const getModelDefaultValues = (
   const modelData: ModelData = {};
 
   modelFieldsConfig.fields.forEach((field) => {
-    if (field.type === "string") {
-      modelData[field.name] = "";
-    } else if (field.type === "number") {
-      modelData[field.name] = 0;
+    switch (field.type) {
+      case "string":
+        modelData[field.name] = "";
+        break;
+      case "number":
+        modelData[field.name] = 0;
+        break;
+      case "date":
+        modelData[field.name] = new Date();
+        break;
     }
   });
 

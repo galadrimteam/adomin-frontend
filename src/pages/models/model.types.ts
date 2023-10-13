@@ -1,6 +1,6 @@
 export interface ModelField {
   name: string;
-  type: "number" | "string";
+  type: "number" | "string" | "date";
   adomin: {
     label?: string;
     editable?: boolean;
@@ -17,4 +17,4 @@ export interface ModelFieldsConfig {
   primaryKey: string;
 }
 
-export type ModelData = Record<string, string | number>;
+export type ModelData = Record<string, string | number | Date>;
