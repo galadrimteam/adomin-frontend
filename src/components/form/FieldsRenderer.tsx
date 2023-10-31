@@ -36,16 +36,21 @@ export const FieldsRender = ({ config, control }: Props) => {
         }
 
         if (field.adomin.type === "number") {
-          <TextFieldRhf
-            key={key}
-            label={label}
-            type="number"
-            name={field.name}
-            control={control}
-            stringToValue={stringToNumber}
-            valueToString={numberToString}
-            sx={sx}
-          />;
+          return (
+            <TextFieldRhf
+              key={key}
+              label={label}
+              type="number"
+              name={field.name}
+              control={control}
+              stringToValue={stringToNumber}
+              valueToString={numberToString}
+              min={field.adomin.min}
+              max={field.adomin.max}
+              step={field.adomin.step?.toString()}
+              sx={sx}
+            />
+          );
         }
 
         return (
