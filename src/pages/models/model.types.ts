@@ -1,12 +1,8 @@
+import { AdominFieldConfig } from "./fields.types";
+
 export interface ModelField {
   name: string;
-  type: "number" | "string" | "date";
-  adomin: {
-    label?: string;
-    editable?: boolean;
-    creatable?: boolean;
-    size?: number;
-  };
+  adomin: AdominFieldConfig;
 }
 
 export interface ModelFieldsConfig {

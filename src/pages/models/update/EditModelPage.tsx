@@ -42,7 +42,7 @@ const EditModelPage = () => {
     const dataToReturn = { ...modelQuery.data };
 
     for (const modelField of modelConfig.fields) {
-      if (modelField.type === "date") {
+      if (modelField.adomin.type === "date") {
         dataToReturn[modelField.name] = new Date(dataToReturn[modelField.name]);
       }
     }

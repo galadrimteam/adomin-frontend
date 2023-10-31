@@ -6,7 +6,7 @@ export const getModelDefaultValues = (
   const modelData: ModelData = {};
 
   modelFieldsConfig.fields.forEach((field) => {
-    switch (field.type) {
+    switch (field.adomin.type) {
       case "string":
         modelData[field.name] = "";
         break;
@@ -16,6 +16,10 @@ export const getModelDefaultValues = (
       case "date":
         modelData[field.name] = new Date();
         break;
+      default:
+        throw new Error(
+          `Unknown field type: '${field.adomin.type}' use for field '${field.name}'`
+        );
     }
   });
 

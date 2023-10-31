@@ -23,7 +23,7 @@ export const FieldsRender = ({ config, control }: Props) => {
         const label = field.adomin.label ?? field.name;
         const sx: SxProps = { mb: index !== fieldsToUse.length - 1 ? 4 : 0 };
 
-        if (field.type === "date") {
+        if (field.adomin.type === "date") {
           return (
             <DatePickerRhf
               key={key}
@@ -35,7 +35,7 @@ export const FieldsRender = ({ config, control }: Props) => {
           );
         }
 
-        if (field.type === "number") {
+        if (field.adomin.type === "number") {
           <TextFieldRhf
             key={key}
             label={label}

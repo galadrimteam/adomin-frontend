@@ -27,7 +27,7 @@ export const getColumn = (
     size: field.adomin.size ?? 120,
   };
 
-  if (field.type === "number") {
+  if (field.adomin.type === "number") {
     return {
       ...baseColumn,
       muiTableBodyCellEditTextFieldProps: getMuiTableBodyCellEditTextFieldProps(
@@ -37,7 +37,7 @@ export const getColumn = (
     };
   }
 
-  if (field.type === "string") {
+  if (field.adomin.type === "string") {
     return {
       ...baseColumn,
       muiTableBodyCellEditTextFieldProps: getMuiTableBodyCellEditTextFieldProps(
@@ -47,7 +47,7 @@ export const getColumn = (
     };
   }
 
-  if (field.type === "date") {
+  if (field.adomin.type === "date") {
     return {
       ...baseColumn,
       muiTableBodyCellEditTextFieldProps:
@@ -56,5 +56,5 @@ export const getColumn = (
     };
   }
 
-  throw new Error(`Unsupported field type '${field.type}'`);
+  throw new Error(`Unsupported field type '${field.adomin.type}'`);
 };
