@@ -3,7 +3,7 @@ import { TextField } from "@mui/material";
 import { useState } from "react";
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
-import privateAxios, { setToken } from "../axios/privateAxios";
+import { privateAxios, setToken } from "../axios/privateAxios";
 
 export const LoginPage = () => {
   const navigate = useNavigate();

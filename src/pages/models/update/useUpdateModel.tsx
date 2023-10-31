@@ -1,6 +1,6 @@
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
-import privateAxios from "../../../axios/privateAxios";
+import { privateAxios } from "../../../axios/privateAxios";
 import { notifySuccess } from "../../../errors/notifiySuccess";
 import { ModelData, ModelFieldsConfig } from "../model.types";
 

@@ -1,4 +1,4 @@
-import axios, { isAxiosError } from "axios";
+import axios, { InternalAxiosRequestConfig, isAxiosError } from "axios";
 import { notifyApiError } from "../errors/notifyApiError";
 
 export const getApiUrl = () => {
@@ -18,13 +18,15 @@ const privateAxios = axios.create({
   baseURL: getApiUrl(),
 });
 
-privateAxios.interceptors.request.use((axiosConfig) => {
+const tokenRequestSetup = (axiosConfig: InternalAxiosRequestConfig) => {
   const token = localStorage.getItem(TOKEN_STORAGE_KEY);
 
   axiosConfig.headers.Authorization = `Bearer ${token}`;
 
   return axiosConfig;
-});
+};
+
+privateAxios.interceptors.request.use(tokenRequestSetup);
 
 privateAxios.interceptors.response.use(undefined, (error) => {
   if (isAxiosError(error)) {
@@ -33,4 +35,11 @@ privateAxios.interceptors.response.use(undefined, (error) => {
   throw error;
 });
 
-export default privateAxios;
+// This is used for things like the /config endpoint
+const privateAxiosWithoutToasts = axios.create({
+  baseURL: getApiUrl(),
+});
+
+privateAxiosWithoutToasts.interceptors.request.use(tokenRequestSetup);
+
+export { privateAxios, privateAxiosWithoutToasts };

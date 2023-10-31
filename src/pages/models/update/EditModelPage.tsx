@@ -2,7 +2,7 @@ import { Alert } from "@mui/material";
 import { useMemo } from "react";
 import { useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
-import privateAxios from "../../../axios/privateAxios";
+import { privateAxios } from "../../../axios/privateAxios";
 import { CenteredSpinner } from "../../../components/CenteredSpinner";
 import { PageHeading } from "../../../components/PageHeading";
 import { ModelData } from "../model.types";

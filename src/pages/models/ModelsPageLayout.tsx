@@ -1,7 +1,7 @@
 import { Alert } from "@mui/material";
 import { useQuery } from "react-query";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
-import privateAxios from "../../axios/privateAxios";
+import { privateAxios } from "../../axios/privateAxios";
 import { CenteredSpinner } from "../../components/CenteredSpinner";
 import { ModelFieldsConfig } from "./model.types";
 

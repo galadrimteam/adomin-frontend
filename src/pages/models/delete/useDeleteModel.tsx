@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
-import privateAxios from "../../../axios/privateAxios";
+import { privateAxios } from "../../../axios/privateAxios";
 import { ModelData } from "../model.types";
 
 interface Props {
