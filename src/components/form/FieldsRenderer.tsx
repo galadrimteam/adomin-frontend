@@ -24,6 +24,9 @@ export const FieldsRender = ({ config, control }: Props) => {
         const key = field.name;
         const label = field.adomin.label ?? field.name;
         const sx: SxProps = { mb: index !== fieldsToUse.length - 1 ? 4 : 0 };
+        const optionalOrNullable =
+          field.adomin.optional || field.adomin.nullable;
+        const required = !optionalOrNullable;
 
         if (field.adomin.type === "date") {
           return (
@@ -33,6 +36,7 @@ export const FieldsRender = ({ config, control }: Props) => {
               name={field.name}
               control={control}
               sx={sx}
+              required={required}
             />
           );
         }
@@ -51,6 +55,7 @@ export const FieldsRender = ({ config, control }: Props) => {
               max={field.adomin.max}
               step={field.adomin.step?.toString()}
               sx={sx}
+              required={required}
             />
           );
         }
@@ -64,6 +69,7 @@ export const FieldsRender = ({ config, control }: Props) => {
               name={field.name}
               control={control}
               sx={sx}
+              required={required}
             />
           );
         }

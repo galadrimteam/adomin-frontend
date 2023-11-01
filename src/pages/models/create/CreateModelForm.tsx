@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { CenteredSpinner } from "../../../components/CenteredSpinner";
 import { FieldsRender } from "../../../components/form/FieldsRenderer";
 import { ModelFieldsConfig } from "../model.types";
-import { getModelDefaultValues } from "./getModelDefaultValues";
+import { getModelDefaultValues } from "./defaultValues/getModelDefaultValues";
 import { useCreateModel } from "./useCreateModel";
 
 interface Props {

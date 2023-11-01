@@ -7,10 +7,11 @@ type DateInputRhfProps<T extends FieldValues> = {
   name: Path<T>;
   label: string;
   sx?: SxProps;
+  required?: boolean;
 };
 
 function DatePickerRhf<T extends FieldValues>(props: DateInputRhfProps<T>) {
-  const { name, control, label, sx } = props;
+  const { name, control, label, sx, required } = props;
 
   const {
     field: { value, onChange, onBlur: rhfOnBlur },
@@ -23,6 +24,11 @@ function DatePickerRhf<T extends FieldValues>(props: DateInputRhfProps<T>) {
       onChange={onChange}
       onClose={rhfOnBlur}
       sx={sx}
+      slotProps={{
+        textField: {
+          required,
+        },
+      }}
     />
   );
 }
