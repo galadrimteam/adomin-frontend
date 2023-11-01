@@ -1,8 +1,10 @@
-import { SxProps } from "@mui/material";
+import { Alert, SxProps } from "@mui/material";
 import { Control, FieldValues } from "react-hook-form";
 import { ModelFieldsConfig } from "../../pages/models/model.types";
+import { CheckboxRhf } from "./CheckboxRhf";
 import DatePickerRhf from "./DatePickerRhf";
 import { DoubleFields } from "./MultipleFields";
+import { SwitchRhf } from "./SwitchRhf";
 import { TextFieldRhf } from "./TextFieldRhf";
 import { numberToString, stringToNumber } from "./TextFieldRhfUtils";
 
@@ -53,15 +55,40 @@ export const FieldsRender = ({ config, control }: Props) => {
           );
         }
 
+        if (field.adomin.type === "string") {
+          return (
+            <TextFieldRhf
+              key={key}
+              label={label}
+              type="text"
+              name={field.name}
+              control={control}
+              sx={sx}
+            />
+          );
+        }
+
+        if (field.adomin.type === "boolean") {
+          const BooleanComponent =
+            field.adomin.variant === "switch" ? SwitchRhf : CheckboxRhf;
+
+          return (
+            <BooleanComponent
+              key={key}
+              label={label}
+              name={field.name}
+              control={control}
+              sx={sx}
+            />
+          );
+        }
+
         return (
-          <TextFieldRhf
-            key={key}
-            label={label}
-            type="text"
-            name={field.name}
-            control={control}
-            sx={sx}
-          />
+          <div key={key} className="">
+            <Alert className="h-[56px]" severity="error">
+              Unknown field type '{field.adomin.type}' for field '{field.name}'
+            </Alert>
+          </div>
         );
       })}
     </DoubleFields>

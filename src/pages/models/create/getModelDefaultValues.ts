@@ -16,10 +16,11 @@ export const getModelDefaultValues = (
       case "date":
         modelData[field.name] = new Date();
         break;
+      case "boolean":
+        modelData[field.name] = false;
+        break;
       default:
-        throw new Error(
-          `Unknown field type: '${field.adomin.type}' use for field '${field.name}'`
-        );
+        break;
     }
   });
 

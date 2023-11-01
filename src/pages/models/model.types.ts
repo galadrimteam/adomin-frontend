@@ -13,4 +13,5 @@ export interface ModelFieldsConfig {
   primaryKey: string;
 }
 
-export type ModelData = Record<string, string | number | Date>;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type ModelData = Record<string, any>;

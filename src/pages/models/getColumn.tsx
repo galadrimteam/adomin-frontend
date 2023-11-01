@@ -1,5 +1,7 @@
 import { MRT_ColumnDef } from "material-react-table";
+import { BooleanCell } from "../../components/cells/BooleanCell";
 import { DateCell } from "../../components/cells/DateCell";
+import { UnkownTypeCell } from "../../components/cells/UnknownTypeCell";
 import { ModelField } from "./model.types";
 
 interface ValidationErrors {
@@ -56,5 +58,19 @@ export const getColumn = (
     };
   }
 
-  throw new Error(`Unsupported field type '${field.adomin.type}'`);
+  if (field.adomin.type === "boolean") {
+    return {
+      ...baseColumn,
+      muiTableBodyCellEditTextFieldProps:
+        getMuiTableBodyCellEditTextFieldProps(validationErrors),
+      Cell: BooleanCell,
+    };
+  }
+
+  return {
+    ...baseColumn,
+    muiTableBodyCellEditTextFieldProps:
+      getMuiTableBodyCellEditTextFieldProps(validationErrors),
+    Cell: UnkownTypeCell,
+  };
 };
