@@ -53,16 +53,31 @@ interface DateValueIsoString {
   value: string;
 }
 
+export interface AdominSelectOption<T extends string | number> {
+  label: string;
+  value: T;
+}
+
+export interface AdominStringSelectConfig {
+  subType: "string";
+  options: AdominSelectOption<string>[];
+  defaultValue?: string;
+}
+
+export interface AdominNumberSelectConfig {
+  subType: "number";
+  options: AdominSelectOption<number>[];
+  defaultValue?: number;
+}
+
 export interface AdominEnumFieldConfig extends AdominBaseFieldConfig {
   type: "enum";
 
-  values?: string[];
+  config: AdominNumberSelectConfig | AdominStringSelectConfig;
 }
 
 export interface AdominEnumSetFieldConfig extends AdominBaseFieldConfig {
   type: "enumSet";
-
-  values?: string[];
 }
 
 export interface AdominArrayFieldConfig extends AdominBaseFieldConfig {

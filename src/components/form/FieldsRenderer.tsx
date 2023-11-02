@@ -7,6 +7,10 @@ import { DoubleFields } from "./MultipleFields";
 import { SwitchRhf } from "./SwitchRhf";
 import { TextFieldRhf } from "./TextFieldRhf";
 import { numberToString, stringToNumber } from "./TextFieldRhfUtils";
+import {
+  BasicNumberSelectRhf,
+  BasicStringSelectRhf,
+} from "./selects/BasicSelectRhf";
 
 interface Props {
   config: ModelFieldsConfig;
@@ -84,6 +88,38 @@ export const FieldsRender = ({ config, control }: Props) => {
               label={label}
               name={field.name}
               control={control}
+              sx={sx}
+            />
+          );
+        }
+
+        if (
+          field.adomin.type === "enum" &&
+          field.adomin.config.subType === "string"
+        ) {
+          return (
+            <BasicStringSelectRhf
+              key={key}
+              label={label}
+              name={field.name}
+              control={control}
+              options={field.adomin.config.options}
+              sx={sx}
+            />
+          );
+        }
+
+        if (
+          field.adomin.type === "enum" &&
+          field.adomin.config.subType === "number"
+        ) {
+          return (
+            <BasicNumberSelectRhf
+              key={key}
+              label={label}
+              name={field.name}
+              control={control}
+              options={field.adomin.config.options}
               sx={sx}
             />
           );

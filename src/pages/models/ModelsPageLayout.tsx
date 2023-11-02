@@ -38,7 +38,9 @@ const ModelsPageLayout = () => {
       <div className="flex-1 ">
         <Outlet />
       </div>
-      <div className="bg-adomin_4 text-adomin_2 p-2">TODO</div>
+      <div className="bg-adomin_4 text-adomin_2 p-2">
+        Made with ❤️ by Galadrim
+      </div>
     </div>
   );
 };

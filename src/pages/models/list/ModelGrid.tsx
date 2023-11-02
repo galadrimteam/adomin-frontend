@@ -8,7 +8,8 @@ import { CenteredSpinner } from "../../../components/CenteredSpinner";
 import { DeleteModelModal } from "../delete/DeleteModelModal";
 import { useDeleteModel } from "../delete/useDeleteModel";
 import { getColumn } from "../getColumn";
-import { ModelFieldsConfig } from "../model.types";
+import { ModelData, ModelFieldsConfig } from "../model.types";
+import { transformEnumValueToLabels } from "./transformEnumValueToLabels";
 import { useModelsListQuery } from "./useModelsListQuery";
 
 interface ModelGridProps {
@@ -32,6 +33,11 @@ export const ModelGrid = ({
   const { listQuery } = useModelsListQuery(queryProps);
   const deleteModelProps = useDeleteModel(queryProps);
 
+  const tableRows: ModelData[] = useMemo(
+    () => transformEnumValueToLabels(fields, listQuery.data),
+    [fields, listQuery.data]
+  );
+
   if (listQuery.isError) {
     return (
       <div className="text-red-500">Erreur lors du chargement des données</div>
@@ -47,7 +53,7 @@ export const ModelGrid = ({
       <MaterialReactTable
         localization={MRT_Localization_FR}
         columns={columns}
-        data={listQuery.data}
+        data={tableRows}
         enableColumnOrdering
         enableRowActions={true}
         renderRowActions={({ row }) => (

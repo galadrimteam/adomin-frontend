@@ -39,7 +39,7 @@ export const getColumn = (
     };
   }
 
-  if (field.adomin.type === "string") {
+  if (field.adomin.type === "string" || field.adomin.type === "enum") {
     return {
       ...baseColumn,
       muiTableBodyCellEditTextFieldProps: getMuiTableBodyCellEditTextFieldProps(
