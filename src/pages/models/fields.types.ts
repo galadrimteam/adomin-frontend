@@ -70,11 +70,9 @@ export interface AdominNumberSelectConfig {
   defaultValue?: number;
 }
 
-export interface AdominEnumFieldConfig extends AdominBaseFieldConfig {
+export type AdominEnumFieldConfig = AdominBaseFieldConfig & {
   type: "enum";
-
-  config: AdominNumberSelectConfig | AdominStringSelectConfig;
-}
+} & (AdominNumberSelectConfig | AdominStringSelectConfig);
 
 export interface AdominEnumSetFieldConfig extends AdominBaseFieldConfig {
   type: "enumSet";

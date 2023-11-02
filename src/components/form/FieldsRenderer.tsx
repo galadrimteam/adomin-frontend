@@ -93,33 +93,27 @@ export const FieldsRender = ({ config, control }: Props) => {
           );
         }
 
-        if (
-          field.adomin.type === "enum" &&
-          field.adomin.config.subType === "string"
-        ) {
+        if (field.adomin.type === "enum" && field.adomin.subType === "string") {
           return (
             <BasicStringSelectRhf
               key={key}
               label={label}
               name={field.name}
               control={control}
-              options={field.adomin.config.options}
+              options={field.adomin.options}
               sx={sx}
             />
           );
         }
 
-        if (
-          field.adomin.type === "enum" &&
-          field.adomin.config.subType === "number"
-        ) {
+        if (field.adomin.type === "enum" && field.adomin.subType === "number") {
           return (
             <BasicNumberSelectRhf
               key={key}
               label={label}
               name={field.name}
               control={control}
-              options={field.adomin.config.options}
+              options={field.adomin.options}
               sx={sx}
             />
           );

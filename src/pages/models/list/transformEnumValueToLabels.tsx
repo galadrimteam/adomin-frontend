@@ -20,7 +20,7 @@ export const transformEnumValueToLabels = (
     const newRow: Record<string, unknown> = {};
 
     for (const enumField of enumFields) {
-      const option = enumField.adomin.config.options.find(
+      const option = enumField.adomin.options.find(
         ({ value }) => value === row[enumField.name]
       );
       newRow[enumField.name] = option?.label ?? row[enumField.name];
