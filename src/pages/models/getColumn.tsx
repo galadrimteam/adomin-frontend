@@ -2,6 +2,7 @@ import { MRT_ColumnDef } from "material-react-table";
 import { BooleanCell } from "../../components/cells/BooleanCell";
 import { DateCell } from "../../components/cells/DateCell";
 import { FileCell } from "../../components/cells/FileCell";
+import { ImageCell } from "../../components/cells/ImageCell";
 import { UnkownTypeCell } from "../../components/cells/UnknownTypeCell";
 import { ModelField } from "./model.types";
 
@@ -65,6 +66,15 @@ export const getColumn = (
       muiTableBodyCellEditTextFieldProps:
         getMuiTableBodyCellEditTextFieldProps(validationErrors),
       Cell: BooleanCell,
+    };
+  }
+
+  if (field.adomin.type === "file" && field.adomin.isImage) {
+    return {
+      ...baseColumn,
+      muiTableBodyCellEditTextFieldProps:
+        getMuiTableBodyCellEditTextFieldProps(validationErrors),
+      Cell: ImageCell,
     };
   }
 

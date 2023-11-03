@@ -9,17 +9,14 @@ const appendData = (formData: FormData, field: ModelField, data: any) => {
   if (dataToAppend === undefined) return;
 
   if (field.adomin.type === "file" && dataToAppend instanceof FileStore) {
-    return formData.append(field.name, dataToAppend.file ?? "");
+    const file = dataToAppend.resizedBlob ?? dataToAppend.file;
+    return formData.append(field.name, file ?? "");
   }
-
   if (field.adomin.type === "date" && field.adomin.subType === "date") {
     return formData.append(field.name, format(dataToAppend, "yyyy-MM-dd"));
   }
   if (field.adomin.type === "date" && field.adomin.subType === "datetime") {
     return formData.append(field.name, dataToAppend.toISOString());
-  }
-  if (field.adomin.type === "enum") {
-    return formData.append(field.name, dataToAppend.toString());
   }
 
   formData.append(field.name, data[field.name]);

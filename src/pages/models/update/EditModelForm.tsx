@@ -28,7 +28,7 @@ export const EditModelForm = ({ defaultValues, modelConfig }: Props) => {
       className="bg-white rounded-md w-[80%] mt-8 p-4"
       onSubmit={handleSubmit(updateModel)}
     >
-      <FieldsRender config={modelConfig} control={control} />
+      <FieldsRender mode="update" config={modelConfig} control={control} />
 
       <div className="flex justify-center gap-4">
         <Link to={`/adomin/${modelConfig.name}`}>

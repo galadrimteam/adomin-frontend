@@ -16,16 +16,15 @@ export interface FileInputProps {
 
 export const FileInput = observer(({ fileStore }: FileInputProps) => (
   <Box>
-    {fileStore.inputOptions.imageParams !== undefined &&
-      fileStore.fileSrc !== null && (
-        <Box sx={{ display: "flex", justifyContent: "center", my: 2 }}>
-          <img
-            alt={fileStore.inputOptions.imageParams.imageAlt}
-            src={fileStore.fileSrc}
-            style={{ maxWidth: "80%", marginBottom: 4 }}
-          />
-        </Box>
-      )}
+    {fileStore.inputOptions.isImage && fileStore.fileSrc !== null && (
+      <Box sx={{ display: "flex", justifyContent: "center", my: 2 }}>
+        <img
+          alt={"image to upload"}
+          src={fileStore.fileSrc}
+          style={{ maxWidth: "80%", marginBottom: 4 }}
+        />
+      </Box>
+    )}
     <Box
       sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
     >
@@ -35,11 +34,7 @@ export const FileInput = observer(({ fileStore }: FileInputProps) => (
           id="file-updloaded"
           type="file"
           hidden
-          accept={
-            fileStore.inputOptions.imageParams !== undefined
-              ? "image/*"
-              : undefined
-          }
+          accept={fileStore.inputOptions.isImage ? "image/*" : undefined}
           onChange={(e) => fileStore.setUploadedFile(e.target)}
         />
       </Button>

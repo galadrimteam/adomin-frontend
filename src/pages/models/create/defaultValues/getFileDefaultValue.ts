@@ -7,11 +7,14 @@ export const getFileDefaultValue = (
   value?: ApiAttachment | null
 ) => {
   const store = new FileStore({
+    maxWidth: fieldConfig.maxWidth,
+    maxHeight: fieldConfig.maxHeight,
+    quality: fieldConfig.quality,
     url: value?.url,
-    shouldResize: fieldConfig.isImage ?? false,
+    shouldResize: fieldConfig.isImage && fieldConfig.noResize !== true,
     inputOptions: {
       inputText: fieldConfig.label ?? "Upload file",
-      imageParams: { imageAlt: fieldConfig.label ?? "Upload file" },
+      isImage: fieldConfig.isImage,
     },
   });
 

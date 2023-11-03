@@ -13,12 +13,17 @@ import { BasicStringSelectRhf } from "./selects/BasicSelectRhf";
 interface Props {
   config: ModelFieldsConfig;
   control: Control<FieldValues>;
+  mode: "create" | "update";
 }
 
-export const FieldsRender = ({ config, control }: Props) => {
-  const fieldsToUse = config.fields.filter(
-    (field) => field.name !== config.primaryKey
-  );
+export const FieldsRender = ({ config, control, mode }: Props) => {
+  const fieldsToUse = config.fields.filter((field) => {
+    if (field.name === config.primaryKey) return false;
+    if (mode === "create") return field.adomin.creatable !== false;
+    if (mode === "update") return field.adomin.editable !== false;
+
+    return true;
+  });
 
   return (
     <DoubleFields my={2}>

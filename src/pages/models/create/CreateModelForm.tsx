@@ -33,7 +33,7 @@ export const CreateModelForm = ({ modelConfig }: Props) => {
       className="bg-white rounded-md w-[80%] mt-8 p-4"
       onSubmit={handleSubmit(createModel)}
     >
-      <FieldsRender config={modelConfig} control={control} />
+      <FieldsRender mode="create" config={modelConfig} control={control} />
 
       <div className="flex justify-center gap-4">
         <Link to={`/adomin/${modelConfig.name}`}>

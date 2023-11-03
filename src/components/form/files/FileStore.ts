@@ -3,9 +3,7 @@ import { makeAutoObservable } from "mobx";
 
 interface FileInputOptions {
   inputText: string;
-  imageParams?: {
-    imageAlt: string;
-  };
+  isImage?: boolean;
 }
 
 export class FileStore {
@@ -36,6 +34,7 @@ export class FileStore {
     shouldResize,
     maxWidth,
     maxHeight,
+    quality,
     onChangeCallback,
     inputOptions,
   }: {
@@ -43,6 +42,7 @@ export class FileStore {
     shouldResize?: boolean;
     maxWidth?: number;
     maxHeight?: number;
+    quality?: number;
     onChangeCallback?: (file: File | null) => void;
     inputOptions?: FileInputOptions;
   } = {}) {
@@ -51,6 +51,7 @@ export class FileStore {
     this.shouldResize = shouldResize ?? false;
     if (maxWidth) this.resizeConfig.maxWidth = maxWidth;
     if (maxHeight) this.resizeConfig.maxHeight = maxHeight;
+    if (quality) this.resizeConfig.quality = quality;
     this.inputOptions = inputOptions ?? { inputText: "Upload file" };
     makeAutoObservable(this);
   }
