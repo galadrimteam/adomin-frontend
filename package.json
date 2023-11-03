@@ -1,7 +1,7 @@
 {
   "name": "frontend-backoffice",
   "private": true,
-  "version": "2.0.2",
+  "version": "2.0.4",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -19,9 +19,12 @@
     "@tanstack/react-query": "^5.4.3",
     "@tanstack/react-query-devtools": "^5.4.3",
     "axios": "^1.5.0",
+    "browser-image-resizer": "^2.4.1",
     "clsx": "^2.0.0",
     "date-fns": "^2.30.0",
     "material-react-table": "^1.14.0",
+    "mobx": "^6.10.2",
+    "mobx-react-lite": "^4.0.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.46.1",

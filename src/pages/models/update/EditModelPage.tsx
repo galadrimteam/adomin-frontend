@@ -5,6 +5,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { privateAxios } from "../../../axios/privateAxios";
 import { CenteredSpinner } from "../../../components/CenteredSpinner";
 import { PageHeading } from "../../../components/PageHeading";
+import type { ApiAttachment } from "../../../components/form/files/FileInput";
+import { getFileDefaultValue } from "../create/defaultValues/getFileDefaultValue";
 import { ModelData } from "../model.types";
 import { useModelConfigData } from "../useModelConfigData";
 import { EditModelForm } from "./EditModelForm";
@@ -44,6 +46,12 @@ const EditModelPage = () => {
     for (const modelField of modelConfig.fields) {
       if (modelField.adomin.type === "date") {
         dataToReturn[modelField.name] = new Date(dataToReturn[modelField.name]);
+      }
+      if (modelField.adomin.type === "file") {
+        dataToReturn[modelField.name] = getFileDefaultValue(
+          modelField.adomin,
+          dataToReturn[modelField.name] as ApiAttachment | null
+        );
       }
     }
 

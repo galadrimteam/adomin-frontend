@@ -1,6 +1,7 @@
 import { ModelData, ModelFieldsConfig } from "../../model.types";
 import { getDateDefaultValue } from "./getDateDefaultValue";
 import { getEnumDefaultValue } from "./getEnumDefaultValue";
+import { getFileDefaultValue } from "./getFileDefaultValue";
 
 export const getModelDefaultValues = (
   modelFieldsConfig: ModelFieldsConfig
@@ -19,6 +20,8 @@ export const getModelDefaultValues = (
       modelData[field.name] = getDateDefaultValue(config);
     } else if (config.type === "enum") {
       modelData[field.name] = getEnumDefaultValue(config);
+    } else if (config.type === "file") {
+      modelData[field.name] = getFileDefaultValue(config);
     }
   });
 

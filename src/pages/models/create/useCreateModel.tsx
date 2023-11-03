@@ -2,6 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { privateAxios } from "../../../axios/privateAxios";
 import { notifySuccess } from "../../../errors/notifiySuccess";
+import { getFormData } from "../../../utils/getFormData";
 import { ModelData, ModelFieldsConfig } from "../model.types";
 
 interface Props {
@@ -19,7 +20,7 @@ export const useCreateModel = ({ modelConfig }: Props) => {
     mutationFn: async (values: ModelData) => {
       const res = await privateAxios.post<UpdateModelResponse>(
         `/adomin/api/crud/${modelConfig.name}`,
-        values
+        getFormData(values, modelConfig)
       );
 
       return res.data;
