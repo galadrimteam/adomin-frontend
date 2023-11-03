@@ -1,6 +1,6 @@
 import { Alert } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
-import { useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { privateAxios } from "../../../axios/privateAxios";
 import { CenteredSpinner } from "../../../components/CenteredSpinner";
@@ -25,15 +25,15 @@ const EditModelPage = () => {
 
   const modelName = model;
 
-  const modelQuery = useQuery(
-    ["model", modelName, primaryKeyValue],
-    async () => {
+  const modelQuery = useQuery({
+    queryKey: ["model", modelName, primaryKeyValue],
+    queryFn: async () => {
       const res = await privateAxios.get<ModelData>(
         `/adomin/api/crud/${modelName}/${primaryKeyValue}`
       );
       return res.data;
-    }
-  );
+    },
+  });
 
   const modelQueryData = useMemo(() => {
     if (!modelQuery.data) return undefined;

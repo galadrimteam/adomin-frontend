@@ -1,7 +1,7 @@
 import { LoadingButton } from "@mui/lab";
 import { TextField } from "@mui/material";
+import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
-import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { privateAxios, setToken } from "../axios/privateAxios";
 
@@ -10,8 +10,8 @@ export const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const loginMutation = useMutation(
-    async () => {
+  const loginMutation = useMutation({
+    mutationFn: async () => {
       const res = await privateAxios.post("/adomin/api/login", {
         email,
         password,
@@ -19,16 +19,14 @@ export const LoginPage = () => {
 
       return res.data;
     },
-    {
-      onSuccess: (data) => {
-        if (typeof data.token !== "string") {
-          throw new Error("No token in response");
-        }
-        setToken(data.token);
-        navigate("/adomin");
-      },
-    }
-  );
+    onSuccess: (data) => {
+      if (typeof data.token !== "string") {
+        throw new Error("No token in response");
+      }
+      setToken(data.token);
+      navigate("/adomin");
+    },
+  });
 
   return (
     <div className="w-full flex items-center justify-center min-h-screen">
@@ -58,7 +56,7 @@ export const LoginPage = () => {
 
         <LoadingButton
           type="submit"
-          loading={loginMutation.isLoading}
+          loading={loginMutation.isPending}
           variant="outlined"
         >
           Se connecter

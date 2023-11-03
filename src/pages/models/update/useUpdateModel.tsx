@@ -1,4 +1,4 @@
-import { useMutation } from "react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { privateAxios } from "../../../axios/privateAxios";
 import { notifySuccess } from "../../../errors/notifiySuccess";
@@ -15,8 +15,8 @@ interface UpdateModelResponse {
 
 export const useUpdateModel = ({ modelConfig }: Props) => {
   const navigate = useNavigate();
-  const updateMutation = useMutation(
-    async (values: ModelData) => {
+  const updateMutation = useMutation({
+    mutationFn: async (values: ModelData) => {
       const primaryKeyValue = values[modelConfig.primaryKey];
       const res = await privateAxios.put<UpdateModelResponse>(
         `/adomin/api/crud/${modelConfig.name}/${primaryKeyValue}`,
@@ -25,17 +25,15 @@ export const useUpdateModel = ({ modelConfig }: Props) => {
 
       return res.data;
     },
-    {
-      onSuccess: () => {
-        notifySuccess(`${modelConfig.label.toLocaleLowerCase()} mis à jour`);
-        navigate(`/adomin/${modelConfig.name}`);
-      },
-    }
-  );
+    onSuccess: () => {
+      notifySuccess(`${modelConfig.label.toLocaleLowerCase()} mis à jour`);
+      navigate(`/adomin/${modelConfig.name}`);
+    },
+  });
 
   const updateModel = async (values: ModelData) => {
     await updateMutation.mutateAsync(values);
   };
 
-  return { updateModel, isLoading: updateMutation.isLoading };
+  return { updateModel, isLoading: updateMutation.isPending };
 };

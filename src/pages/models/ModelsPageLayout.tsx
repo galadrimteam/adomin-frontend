@@ -1,5 +1,5 @@
 import { Alert } from "@mui/material";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
 import { privateAxios } from "../../axios/privateAxios";
 import { CenteredSpinner } from "../../components/CenteredSpinner";
@@ -16,11 +16,14 @@ const ModelsPageLayout = () => {
     throw new Error("Problème lors de la séléction du Model");
   }
 
-  const modelQuery = useQuery(["modelParams", model], async () => {
-    const res = await privateAxios.get<ModelFieldsConfig>(
-      `/adomin/api/config/${model}`
-    );
-    return res.data;
+  const modelQuery = useQuery({
+    queryKey: ["modelParams", model],
+    queryFn: async () => {
+      const res = await privateAxios.get<ModelFieldsConfig>(
+        `/adomin/api/config/${model}`
+      );
+      return res.data;
+    },
   });
 
   if (modelQuery.isLoading) {
