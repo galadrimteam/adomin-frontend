@@ -3,10 +3,12 @@ import { useQuery } from "react-query";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
 import { privateAxios } from "../../axios/privateAxios";
 import { CenteredSpinner } from "../../components/CenteredSpinner";
+import { useConfigQuery } from "../home/useConfigQuery";
 import { ModelFieldsConfig } from "./model.types";
 
 const ModelsPageLayout = () => {
   const { model } = useParams<{ model: string }>();
+  const configQuery = useConfigQuery();
   const navigate = useNavigate();
 
   if (!model) {
@@ -39,7 +41,7 @@ const ModelsPageLayout = () => {
         <Outlet />
       </div>
       <div className="bg-adomin_4 text-adomin_2 p-2">
-        Made with ❤️ by Galadrim
+        {configQuery.data?.footerText ?? "Loading footer text..."}
       </div>
     </div>
   );

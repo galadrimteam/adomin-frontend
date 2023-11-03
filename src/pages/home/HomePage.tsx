@@ -1,19 +1,12 @@
 import { Alert } from "@mui/material";
 import { isAxiosError } from "axios";
-import { useQuery } from "react-query";
 import { Navigate, Outlet } from "react-router-dom";
-import { privateAxiosWithoutToasts } from "../../axios/privateAxios";
 import { CenteredSpinner } from "../../components/CenteredSpinner";
-import { AdominConfig, Sidebar } from "./Sidebar";
+import { Sidebar } from "./Sidebar";
+import { useConfigQuery } from "./useConfigQuery";
 
 function HomePage() {
-  const configQuery = useQuery("config", async () => {
-    const res = await privateAxiosWithoutToasts.get<AdominConfig>(
-      "/adomin/api/config"
-    );
-
-    return res.data;
-  });
+  const configQuery = useConfigQuery();
 
   if (configQuery.isLoading) {
     return <CenteredSpinner />;

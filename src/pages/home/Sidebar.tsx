@@ -4,10 +4,14 @@ import { Link, Navigate, useParams } from "react-router-dom";
 
 export interface AdominConfig {
   title: string;
+  footerText: string;
   models: { model: string; label: string }[];
 }
 
-export const Sidebar = ({ models, title }: AdominConfig) => {
+export const Sidebar = ({
+  models,
+  title,
+}: Omit<AdominConfig, "footerText">) => {
   const { model: modelParam } = useParams();
 
   if (modelParam === undefined && models.length > 0) {
