@@ -4,16 +4,16 @@ import { DateCell } from "../../components/cells/DateCell";
 import { FileCell } from "../../components/cells/FileCell";
 import { ImageCell } from "../../components/cells/ImageCell";
 import { UnkownTypeCell } from "../../components/cells/UnknownTypeCell";
-import { ModelField } from "./model.types";
+import { ModelData, ModelField } from "./model.types";
 
 interface ValidationErrors {
   [cellId: string]: string;
 }
 
-const getMuiTableBodyCellEditTextFieldProps = (
+const getMuiEditTextFieldProps = (
   validationErrors: ValidationErrors,
   type?: string
-): MRT_ColumnDef["muiTableBodyCellEditTextFieldProps"] => {
+): MRT_ColumnDef<ModelData>["muiEditTextFieldProps"] => {
   return ({ cell }) => ({
     error: !!validationErrors[cell.id],
     helperText: validationErrors[cell.id],
@@ -24,7 +24,7 @@ const getMuiTableBodyCellEditTextFieldProps = (
 export const getColumn = (
   field: ModelField,
   validationErrors: ValidationErrors
-): MRT_ColumnDef => {
+): MRT_ColumnDef<ModelData> => {
   const baseColumn = {
     accessorKey: field.name,
     header: field.adomin.label ?? field.name,
@@ -34,28 +34,34 @@ export const getColumn = (
   if (field.adomin.type === "number") {
     return {
       ...baseColumn,
-      muiTableBodyCellEditTextFieldProps: getMuiTableBodyCellEditTextFieldProps(
+      muiEditTextFieldProps: getMuiEditTextFieldProps(
         validationErrors,
         "number"
       ),
     };
   }
 
-  if (field.adomin.type === "string" || field.adomin.type === "enum") {
+  if (field.adomin.type === "string") {
     return {
       ...baseColumn,
-      muiTableBodyCellEditTextFieldProps: getMuiTableBodyCellEditTextFieldProps(
-        validationErrors,
-        "text"
-      ),
+      muiEditTextFieldProps: getMuiEditTextFieldProps(validationErrors, "text"),
+    };
+  }
+
+  if (field.adomin.type === "enum") {
+    return {
+      ...baseColumn,
+      filterVariant: "select",
+      filterSelectOptions: field.adomin.options,
+      muiEditTextFieldProps: getMuiEditTextFieldProps(validationErrors, "text"),
     };
   }
 
   if (field.adomin.type === "date") {
     return {
       ...baseColumn,
-      muiTableBodyCellEditTextFieldProps:
-        getMuiTableBodyCellEditTextFieldProps(validationErrors),
+      filterVariant: "date",
+      muiEditTextFieldProps: getMuiEditTextFieldProps(validationErrors),
       Cell: DateCell,
     };
   }
@@ -63,8 +69,8 @@ export const getColumn = (
   if (field.adomin.type === "boolean") {
     return {
       ...baseColumn,
-      muiTableBodyCellEditTextFieldProps:
-        getMuiTableBodyCellEditTextFieldProps(validationErrors),
+      filterVariant: "checkbox",
+      muiEditTextFieldProps: getMuiEditTextFieldProps(validationErrors),
       Cell: BooleanCell,
     };
   }
@@ -72,8 +78,7 @@ export const getColumn = (
   if (field.adomin.type === "file" && field.adomin.isImage) {
     return {
       ...baseColumn,
-      muiTableBodyCellEditTextFieldProps:
-        getMuiTableBodyCellEditTextFieldProps(validationErrors),
+      muiEditTextFieldProps: getMuiEditTextFieldProps(validationErrors),
       Cell: ImageCell,
     };
   }
@@ -81,16 +86,14 @@ export const getColumn = (
   if (field.adomin.type === "file") {
     return {
       ...baseColumn,
-      muiTableBodyCellEditTextFieldProps:
-        getMuiTableBodyCellEditTextFieldProps(validationErrors),
+      muiEditTextFieldProps: getMuiEditTextFieldProps(validationErrors),
       Cell: FileCell,
     };
   }
 
   return {
     ...baseColumn,
-    muiTableBodyCellEditTextFieldProps:
-      getMuiTableBodyCellEditTextFieldProps(validationErrors),
+    muiEditTextFieldProps: getMuiEditTextFieldProps(validationErrors),
     Cell: UnkownTypeCell,
   };
 };
