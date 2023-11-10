@@ -35,6 +35,8 @@ export const FieldsRender = ({ config, control, mode }: Props) => {
           field.adomin.optional || field.adomin.nullable;
         const required = !optionalOrNullable;
 
+        const fieldType = field.adomin.type;
+
         if (field.adomin.type === "date") {
           return (
             <DatePickerRhf
@@ -116,7 +118,7 @@ export const FieldsRender = ({ config, control, mode }: Props) => {
         return (
           <div key={key} className="">
             <Alert className="h-[56px]" severity="error">
-              Unknown field type '{field.adomin.type}' for field '{field.name}'
+              Unknown field type '{fieldType}' for field '{field.name}'
             </Alert>
           </div>
         );
