@@ -53,8 +53,6 @@ export const ModelGrid = ({
     [fields, validationErrors]
   );
 
-  const queryProps = { modelName };
-
   const listQuery = useQuery({
     queryKey: [
       "models",
@@ -80,7 +78,7 @@ export const ModelGrid = ({
     },
   });
 
-  const deleteModelProps = useDeleteModel(queryProps);
+  const deleteModelProps = useDeleteModel({ modelName });
 
   const tableRows: ModelData[] = useMemo(
     () => transformEnumValueToLabels(fields, listQuery.data?.data ?? []),

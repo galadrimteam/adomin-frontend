@@ -1,7 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { privateAxios } from "../../../axios/privateAxios";
-import { ModelData } from "../model.types";
 
 interface Props {
   modelName: string;
@@ -19,18 +18,8 @@ export const useDeleteModel = ({ modelName }: Props) => {
       );
       return res.data;
     },
-    onSuccess: ({ id }: { id: unknown }) => {
-      queryClient.setQueryData<ModelData[] | undefined>(
-        ["models", modelName],
-        (oldData) => {
-          if (!oldData || oldData instanceof Array === false) return oldData;
-          if (typeof id !== "number" && typeof id !== "string") {
-            return oldData;
-          }
-
-          return oldData.filter((row) => row.id !== deleteId);
-        }
-      );
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["models", modelName] });
     },
   });
 
