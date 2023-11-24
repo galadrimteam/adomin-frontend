@@ -3,6 +3,7 @@ import { BooleanCell } from "../../components/cells/BooleanCell";
 import { DateCell } from "../../components/cells/DateCell";
 import { FileCell } from "../../components/cells/FileCell";
 import { ImageCell } from "../../components/cells/ImageCell";
+import { StringArrayCell } from "../../components/cells/StringArrayCell";
 import { UnkownTypeCell } from "../../components/cells/UnknownTypeCell";
 import { ModelData, ModelField } from "./model.types";
 
@@ -88,6 +89,14 @@ export const getColumn = (
       ...baseColumn,
       muiEditTextFieldProps: getMuiEditTextFieldProps(validationErrors),
       Cell: FileCell,
+    };
+  }
+
+  if (field.adomin.type === "array") {
+    return {
+      ...baseColumn,
+      muiEditTextFieldProps: getMuiEditTextFieldProps(validationErrors),
+      Cell: StringArrayCell,
     };
   }
 

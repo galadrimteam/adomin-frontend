@@ -22,6 +22,8 @@ export const getModelDefaultValues = (
       modelData[field.name] = getEnumDefaultValue(config);
     } else if (config.type === "file") {
       modelData[field.name] = getFileDefaultValue(config);
+    } else if (config.type === "array") {
+      modelData[field.name] = [];
     }
   });
 

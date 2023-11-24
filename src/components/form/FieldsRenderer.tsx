@@ -115,6 +115,23 @@ export const FieldsRender = ({ config, control, mode }: Props) => {
           return <FileInputRhf key={key} control={control} name={field.name} />;
         }
 
+        if (field.adomin.type === "array") {
+          return (
+            <TextFieldRhf
+              key={key}
+              label={label}
+              type="text"
+              name={field.name}
+              control={control}
+              sx={sx}
+              valueToString={(value) =>
+                ((value as unknown as string[] | undefined) ?? []).join(",")
+              }
+              stringToValue={(value) => value.split(",") as unknown as string}
+            />
+          );
+        }
+
         return (
           <div key={key} className="">
             <Alert className="h-[56px]" severity="error">

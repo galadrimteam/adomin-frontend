@@ -202,7 +202,7 @@ export type AdominFieldConfig =
   | AdominBooleanFieldConfig
   | AdominDateFieldConfig
   | AdominEnumFieldConfig
-  | AdominFileFieldConfig;
+  | AdominFileFieldConfig
+  | AdominArrayFieldConfig;
 // | AdominEnumSetFieldConfig
-// | AdominArrayFieldConfig
 // | AdominObjectFieldConfig

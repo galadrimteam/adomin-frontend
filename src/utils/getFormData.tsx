@@ -19,6 +19,13 @@ const appendData = (formData: FormData, field: ModelField, data: any) => {
     return formData.append(field.name, dataToAppend.toISOString());
   }
 
+  if (field.adomin.type === "array" && Array.isArray(dataToAppend)) {
+    for (const item of dataToAppend) {
+      formData.append(`${field.name}[]`, item);
+    }
+    return;
+  }
+
   formData.append(field.name, data[field.name]);
 };
 
