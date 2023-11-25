@@ -1,31 +1,28 @@
 import { Alert } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { privateAxios } from "../../../axios/privateAxios";
 import { CenteredSpinner } from "../../../components/CenteredSpinner";
 import { PageHeading } from "../../../components/PageHeading";
 import type { ApiAttachment } from "../../../components/form/files/FileInput";
+import { useModelConfig } from "../ModelConfigContext";
 import { getFileDefaultValue } from "../create/defaultValues/getFileDefaultValue";
 import { ModelData } from "../model.types";
-import { useModelConfigData } from "../useModelConfigData";
 import { EditModelForm } from "./EditModelForm";
 
 const EditModelPage = () => {
-  const { model, primaryKeyValue } = useParams<{
-    model: string;
+  const { primaryKeyValue } = useParams<{
     primaryKeyValue: string;
   }>();
 
-  const modelConfig = useModelConfigData();
-  const navigate = useNavigate();
+  const modelConfig = useModelConfig();
 
-  if (!model || !primaryKeyValue) {
-    navigate("/");
-    throw new Error("Problème lors de la séléction du Model");
+  if (!primaryKeyValue) {
+    throw new Error("Identifiant du model manquant");
   }
 
-  const modelName = model;
+  const modelName = modelConfig.name;
 
   const modelQuery = useQuery({
     queryKey: ["model", modelName, primaryKeyValue],
@@ -39,7 +36,6 @@ const EditModelPage = () => {
 
   const modelQueryData = useMemo(() => {
     if (!modelQuery.data) return undefined;
-    if (!modelConfig) return modelQuery.data;
 
     const dataToReturn = { ...modelQuery.data };
 

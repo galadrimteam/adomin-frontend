@@ -1,12 +1,9 @@
-import { CenteredSpinner } from "../../../components/CenteredSpinner";
 import { PageHeading } from "../../../components/PageHeading";
-import { useModelConfigData } from "../useModelConfigData";
+import { useModelConfig } from "../ModelConfigContext";
 import { ModelGrid } from "./ModelGrid";
 
 const ModelListPage = () => {
-  const modelConfig = useModelConfigData();
-
-  if (!modelConfig) return <CenteredSpinner />;
+  const modelConfig = useModelConfig();
 
   return (
     <div className="flex w-full flex-col">

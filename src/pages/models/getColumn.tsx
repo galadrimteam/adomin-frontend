@@ -2,6 +2,7 @@ import { MRT_ColumnDef } from "material-react-table";
 import { BooleanCell } from "../../components/cells/BooleanCell";
 import { DateCell } from "../../components/cells/DateCell";
 import { FileCell } from "../../components/cells/FileCell";
+import { ForeignKeyCell } from "../../components/cells/ForeignKeyCell";
 import { ImageCell } from "../../components/cells/ImageCell";
 import { StringArrayCell } from "../../components/cells/StringArrayCell";
 import { UnkownTypeCell } from "../../components/cells/UnknownTypeCell";
@@ -97,6 +98,14 @@ export const getColumn = (
       ...baseColumn,
       muiEditTextFieldProps: getMuiEditTextFieldProps(validationErrors),
       Cell: StringArrayCell,
+    };
+  }
+
+  if (field.adomin.type === "foreignKey") {
+    return {
+      ...baseColumn,
+      muiEditTextFieldProps: getMuiEditTextFieldProps(validationErrors),
+      Cell: ForeignKeyCell,
     };
   }
 

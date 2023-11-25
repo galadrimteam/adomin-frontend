@@ -196,6 +196,14 @@ export interface AdominObjectFieldConfig extends AdominBaseFieldConfig {
   type: "object";
 }
 
+export interface AdominForeignKeyFieldConfig extends AdominBaseFieldConfig {
+  type: "foreignKey";
+  modelName: string;
+  labelFields: string[];
+  labelFieldsSeparator?: string;
+  searchFields: string[];
+}
+
 export type AdominFieldConfig =
   | AdominStringFieldConfig
   | AdominNumberFieldConfig
@@ -203,6 +211,7 @@ export type AdominFieldConfig =
   | AdominDateFieldConfig
   | AdominEnumFieldConfig
   | AdominFileFieldConfig
-  | AdominArrayFieldConfig;
+  | AdominArrayFieldConfig
+  | AdominForeignKeyFieldConfig;
 // | AdominEnumSetFieldConfig
 // | AdominObjectFieldConfig

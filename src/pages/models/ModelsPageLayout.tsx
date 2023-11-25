@@ -4,6 +4,7 @@ import { Outlet, useNavigate, useParams } from "react-router-dom";
 import { privateAxios } from "../../axios/privateAxios";
 import { CenteredSpinner } from "../../components/CenteredSpinner";
 import { useConfigQuery } from "../home/useConfigQuery";
+import { ModelConfigContext } from "./ModelConfigContext";
 import { ModelFieldsConfig } from "./model.types";
 
 const ModelsPageLayout = () => {
@@ -41,7 +42,9 @@ const ModelsPageLayout = () => {
   return (
     <div className="w-full flex flex-col bg-blue-50">
       <div className="flex-1 ">
-        <Outlet />
+        <ModelConfigContext.Provider value={modelQuery.data}>
+          <Outlet />
+        </ModelConfigContext.Provider>
       </div>
       <div className="bg-adomin_4 text-adomin_2 p-2">
         {configQuery.data?.footerText ?? "Loading footer text..."}
