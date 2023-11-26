@@ -26,7 +26,11 @@ const appendData = (formData: FormData, field: ModelField, data: any) => {
     return;
   }
 
-  formData.append(field.name, data[field.name]);
+  if (dataToAppend === null) {
+    return formData.append(field.name, "");
+  }
+
+  formData.append(field.name, dataToAppend);
 };
 
 export const getFormData = (data: unknown, config: ModelFieldsConfig) => {

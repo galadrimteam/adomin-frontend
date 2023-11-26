@@ -1,11 +1,9 @@
 import { Alert } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
-import { privateAxios } from "../../axios/privateAxios";
 import { CenteredSpinner } from "../../components/CenteredSpinner";
 import { useConfigQuery } from "../home/useConfigQuery";
 import { ModelConfigContext } from "./ModelConfigContext";
-import { ModelFieldsConfig } from "./model.types";
+import { useModelConfigQuery } from "./useModelConfigQuery";
 
 const ModelsPageLayout = () => {
   const { model } = useParams<{ model: string }>();
@@ -17,15 +15,7 @@ const ModelsPageLayout = () => {
     throw new Error("Problème lors de la séléction du Model");
   }
 
-  const modelQuery = useQuery({
-    queryKey: ["modelParams", model],
-    queryFn: async () => {
-      const res = await privateAxios.get<ModelFieldsConfig>(
-        `/adomin/api/config/${model}`
-      );
-      return res.data;
-    },
-  });
+  const modelQuery = useModelConfigQuery(model);
 
   if (modelQuery.isLoading) {
     return <CenteredSpinner />;

@@ -25,7 +25,7 @@ interface ModelGridProps {
   modelConfig: ModelFieldsConfig;
 }
 
-interface ModelListResponse {
+export interface ModelListResponse {
   data: ModelData[];
   meta: { total: number };
 }

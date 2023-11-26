@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { CenteredSpinner } from "../../../components/CenteredSpinner";
-import { FieldsRender } from "../../../components/form/FieldsRenderer";
+import { FieldsRenderer } from "../../../components/form/FieldsRenderer";
 import { ModelData, ModelFieldsConfig } from "../model.types";
 import { useUpdateModel } from "./useUpdateModel";
 
@@ -28,7 +28,7 @@ export const EditModelForm = ({ defaultValues, modelConfig }: Props) => {
       className="bg-white rounded-md w-[80%] mt-8 p-4"
       onSubmit={handleSubmit(updateModel)}
     >
-      <FieldsRender mode="update" config={modelConfig} control={control} />
+      <FieldsRenderer mode="update" config={modelConfig} control={control} />
 
       <div className="flex justify-center gap-4">
         <Link to={`/adomin/${modelConfig.name}`}>

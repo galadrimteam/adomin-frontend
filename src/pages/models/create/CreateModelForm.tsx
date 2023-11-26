@@ -4,7 +4,7 @@ import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { CenteredSpinner } from "../../../components/CenteredSpinner";
-import { FieldsRender } from "../../../components/form/FieldsRenderer";
+import { FieldsRenderer } from "../../../components/form/FieldsRenderer";
 import { ModelFieldsConfig } from "../model.types";
 import { getModelDefaultValues } from "./defaultValues/getModelDefaultValues";
 import { useCreateModel } from "./useCreateModel";
@@ -33,7 +33,7 @@ export const CreateModelForm = ({ modelConfig }: Props) => {
       className="bg-white rounded-md w-[80%] mt-8 p-4"
       onSubmit={handleSubmit(createModel)}
     >
-      <FieldsRender mode="create" config={modelConfig} control={control} />
+      <FieldsRenderer mode="create" config={modelConfig} control={control} />
 
       <div className="flex justify-center gap-4">
         <Link to={`/adomin/${modelConfig.name}`}>

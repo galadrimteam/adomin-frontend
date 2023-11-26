@@ -9,6 +9,7 @@ import { TextFieldRhf } from "./TextFieldRhf";
 import { numberToString, stringToNumber } from "./TextFieldRhfUtils";
 import { FileInputRhf } from "./files/FileInputRhf";
 import { BasicStringSelectRhf } from "./selects/BasicSelectRhf";
+import { ForeignKeySelectRhf } from "./selects/ForeignKeySelectRhf";
 
 interface Props {
   config: ModelFieldsConfig;
@@ -16,7 +17,7 @@ interface Props {
   mode: "create" | "update";
 }
 
-export const FieldsRender = ({ config, control, mode }: Props) => {
+export const FieldsRenderer = ({ config, control, mode }: Props) => {
   const fieldsToUse = config.fields.filter((field) => {
     if (field.name === config.primaryKey) return false;
     if (mode === "create") return field.adomin.creatable !== false;
@@ -128,6 +129,18 @@ export const FieldsRender = ({ config, control, mode }: Props) => {
                 ((value as unknown as string[] | undefined) ?? []).join(",")
               }
               stringToValue={(value) => value.split(",") as unknown as string}
+            />
+          );
+        }
+
+        if (field.adomin.type === "foreignKey") {
+          return (
+            <ForeignKeySelectRhf
+              key={key}
+              control={control}
+              name={field.name}
+              labelField={field.adomin.labelField}
+              modelName={field.adomin.modelName}
             />
           );
         }
