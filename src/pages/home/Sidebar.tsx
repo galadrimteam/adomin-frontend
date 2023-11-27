@@ -1,11 +1,18 @@
 import { CropSquare } from "@mui/icons-material";
 import clsx from "clsx";
+import { useMemo } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 
+interface ModelBasicInfos {
+  model: string;
+  label: string;
+  labelPluralized: string;
+  isHidden: boolean;
+}
 export interface AdominConfig {
   title: string;
   footerText: string;
-  models: { model: string; label: string }[];
+  models: ModelBasicInfos[];
 }
 
 export const Sidebar = ({
@@ -13,6 +20,11 @@ export const Sidebar = ({
   title,
 }: Omit<AdominConfig, "footerText">) => {
   const { model: modelParam } = useParams();
+
+  const modelsToShow = useMemo(
+    () => models.filter((model) => !model.isHidden),
+    [models]
+  );
 
   if (modelParam === undefined && models.length > 0) {
     return <Navigate to={`/adomin/${models[0].model}`} />;
@@ -23,7 +35,7 @@ export const Sidebar = ({
       <h1 className="text-center text-2xl text-white mt-4">{title}</h1>
       <h2 className="text-center text-l text-adomin_2 mb-2">Back-office</h2>
 
-      {models.map(({ label, model: modelName }) => (
+      {modelsToShow.map(({ label, model: modelName }) => (
         <Link to={`/adomin/${modelName}`} key={modelName}>
           <div className="flex items-center w-full p-4">
             <CropSquare

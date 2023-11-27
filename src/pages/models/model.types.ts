@@ -11,6 +11,7 @@ export interface ModelFieldsConfig {
   labelPluralized: string;
   fields: ModelField[];
   primaryKey: string;
+  isHidden: boolean;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
