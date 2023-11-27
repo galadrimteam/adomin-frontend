@@ -3,6 +3,7 @@ import { BooleanCell } from "../../components/cells/BooleanCell";
 import { DateCell } from "../../components/cells/DateCell";
 import { FileCell } from "../../components/cells/FileCell";
 import { ForeignKeyCell } from "../../components/cells/ForeignKeyCell";
+import { ForeignKeyCellWithLabel } from "../../components/cells/ForeignKeyCellWithLabel";
 import { ImageCell } from "../../components/cells/ImageCell";
 import { StringArrayCell } from "../../components/cells/StringArrayCell";
 import { UnkownTypeCell } from "../../components/cells/UnknownTypeCell";
@@ -105,7 +106,9 @@ export const getColumn = (
     return {
       ...baseColumn,
       muiEditTextFieldProps: getMuiEditTextFieldProps(validationErrors),
-      Cell: ForeignKeyCell,
+      Cell: field.adomin.showLabelInTable
+        ? ForeignKeyCellWithLabel
+        : ForeignKeyCell,
     };
   }
 
