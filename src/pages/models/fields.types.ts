@@ -198,8 +198,21 @@ export interface AdominObjectFieldConfig extends AdominBaseFieldConfig {
 
 export interface AdominForeignKeyFieldConfig extends AdominBaseFieldConfig {
   type: "foreignKey";
+  /**
+   * Model referenced by this foreign key
+   */
   modelName: string;
-  labelField: string;
+  /**
+   * Fields to use for label
+   */
+  labelFields: string[];
+  /**
+   * Separator between label fields, default is ", "
+   */
+  labelFieldsSeparator?: string;
+  /**
+   * type of the foreign key
+   */
   subType: "string" | "number";
 }
 

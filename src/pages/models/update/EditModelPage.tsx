@@ -1,15 +1,13 @@
 import { Alert } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { useParams } from "react-router-dom";
-import { privateAxios } from "../../../axios/privateAxios";
 import { CenteredSpinner } from "../../../components/CenteredSpinner";
 import { PageHeading } from "../../../components/PageHeading";
 import type { ApiAttachment } from "../../../components/form/files/FileInput";
 import { useModelConfig } from "../ModelConfigContext";
 import { getFileDefaultValue } from "../create/defaultValues/getFileDefaultValue";
-import { ModelData } from "../model.types";
 import { EditModelForm } from "./EditModelForm";
+import { useShowModelQuery } from "./useShowModelQuery";
 
 const EditModelPage = () => {
   const { primaryKeyValue } = useParams<{
@@ -24,15 +22,7 @@ const EditModelPage = () => {
 
   const modelName = modelConfig.name;
 
-  const modelQuery = useQuery({
-    queryKey: ["model", modelName, primaryKeyValue],
-    queryFn: async () => {
-      const res = await privateAxios.get<ModelData>(
-        `/adomin/api/crud/${modelName}/${primaryKeyValue}`
-      );
-      return res.data;
-    },
-  });
+  const modelQuery = useShowModelQuery(modelName, primaryKeyValue);
 
   const modelQueryData = useMemo(() => {
     if (!modelQuery.data) return undefined;

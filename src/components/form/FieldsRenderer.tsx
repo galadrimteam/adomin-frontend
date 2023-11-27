@@ -9,7 +9,7 @@ import { TextFieldRhf } from "./TextFieldRhf";
 import { numberToString, stringToNumber } from "./TextFieldRhfUtils";
 import { FileInputRhf } from "./files/FileInputRhf";
 import { EnumStringSelectRhf } from "./selects/EnumStringSelectRhf";
-import { ForeignKeySelectRhf } from "./selects/ForeignKeySelectRhf";
+import { ForeignKeySelectRhf } from "./selects/foreignKey/ForeignKeySelectRhf";
 
 interface Props {
   config: ModelFieldsConfig;
@@ -139,9 +139,10 @@ export const FieldsRenderer = ({ config, control, mode }: Props) => {
               key={key}
               control={control}
               name={field.name}
-              labelField={field.adomin.labelField}
+              labelFields={field.adomin.labelFields}
               modelName={field.adomin.modelName}
               inputLabel={field.adomin.label ?? field.name}
+              separator={field.adomin.labelFieldsSeparator}
             />
           );
         }
