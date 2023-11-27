@@ -2,7 +2,7 @@ import { Control, FieldValues, Path, useController } from "react-hook-form";
 
 import { BasicSelect, BasicSelectProps } from "./BasicSelect";
 
-type BasicSelectRhfProps<
+export type BasicSelectRhfProps<
   T extends FieldValues,
   SelectType extends string | number
 > = {

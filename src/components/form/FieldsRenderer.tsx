@@ -8,7 +8,7 @@ import { SwitchRhf } from "./SwitchRhf";
 import { TextFieldRhf } from "./TextFieldRhf";
 import { numberToString, stringToNumber } from "./TextFieldRhfUtils";
 import { FileInputRhf } from "./files/FileInputRhf";
-import { BasicStringSelectRhf } from "./selects/BasicSelectRhf";
+import { EnumStringSelectRhf } from "./selects/EnumStringSelectRhf";
 import { ForeignKeySelectRhf } from "./selects/ForeignKeySelectRhf";
 
 interface Props {
@@ -101,7 +101,7 @@ export const FieldsRenderer = ({ config, control, mode }: Props) => {
 
         if (field.adomin.type === "enum") {
           return (
-            <BasicStringSelectRhf
+            <EnumStringSelectRhf
               key={key}
               label={label}
               name={field.name}

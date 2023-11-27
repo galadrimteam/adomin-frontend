@@ -46,6 +46,17 @@ const formatFilter = (
     return columnFilter;
   }
 
+  if (field.adomin.type === "enum") {
+    const found = field.adomin.options.find(
+      (value) => value.value === columnFilter.value
+    );
+
+    return {
+      ...columnFilter,
+      value: found?.value ?? null,
+    };
+  }
+
   if (field.adomin.type === "boolean") {
     return {
       ...columnFilter,
