@@ -141,6 +141,7 @@ export const FieldsRenderer = ({ config, control, mode }: Props) => {
               name={field.name}
               labelField={field.adomin.labelField}
               modelName={field.adomin.modelName}
+              inputLabel={field.adomin.label ?? field.name}
             />
           );
         }

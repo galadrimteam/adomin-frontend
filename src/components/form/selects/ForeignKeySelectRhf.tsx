@@ -11,6 +11,7 @@ interface ForeignKeySelectProps {
   value: string | null;
   onChange: (newValue: string | null) => void;
   errorMessage?: string;
+  inputLabel: string;
   labelField: string;
   modelName: string;
 }
@@ -25,6 +26,7 @@ const ForeignKeySelect = ({
   labelField,
   value,
   onChange,
+  inputLabel,
 }: ForeignKeySelectProps) => {
   const [selectValue, setSelectValue] = useState<ForeignKeySelectOption | null>(
     null
@@ -81,7 +83,7 @@ const ForeignKeySelect = ({
       }}
       options={options}
       renderInput={(params) => (
-        <TextField {...params} label="Rechercher" variant="outlined" />
+        <TextField {...params} label={inputLabel} variant="outlined" />
       )}
       loading={listQuery.isLoading}
       isOptionEqualToValue={(option, value) => option.value === value.value}
