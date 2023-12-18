@@ -3,10 +3,9 @@ import { useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { CenteredSpinner } from "../../../components/CenteredSpinner";
 import { PageHeading } from "../../../components/PageHeading";
-import type { ApiAttachment } from "../../../components/form/files/FileInput";
 import { useModelConfig } from "../ModelConfigContext";
-import { getFileDefaultValue } from "../create/defaultValues/getFileDefaultValue";
 import { EditModelForm } from "./EditModelForm";
+import { getModelDefaultValuesForEdition } from "./getModelDefaultValuesForEdition";
 import { useShowModelQuery } from "./useShowModelQuery";
 
 const EditModelPage = () => {
@@ -27,21 +26,7 @@ const EditModelPage = () => {
   const modelQueryData = useMemo(() => {
     if (!modelQuery.data) return undefined;
 
-    const dataToReturn = { ...modelQuery.data };
-
-    for (const modelField of modelConfig.fields) {
-      if (modelField.adomin.type === "date") {
-        dataToReturn[modelField.name] = new Date(dataToReturn[modelField.name]);
-      }
-      if (modelField.adomin.type === "file") {
-        dataToReturn[modelField.name] = getFileDefaultValue(
-          modelField.adomin,
-          dataToReturn[modelField.name] as ApiAttachment | null
-        );
-      }
-    }
-
-    return dataToReturn;
+    return getModelDefaultValuesForEdition(modelQuery.data, modelConfig);
   }, [modelConfig, modelQuery.data]);
 
   if (modelQuery.isLoading || !modelConfig) {
