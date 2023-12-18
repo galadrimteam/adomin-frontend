@@ -1,7 +1,9 @@
 import { CropSquare } from "@mui/icons-material";
+import { Divider } from "@mui/material";
 import clsx from "clsx";
 import { useMemo } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
+import { LogoutButton } from "./LogoutButton";
 
 interface ModelBasicInfos {
   model: string;
@@ -9,16 +11,21 @@ interface ModelBasicInfos {
   labelPluralized: string;
   isHidden: boolean;
 }
+
+type AdminUser = Record<string, unknown>;
+
 export interface AdominConfig {
   title: string;
   footerText: string;
   models: ModelBasicInfos[];
+  userDisplayKey: string;
+  user: AdminUser;
 }
 
 export const Sidebar = ({
   models,
   title,
-}: Omit<AdominConfig, "footerText">) => {
+}: Pick<AdominConfig, "models" | "title">) => {
   const { model: modelParam } = useParams();
 
   const modelsToShow = useMemo(
@@ -31,7 +38,7 @@ export const Sidebar = ({
   }
 
   return (
-    <div className="bg-adomin_1 w-[300px] select-none">
+    <div className="bg-adomin_1 w-[300px] select-none flex flex-col">
       <h1 className="text-center text-2xl text-white mt-4">{title}</h1>
       <h2 className="text-center text-l text-adomin_2 mb-2">Back-office</h2>
 
@@ -55,6 +62,10 @@ export const Sidebar = ({
           </div>
         </Link>
       ))}
+      <Divider />
+      <div className="mt-auto">
+        <LogoutButton />
+      </div>
     </div>
   );
 };
