@@ -1,0 +1,28 @@
+name: Deploy staging ⚙️
+on:
+  push:
+    branches:
+      - does-not-exist # replace by e.g: staging
+
+jobs:
+  back-office:
+    runs-on: ubuntu-latest
+    env:
+      VITE_API_URL: https://api.staging.your-own-domain.fr/ # replace by your API url
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install dependencies
+        run: yarn
+      - name: Build
+        run: yarn build
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          # you will have to create AWS_ACCESS_KEY and AWS_SECRET_KEY secrets in your repository settings
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+          aws-region: eu-west-3
+      - name: Deploy
+        run: aws s3 sync ./dist s3://your-s3-bucket-name/ # replace by your s3 bucket name
+      - name: Invalidate dashboard cloudfront
+        run: aws cloudfront create-invalidation --distribution-id YOUR_DISTRIB_ID --paths "/*" # replace by your cloudfront distribution id

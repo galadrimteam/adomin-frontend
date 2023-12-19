@@ -1,27 +1,30 @@
-# React + TypeScript + Vite
+# Adomin frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the frontend for the Adomin backoffice.
 
-Currently, two official plugins are available:
+:bulb: quick reminder: this is now **your code**
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Configuration
 
-## Expanding the ESLint configuration
+If you are planning on not touching anything on this repo (unlikely IMO) the only configuration you need on the frontend is changing VITE_API_URL and set it to your backend URL
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+The real configurations are on the backend side (to set which tables to show, permissions, etc, etc), for more infos [check this](https://github.com/galadrimteam/adomin?tab=readme-ov-file#adomin)
 
-- Configure the top-level `parserOptions` property like this:
+All other "configurations" must be done through editing the code 🤭
 
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
-```
+## How does it work, where do I edit things
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+Good question! Here is some reading for you :nerd_face:
+
+- [routing](./docs/routing.md)
+
+## Deployment
+
+If you are using github actions and s3/cloudfront, you can check [staging.yml](.github/workflows/staging.yml)
+
+Anyway, you can look at it for inspiration, but in theory all you have to do is :
+
+- `yarn build` with correct VITE_API_URL env variable set
+- copy dist folder to your static files service
+- serve those files with a rule for SPAs (e.g. serving the index.html on 404)
+  for this last bullet point, you can find inspiration for [nginx](https://sdickinson.com/nginx-config-for-single-page-applications/) and for [caddy](./docs/caddy-example.md)

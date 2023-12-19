@@ -2,7 +2,7 @@ import { CropSquare } from "@mui/icons-material";
 import { Divider } from "@mui/material";
 import clsx from "clsx";
 import { useMemo } from "react";
-import { Link, Navigate, useParams } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { LogoutButton } from "./LogoutButton";
 
 interface ModelBasicInfos {
@@ -22,18 +22,17 @@ export interface AdominConfig {
   user: AdminUser;
 }
 
-export const Sidebar = ({
-  models,
-  title,
-}: Pick<AdominConfig, "models" | "title">) => {
-  const { model: modelParam } = useParams();
+interface SidebarProps extends Pick<AdominConfig, "models" | "title"> {
+  currentModel?: string;
+}
 
+export const Sidebar = ({ models, title, currentModel }: SidebarProps) => {
   const modelsToShow = useMemo(
     () => models.filter((model) => !model.isHidden),
     [models]
   );
 
-  if (modelParam === undefined && models.length > 0) {
+  if (currentModel === undefined && models.length > 0) {
     return <Navigate to={`/adomin/${models[0].model}`} />;
   }
 
@@ -48,13 +47,13 @@ export const Sidebar = ({
             <CropSquare
               className={clsx({
                 "text-adomin_3": true,
-                "text-white": modelName === modelParam,
+                "text-white": modelName === currentModel,
               })}
             />
             <p
               className={clsx({
                 "flex-1 ml-2 text-adomin_2 hover:text-white": true,
-                "text-white": modelName === modelParam,
+                "text-white": modelName === currentModel,
               })}
             >
               {label}
