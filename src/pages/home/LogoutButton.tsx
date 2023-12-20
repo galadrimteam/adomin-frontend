@@ -39,16 +39,20 @@ export const LogoutButton = () => {
   return (
     <div className="my-2">
       <div className="flex justify-center items-center mt-2">
-        <IconButton onClick={handleLogout}>
-          <Tooltip title={userDisplayName}>
-            <div className="max-w-[250px]">
-              <p className="text-center text-white mr-4 truncate">
+        <>
+          <div className="max-w-[250px]">
+            <Tooltip title={userDisplayName}>
+              <p className="text-center text-white mr-4 truncate text-xl">
                 {userDisplayName}
               </p>
-            </div>
-          </Tooltip>
-        </IconButton>
-        <Logout color="error" />
+            </Tooltip>
+          </div>
+          <IconButton onClick={handleLogout}>
+            <Tooltip title="Se déconnecter">
+              <Logout color="error" />
+            </Tooltip>
+          </IconButton>
+        </>
       </div>
     </div>
   );
