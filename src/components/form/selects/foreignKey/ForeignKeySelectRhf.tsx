@@ -35,6 +35,7 @@ export const ForeignKeySelectRhf = <T extends FieldValues>(
   const valueQuery = useShowModelQuery(inputProps.modelName, castedValue);
 
   useEffect(() => {
+    if (!valueQuery.data && castedValue === null) setSelectValue(null);
     if (!valueQuery.data) return;
 
     if (castedValue === null) {

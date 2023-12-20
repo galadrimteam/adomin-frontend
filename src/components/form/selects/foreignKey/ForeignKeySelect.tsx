@@ -29,6 +29,7 @@ export const ForeignKeySelect = ({
   inputLabel,
   separator,
   selectValue,
+  setSelectValue,
 }: ForeignKeySelectProps) => {
   const [inputValue, setInputValue] = useState("");
   const debouncedSearchTerm = useDebounce(inputValue, 500); // 500 ms de délai
@@ -74,7 +75,11 @@ export const ForeignKeySelect = ({
     <Autocomplete
       value={selectValue}
       onChange={(_e, newValue) => {
-        onChange(newValue?.value ?? null);
+        const valueOrNull = newValue?.value ?? null;
+
+        if (!valueOrNull) setSelectValue(null);
+
+        onChange(valueOrNull);
       }}
       inputValue={inputValue}
       onInputChange={(_e, newInputValue) => {
