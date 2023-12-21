@@ -9,12 +9,16 @@ export interface ForeignKeySelectProps {
   value: string | null;
   onChange: (newValue: string | null) => void;
   errorMessage?: string;
-  inputLabel: string;
+  inputLabel?: string;
   labelFields: string[];
   modelName: string;
   separator?: string;
   selectValue: ForeignKeySelectOption | null;
   setSelectValue: (newValue: ForeignKeySelectOption | null) => void;
+  autocompleteSize?: "small" | "medium";
+  autocompleteVariant?: "filled" | "outlined" | "standard";
+  autocompletePlaceholder?: string;
+  afterChange?: (newValue: string | null) => void;
 }
 
 export type ForeignKeySelectOption = {
@@ -30,6 +34,10 @@ export const ForeignKeySelect = ({
   separator,
   selectValue,
   setSelectValue,
+  autocompleteSize,
+  autocompleteVariant = "outlined",
+  afterChange,
+  autocompletePlaceholder,
 }: ForeignKeySelectProps) => {
   const [inputValue, setInputValue] = useState("");
   const debouncedSearchTerm = useDebounce(inputValue, 500); // 500 ms de délai
@@ -73,10 +81,12 @@ export const ForeignKeySelect = ({
 
   return (
     <Autocomplete
+      size={autocompleteSize}
       value={selectValue}
       onChange={(_e, newValue) => {
         const valueOrNull = newValue?.value ?? null;
 
+        if (afterChange) afterChange(valueOrNull);
         if (!valueOrNull) setSelectValue(null);
 
         onChange(valueOrNull);
@@ -87,7 +97,12 @@ export const ForeignKeySelect = ({
       }}
       options={options}
       renderInput={(params) => (
-        <TextField {...params} label={inputLabel} variant="outlined" />
+        <TextField
+          {...params}
+          label={inputLabel}
+          variant={autocompleteVariant}
+          placeholder={autocompletePlaceholder}
+        />
       )}
       loading={listQuery.isLoading}
       loadingText="Chargement..."

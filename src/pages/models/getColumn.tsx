@@ -7,6 +7,7 @@ import { ForeignKeyCellWithLabel } from "../../components/cells/ForeignKeyCellWi
 import { ImageCell } from "../../components/cells/ImageCell";
 import { StringArrayCell } from "../../components/cells/StringArrayCell";
 import { UnkownTypeCell } from "../../components/cells/UnknownTypeCell";
+import { ForeignKeyCellFilter } from "../../components/filters/ForeignKeyCellFilter";
 import { ModelData, ModelField } from "./model.types";
 
 interface ValidationErrors {
@@ -109,6 +110,7 @@ export const getColumn = (
       Cell: field.adomin.showLabelInTable
         ? ForeignKeyCellWithLabel
         : ForeignKeyCell,
+      Filter: ForeignKeyCellFilter,
     };
   }
 
