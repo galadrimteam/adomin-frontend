@@ -6,6 +6,12 @@ import {
 } from "material-react-table";
 import { ModelField } from "../model.types";
 
+export const prepareQsObject = (
+  input: MRT_SortingState | Params["columnFilters"]
+) => {
+  return btoa(JSON.stringify(input));
+};
+
 interface Params {
   columnFilters: MRT_ColumnFiltersState;
   sorting: MRT_SortingState;
@@ -22,7 +28,7 @@ export const getModelListQueryString = (
   searchParams.append("pageIndex", (pagination.pageIndex + 1).toString());
   searchParams.append("pageSize", pagination.pageSize.toString());
   searchParams.append("globalFilter", globalFilter ?? "");
-  searchParams.append("sorting", JSON.stringify(sorting ?? []));
+  searchParams.append("sorting", prepareQsObject(sorting ?? []));
 
   const fieldsMap = new Map<string, ModelField>(
     fields.map((field) => [field.name, field])
@@ -31,7 +37,7 @@ export const getModelListQueryString = (
     formatFilter(columnFilter, fieldsMap)
   );
 
-  searchParams.append("filters", JSON.stringify(finalColumnFilters));
+  searchParams.append("filters", prepareQsObject(finalColumnFilters));
 
   return searchParams.toString();
 };

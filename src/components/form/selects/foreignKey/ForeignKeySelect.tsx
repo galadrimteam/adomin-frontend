@@ -1,5 +1,6 @@
 import { Autocomplete, TextField } from "@mui/material";
 import { useMemo, useState } from "react";
+import { prepareQsObject } from "../../../../pages/models/list/getModelListQueryString";
 import { useModelConfigQuery } from "../../../../pages/models/useModelConfigQuery";
 import { useDebounce } from "../../../../utils/useDebounce";
 import { getForeignKeyOptionLabel } from "./getForeignKeyOptionLabel";
@@ -45,7 +46,7 @@ export const ForeignKeySelect = ({
 
   const filtersToUse = useMemo(() => {
     if (debouncedSearchTerm === "") return JSON.stringify([]);
-    return JSON.stringify(
+    return prepareQsObject(
       labelFields.map((labelField) => ({
         id: labelField,
         value: debouncedSearchTerm,
