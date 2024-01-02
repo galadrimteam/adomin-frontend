@@ -9,7 +9,7 @@ import { ModelField } from "../model.types";
 export const prepareQsObject = (
   input: MRT_SortingState | Params["columnFilters"]
 ) => {
-  return btoa(JSON.stringify(input));
+  return encodeURIComponent(JSON.stringify(input));
 };
 
 interface Params {
