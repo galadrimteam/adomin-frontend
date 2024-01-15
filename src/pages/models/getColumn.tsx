@@ -1,6 +1,7 @@
 import { MRT_ColumnDef } from "material-react-table";
 import { BooleanCell } from "../../components/cells/BooleanCell";
 import { DateCell } from "../../components/cells/DateCell";
+import { DateTimeCell } from "../../components/cells/DateTimeCell";
 import { FileCell } from "../../components/cells/FileCell";
 import { ForeignKeyCell } from "../../components/cells/ForeignKeyCell";
 import { ForeignKeyCellWithLabel } from "../../components/cells/ForeignKeyCellWithLabel";
@@ -58,6 +59,15 @@ export const getColumn = (
       filterVariant: "select",
       filterSelectOptions: field.adomin.options,
       muiEditTextFieldProps: getMuiEditTextFieldProps(validationErrors, "text"),
+    };
+  }
+
+  if (field.adomin.type === "date" && field.adomin.subType === "datetime") {
+    return {
+      ...baseColumn,
+      filterVariant: "date",
+      muiEditTextFieldProps: getMuiEditTextFieldProps(validationErrors),
+      Cell: DateTimeCell,
     };
   }
 

@@ -2,7 +2,8 @@ import { Alert, SxProps } from "@mui/material";
 import { Control, FieldValues } from "react-hook-form";
 import { ModelFieldsConfig } from "../../pages/models/model.types";
 import { CheckboxRhf } from "./CheckboxRhf";
-import DatePickerRhf from "./DatePickerRhf";
+import { DatePickerRhf } from "./DatePickerRhf";
+import { DateTimePickerRhf } from "./DateTimePickerRhf";
 import { DoubleFields } from "./MultipleFields";
 import { SwitchRhf } from "./SwitchRhf";
 import { TextFieldRhf } from "./TextFieldRhf";
@@ -37,6 +38,22 @@ export const FieldsRenderer = ({ config, control, mode }: Props) => {
         const required = !optionalOrNullable;
 
         const fieldType = field.adomin.type;
+
+        if (
+          field.adomin.type === "date" &&
+          field.adomin.subType === "datetime"
+        ) {
+          return (
+            <DateTimePickerRhf
+              key={key}
+              label={label}
+              name={field.name}
+              control={control}
+              sx={sx}
+              required={required}
+            />
+          );
+        }
 
         if (field.adomin.type === "date") {
           return (

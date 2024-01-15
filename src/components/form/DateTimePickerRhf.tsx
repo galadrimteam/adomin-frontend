@@ -1,5 +1,5 @@
 import { SxProps } from "@mui/material";
-import { DatePicker } from "@mui/x-date-pickers";
+import { DateTimePicker } from "@mui/x-date-pickers";
 import { Control, FieldValues, Path, useController } from "react-hook-form";
 
 type DateInputRhfProps<T extends FieldValues> = {
@@ -10,7 +10,7 @@ type DateInputRhfProps<T extends FieldValues> = {
   required?: boolean;
 };
 
-export function DatePickerRhf<T extends FieldValues>(
+export function DateTimePickerRhf<T extends FieldValues>(
   props: DateInputRhfProps<T>
 ) {
   const { name, control, label, sx, required } = props;
@@ -20,7 +20,7 @@ export function DatePickerRhf<T extends FieldValues>(
   } = useController({ name, control });
 
   return (
-    <DatePicker
+    <DateTimePicker
       label={label}
       value={value}
       onChange={onChange}
