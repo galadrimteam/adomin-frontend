@@ -31,7 +31,7 @@ export interface ModelListResponse {
 }
 
 export const ModelGrid = ({
-  modelConfig: { fields, name: modelName },
+  modelConfig: { fields, name: modelName, staticRights },
 }: ModelGridProps) => {
   const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>(
     []
@@ -107,21 +107,25 @@ export const ModelGrid = ({
     rowCount: listQuery.data?.meta.total ?? 0,
     renderRowActions: ({ row }) => (
       <Box sx={{ display: "flex" }}>
-        <Tooltip arrow placement="left" title="Editer">
-          <Link to={`/adomin/${modelName}/${row.original.id}`}>
-            <IconButton>
-              <Edit />
+        {staticRights.update && (
+          <Tooltip arrow placement="left" title="Editer">
+            <Link to={`/adomin/${modelName}/${row.original.id}`}>
+              <IconButton>
+                <Edit />
+              </IconButton>
+            </Link>
+          </Tooltip>
+        )}
+        {staticRights.delete && (
+          <Tooltip arrow placement="right" title="Supprimer">
+            <IconButton
+              color="error"
+              onClick={() => deleteModelProps.setDeleteId(row.original.id)}
+            >
+              <Delete />
             </IconButton>
-          </Link>
-        </Tooltip>
-        <Tooltip arrow placement="right" title="Supprimer">
-          <IconButton
-            color="error"
-            onClick={() => deleteModelProps.setDeleteId(row.original.id)}
-          >
-            <Delete />
-          </IconButton>
-        </Tooltip>
+          </Tooltip>
+        )}
       </Box>
     ),
     renderTopToolbarCustomActions: () => (
@@ -131,11 +135,13 @@ export const ModelGrid = ({
             <Refresh />
           </IconButton>
         </Tooltip>
-        <Link to={`/adomin/${modelName}/create`}>
-          <IconButton>
-            <Add />
-          </IconButton>
-        </Link>
+        {staticRights.create && (
+          <Link to={`/adomin/${modelName}/create`}>
+            <IconButton>
+              <Add />
+            </IconButton>
+          </Link>
+        )}
       </Box>
     ),
     state: {

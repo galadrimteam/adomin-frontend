@@ -5,6 +5,14 @@ export interface ModelField {
   adomin: AdominFieldConfig;
 }
 
+export interface AdominStaticRightsConfig {
+  create: boolean;
+  read: boolean;
+  update: boolean;
+  delete: boolean;
+  list: boolean;
+}
+
 export interface ModelFieldsConfig {
   name: string;
   label: string;
@@ -12,6 +20,7 @@ export interface ModelFieldsConfig {
   fields: ModelField[];
   primaryKey: string;
   isHidden: boolean;
+  staticRights: AdominStaticRightsConfig;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
