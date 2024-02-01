@@ -43,6 +43,7 @@ export const getColumn = (
         validationErrors,
         "number"
       ),
+      accessorFn: (row) => generateDisplayValue(row, field),
     };
   }
 
@@ -50,6 +51,7 @@ export const getColumn = (
     return {
       ...baseColumn,
       muiEditTextFieldProps: getMuiEditTextFieldProps(validationErrors, "text"),
+      accessorFn: (row) => generateDisplayValue(row, field),
     };
   }
 
@@ -130,3 +132,20 @@ export const getColumn = (
     Cell: UnkownTypeCell,
   };
 };
+
+function generateDisplayValue(row: ModelData, field: ModelField) {
+  const value = row[field.name];
+
+  if (field.adomin.type !== "number" && field.adomin.type !== "string") {
+    return value;
+  }
+
+  if (!field.adomin.valueDisplayTemplate) return value;
+
+  const templateWithValue = field.adomin.valueDisplayTemplate.replace(
+    /\{\{\s*value\s*\}\}/,
+    `${value}`
+  );
+
+  return templateWithValue;
+}
