@@ -9,7 +9,7 @@ import {
   useMaterialReactTable,
 } from "material-react-table";
 
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { MRT_Localization_FR } from "material-react-table/locales/fr";
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
@@ -18,6 +18,8 @@ import { DeleteModelModal } from "../delete/DeleteModelModal";
 import { useDeleteModel } from "../delete/useDeleteModel";
 import { getColumn } from "../getColumn";
 import { ModelData, ModelFieldsConfig } from "../model.types";
+import { ExportButton } from "./ExportButton";
+import { ExportFileType } from "./ExportDialog";
 import { getModelListQueryString } from "./getModelListQueryString";
 import { transformEnumValueToLabels } from "./transformEnumValueToLabels";
 
@@ -74,6 +76,41 @@ export const ModelGrid = ({
       const res = await privateAxios.get<ModelListResponse>(
         `/adomin/api/crud/${modelName}` + "?" + queryParams
       );
+      return res.data;
+    },
+  });
+
+  const downloadExportMutation = useMutation({
+    mutationFn: async (fileType: ExportFileType) => {
+      const queryParams = getModelListQueryString(fields, {
+        columnFilters,
+        globalFilter,
+        pagination,
+        sorting,
+      });
+
+      const fileName = `${modelName}_${Date.now()}.${fileType}`;
+
+      const res = await privateAxios.post(
+        `/adomin/api/crud/export/${modelName}` +
+          "?" +
+          queryParams +
+          `&exportType=${fileType}`,
+        null,
+        {
+          responseType: "blob",
+        }
+      );
+
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", fileName);
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode?.removeChild(link);
+      window.URL.revokeObjectURL(url);
+
       return res.data;
     },
   });
@@ -135,6 +172,7 @@ export const ModelGrid = ({
             <Refresh />
           </IconButton>
         </Tooltip>
+        <ExportButton mutation={downloadExportMutation} />
         {staticRights.create && (
           <Link to={`/adomin/${modelName}/create`}>
             <IconButton>
