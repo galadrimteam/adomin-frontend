@@ -1,6 +1,7 @@
 import { Alert, SxProps } from "@mui/material";
 import { Control, FieldValues } from "react-hook-form";
 import { ModelFieldsConfig } from "../../pages/models/model.types";
+import { BitsetFieldRhf } from "./BitsetFieldRhf";
 import { CheckboxRhf } from "./CheckboxRhf";
 import { DatePickerRhf } from "./DatePickerRhf";
 import { DateTimePickerRhf } from "./DateTimePickerRhf";
@@ -70,6 +71,22 @@ export const FieldsRenderer = ({ config, control, mode }: Props) => {
               control={control}
               sx={sx}
               required={required}
+            />
+          );
+        }
+
+        if (
+          field.adomin.type === "number" &&
+          field.adomin.variant?.type === "bitset"
+        ) {
+          return (
+            <BitsetFieldRhf
+              key={key}
+              label={label}
+              name={field.name}
+              control={control}
+              sx={sx}
+              adomin={field.adomin}
             />
           );
         }
