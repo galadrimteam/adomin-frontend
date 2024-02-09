@@ -1,4 +1,5 @@
 import { MRT_ColumnDef } from "material-react-table";
+import { BitsetCell } from "../../components/cells/BitsetCell";
 import { BooleanCell } from "../../components/cells/BooleanCell";
 import { DateCell } from "../../components/cells/DateCell";
 import { DateTimeCell } from "../../components/cells/DateTimeCell";
@@ -9,6 +10,7 @@ import { ImageCell } from "../../components/cells/ImageCell";
 import { StringArrayCell } from "../../components/cells/StringArrayCell";
 import { UnkownTypeCell } from "../../components/cells/UnknownTypeCell";
 import { ForeignKeyCellFilter } from "../../components/filters/ForeignKeyCellFilter";
+import { getBitsetFilterOptions } from "../../utils/bitsetHelpers";
 import { ModelData, ModelField } from "./model.types";
 
 interface ValidationErrors {
@@ -35,6 +37,22 @@ export const getColumn = (
     header: field.adomin.label ?? field.name,
     size: field.adomin.size ?? 120,
   };
+
+  if (
+    field.adomin.type === "number" &&
+    field.adomin.variant?.type === "bitset"
+  ) {
+    return {
+      ...baseColumn,
+      muiEditTextFieldProps: getMuiEditTextFieldProps(validationErrors),
+      Cell: BitsetCell,
+      filterVariant: "select",
+      filterSelectOptions: getBitsetFilterOptions(
+        field.adomin.variant.bitsetValues,
+        field.adomin.variant.bitsetLabels
+      ),
+    };
+  }
 
   if (field.adomin.type === "number") {
     return {
