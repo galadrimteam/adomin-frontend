@@ -21,8 +21,14 @@ interface Props {
 export const FieldsRenderer = ({ config, control, mode }: Props) => {
   const fieldsToUse = config.fields.filter((field) => {
     if (field.name === config.primaryKey) return false;
-    if (mode === "create") return field.adomin.creatable !== false;
-    if (mode === "update") return field.adomin.editable !== false;
+
+    const creatable =
+      field.adomin.creatable !== false && field.adomin.computed !== true;
+    const editable =
+      field.adomin.editable !== false && field.adomin.computed !== true;
+
+    if (mode === "create") return creatable;
+    if (mode === "update") return editable;
 
     return true;
   });
