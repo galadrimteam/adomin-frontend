@@ -36,6 +36,7 @@ export const getColumn = (
     accessorKey: field.name,
     header: field.adomin.label ?? field.name,
     size: field.adomin.size ?? 120,
+    enableColumnFilter: field.adomin.computed !== true,
   };
 
   if (
