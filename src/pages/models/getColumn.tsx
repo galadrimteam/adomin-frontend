@@ -141,6 +141,7 @@ export const getColumn = (
       ...baseColumn,
       muiEditTextFieldProps: getMuiEditTextFieldProps(validationErrors),
       Cell: HasManyRelationCell,
+      enableSorting: false,
     };
   }
 
