@@ -73,6 +73,8 @@ export const getColumn = (
       ...baseColumn,
       muiEditTextFieldProps: getMuiEditTextFieldProps(validationErrors, "text"),
       accessorFn: (row) => generateDisplayValue(row, field),
+      enableSorting: field.adomin.isPassword !== true,
+      enableColumnFilter: field.adomin.isPassword !== true,
     };
   }
 
@@ -151,6 +153,7 @@ export const getColumn = (
       muiEditTextFieldProps: getMuiEditTextFieldProps(validationErrors),
       Cell: BelongsToRelationCell,
       Filter: ForeignKeyCellFilter,
+      enableSorting: false,
     };
   }
 
@@ -162,6 +165,7 @@ export const getColumn = (
         ? ForeignKeyCellWithLabel
         : ForeignKeyCell,
       Filter: ForeignKeyCellFilter,
+      enableSorting: false,
     };
   }
 
