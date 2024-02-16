@@ -140,7 +140,7 @@ export const getColumn = (
       ...baseColumn,
       muiEditTextFieldProps: getMuiEditTextFieldProps(validationErrors),
       Cell: BelongsToRelationCell,
-      // Filter: ForeignKeyCellFilter,
+      Filter: ForeignKeyCellFilter,
     };
   }
 

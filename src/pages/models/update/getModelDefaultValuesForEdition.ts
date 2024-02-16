@@ -24,6 +24,10 @@ export const getModelDefaultValuesForEdition = (
         config,
         fieldData as ApiAttachment | null
       );
+    } else if (config.type === "belongsToRelation") {
+      const localKey = config.localKeyName ?? "id";
+
+      dataToReturn[field.name] = fieldData?.[localKey] ?? null;
     }
   }
 

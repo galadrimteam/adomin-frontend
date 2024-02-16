@@ -29,14 +29,27 @@ export const ForeignKeyCellFilter: MRT_ColumnDef<ModelData>["Filter"] = ({
   );
 
   const placeholder = useMemo(() => {
-    if (!field || field.adomin.type !== "foreignKey") return undefined;
+    if (
+      !field ||
+      !(
+        field.adomin.type === "foreignKey" ||
+        field.adomin.type === "belongsToRelation"
+      )
+    )
+      return undefined;
 
     const label = field.adomin.label ?? field.name;
 
     return `Filtrer par ${label}`;
   }, [field]);
 
-  if (!field || field.adomin.type !== "foreignKey") {
+  if (
+    !field ||
+    !(
+      field.adomin.type === "foreignKey" ||
+      field.adomin.type === "belongsToRelation"
+    )
+  ) {
     return <Alert severity="error">Erreur lors du chargement du filtre</Alert>;
   }
 

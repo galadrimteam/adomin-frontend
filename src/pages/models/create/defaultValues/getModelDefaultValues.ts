@@ -24,7 +24,10 @@ export const getModelDefaultValues = (
       modelData[field.name] = getFileDefaultValue(config);
     } else if (config.type === "array") {
       modelData[field.name] = [];
-    } else if (config.type === "foreignKey") {
+    } else if (
+      config.type === "foreignKey" ||
+      config.type === "belongsToRelation"
+    ) {
       modelData[field.name] = null;
     }
   });

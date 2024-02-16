@@ -11,12 +11,12 @@ export const BelongsToRelationCell: MRT_ColumnDef<ModelData>["Cell"] = ({
   cell,
 }) => {
   const columnName = cell.getContext().column.id;
-  const cellValue = cell.getValue() as ModelData;
+  const cellValue = cell.getValue() as ModelData | null;
   const modelConfig = useModelConfig();
   const field = modelConfig.fields.find((field) => field.name === columnName);
 
   const relation = useMemo(() => {
-    if (!field || field?.adomin.type !== "belongsToRelation") {
+    if (!field || field?.adomin.type !== "belongsToRelation" || !cellValue) {
       return null;
     }
 

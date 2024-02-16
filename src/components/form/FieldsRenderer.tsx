@@ -173,7 +173,10 @@ export const FieldsRenderer = ({ config, control, mode }: Props) => {
           );
         }
 
-        if (field.adomin.type === "foreignKey") {
+        if (
+          field.adomin.type === "foreignKey" ||
+          field.adomin.type === "belongsToRelation"
+        ) {
           return (
             <ForeignKeySelectRhf
               key={key}
