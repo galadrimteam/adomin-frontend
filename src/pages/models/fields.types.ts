@@ -183,10 +183,6 @@ export type AdominEnumFieldConfig = AdominBaseFieldConfig & {
   defaultValue?: string;
 };
 
-export interface AdominEnumSetFieldConfig extends AdominBaseFieldConfig {
-  type: "enumSet";
-}
-
 export interface AdominArrayFieldConfig extends AdominBaseFieldConfig {
   type: "array";
 }
@@ -244,9 +240,86 @@ export interface AdominForeignKeyFieldConfig extends AdominBaseFieldConfig {
   labelFieldsSeparator?: string;
   /**
    * type of the foreign key
+   * @default 'number'
    */
-  subType: "string" | "number";
+  fkType?: "string" | "number";
+  /**
+   * If true, adomin frontend will fetch the referenced model and use it for list view
+   *
+   * This can result in a lot of queries on the list view, so use with caution
+   * @default false
+   */
   showLabelInTable?: boolean;
+}
+
+export interface AdominHasManyRelationFieldConfig
+  extends AdominBaseFieldConfig {
+  type: "hasManyRelation";
+  /**
+   * Model referenced by this foreign key
+   */
+  modelName: string;
+  /**
+   * Fields to use for label
+   */
+  labelFields: string[];
+  /**
+   * Separator between label fields, default is ", "
+   */
+  labelFieldsSeparator?: string;
+  /**
+   * type of the foreign key
+   * @default 'number'
+   */
+  fkType?: "string" | "number";
+  /**
+   * If true, adomin will preload the relation
+   *
+   * Setting to false can be usefull if you need to customize the query with queryBuilderCallback
+   * @default true
+   */
+  preload?: boolean;
+}
+
+export interface AdominBelongsToRelationFieldConfig
+  extends AdominBaseFieldConfig {
+  type: "belongsToRelation";
+  /**
+   * Model referenced by this foreign key
+   */
+  modelName: string;
+  /**
+   * Fields to use for label
+   */
+  labelFields: string[];
+  /**
+   * Separator between label fields, default is ", "
+   */
+  labelFieldsSeparator?: string;
+  /**
+   * Name of the foreign key for the referenced model
+   * @default `${camelCase(modelName)}Id`
+   *
+   * e.g. if modelName is 'User', the default value will be 'userId'
+   */
+  fkName?: string;
+  /**
+   * type of the foreign key
+   * @default 'number'
+   */
+  fkType?: "string" | "number";
+  /**
+   * Name of the local key in the referenced model
+   * @default 'id'
+   */
+  localKeyName?: string;
+  /**
+   * If true, adomin will preload the relation
+   *
+   * Setting to false can be usefull if you need to customize the query with queryBuilderCallback
+   * @default true
+   */
+  preload?: boolean;
 }
 
 export type AdominFieldConfig =
@@ -257,6 +330,7 @@ export type AdominFieldConfig =
   | AdominEnumFieldConfig
   | AdominFileFieldConfig
   | AdominArrayFieldConfig
-  | AdominForeignKeyFieldConfig;
-// | AdominEnumSetFieldConfig
+  | AdominForeignKeyFieldConfig
+  | AdominHasManyRelationFieldConfig
+  | AdominBelongsToRelationFieldConfig;
 // | AdominObjectFieldConfig

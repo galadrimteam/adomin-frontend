@@ -1,4 +1,5 @@
 import { MRT_ColumnDef } from "material-react-table";
+import { BelongsToRelationCell } from "../../components/cells/BelongsToRelationCell";
 import { BitsetCell } from "../../components/cells/BitsetCell";
 import { BooleanCell } from "../../components/cells/BooleanCell";
 import { DateCell } from "../../components/cells/DateCell";
@@ -131,6 +132,15 @@ export const getColumn = (
       ...baseColumn,
       muiEditTextFieldProps: getMuiEditTextFieldProps(validationErrors),
       Cell: StringArrayCell,
+    };
+  }
+
+  if (field.adomin.type === "belongsToRelation") {
+    return {
+      ...baseColumn,
+      muiEditTextFieldProps: getMuiEditTextFieldProps(validationErrors),
+      Cell: BelongsToRelationCell,
+      // Filter: ForeignKeyCellFilter,
     };
   }
 
