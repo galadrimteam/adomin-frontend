@@ -14,7 +14,8 @@ export interface AdominBaseFieldConfig {
    */
   creatable?: boolean;
   /**
-   * Size of the field on the frontend, default is 120
+   * Size of the field on the frontend
+   * @default 120
    */
   size?: number;
   /**
@@ -207,15 +208,18 @@ export interface AdominFileFieldConfig extends AdominBaseFieldConfig {
    */
   noResize?: boolean;
   /**
-   * used during resizing, defaults to 1200
+   * used during resizing
+   * @default 1200
    */
   maxWidth?: number;
   /**
-   * used during resizing, defaults to 800
+   * used during resizing
+   * @default 800
    */
   maxHeight?: number;
   /**
-   * used during resizing, must be between 0 and 1, defaults to 0.5
+   * used during resizing, must be between 0 and 1
+   * @default 0.5
    */
   quality?: number;
 }
@@ -235,7 +239,8 @@ export interface AdominForeignKeyFieldConfig extends AdominBaseFieldConfig {
    */
   labelFields: string[];
   /**
-   * Separator between label fields, default is ", "
+   * Separator between label fields
+   * @default ', '
    */
   labelFieldsSeparator?: string;
   /**
@@ -264,7 +269,8 @@ export interface AdominHasManyRelationFieldConfig
    */
   labelFields: string[];
   /**
-   * Separator between label fields, default is ", "
+   * Separator between label fields
+   * @default ', '
    */
   labelFieldsSeparator?: string;
   /**
@@ -284,6 +290,11 @@ export interface AdominHasManyRelationFieldConfig
    * @default true
    */
   preload?: boolean;
+  /**
+   * If true, adomin will allow to search in the related models through the global filter
+   * @default false
+   */
+  allowGlobalFilterSearch?: boolean;
   /**
    * Creation of related models on the fly is not possible yet
    */
@@ -306,7 +317,8 @@ export interface AdominBelongsToRelationFieldConfig
    */
   labelFields: string[];
   /**
-   * Separator between label fields, default is ", "
+   * Separator between label fields
+   * @default ', '
    */
   labelFieldsSeparator?: string;
   /**
