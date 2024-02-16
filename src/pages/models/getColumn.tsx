@@ -7,6 +7,7 @@ import { DateTimeCell } from "../../components/cells/DateTimeCell";
 import { FileCell } from "../../components/cells/FileCell";
 import { ForeignKeyCell } from "../../components/cells/ForeignKeyCell";
 import { ForeignKeyCellWithLabel } from "../../components/cells/ForeignKeyCellWithLabel";
+import { HasManyRelationCell } from "../../components/cells/HasManyRelationCell";
 import { ImageCell } from "../../components/cells/ImageCell";
 import { StringArrayCell } from "../../components/cells/StringArrayCell";
 import { UnkownTypeCell } from "../../components/cells/UnknownTypeCell";
@@ -132,6 +133,14 @@ export const getColumn = (
       ...baseColumn,
       muiEditTextFieldProps: getMuiEditTextFieldProps(validationErrors),
       Cell: StringArrayCell,
+    };
+  }
+
+  if (field.adomin.type === "hasManyRelation") {
+    return {
+      ...baseColumn,
+      muiEditTextFieldProps: getMuiEditTextFieldProps(validationErrors),
+      Cell: HasManyRelationCell,
     };
   }
 
