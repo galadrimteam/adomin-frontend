@@ -32,8 +32,8 @@ export const Sidebar = ({ models, title, currentModel }: SidebarProps) => {
     [models]
   );
 
-  if (currentModel === undefined && models.length > 0) {
-    return <Navigate to={`/adomin/${models[0].model}`} />;
+  if (currentModel === undefined && modelsToShow.length > 0) {
+    return <Navigate to={`/adomin/${modelsToShow[0].model}`} />;
   }
 
   return (
