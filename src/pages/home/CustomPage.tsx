@@ -3,6 +3,8 @@ import { isAxiosError } from "axios";
 import { PropsWithChildren } from "react";
 import { Navigate } from "react-router-dom";
 import { CenteredSpinner } from "../../components/CenteredSpinner";
+import { useIsSmallScreen } from "../../utils/useIsSmallScreen";
+import { MobileMenu } from "./MobileMenu";
 import { Sidebar } from "./Sidebar";
 import { useConfigQuery } from "./useConfigQuery";
 
@@ -12,6 +14,7 @@ type CustomPageProps = PropsWithChildren<{
 
 function CustomPage({ children, modelProp }: CustomPageProps) {
   const configQuery = useConfigQuery();
+  const isSmallScreen = useIsSmallScreen();
 
   if (configQuery.isLoading) {
     return <CenteredSpinner />;
@@ -40,7 +43,11 @@ function CustomPage({ children, modelProp }: CustomPageProps) {
 
   return (
     <div className="flex min-h-screen">
-      <Sidebar title={title} models={models} currentModel={modelProp} />
+      {isSmallScreen ? (
+        <MobileMenu title={title} models={models} currentModel={modelProp} />
+      ) : (
+        <Sidebar title={title} models={models} currentModel={modelProp} />
+      )}
       {children}
     </div>
   );

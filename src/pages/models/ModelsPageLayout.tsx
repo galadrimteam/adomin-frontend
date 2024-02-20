@@ -30,7 +30,7 @@ const ModelsPageLayout = () => {
   }
 
   return (
-    <div className="w-full flex flex-col bg-blue-50">
+    <div className="w-full flex flex-col bg-blue-50 overflow-hidden">
       <div className="flex-1 ">
         <ModelConfigContext.Provider value={modelQuery.data}>
           <Outlet />
