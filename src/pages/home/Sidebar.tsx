@@ -7,35 +7,43 @@ import { useMobileContext } from "../../utils/useMobileContext";
 import { LogoutButton } from "./LogoutButton";
 
 interface ModelBasicInfos {
+  type: "model";
   model: string;
   label: string;
   labelPluralized: string;
   isHidden: boolean;
 }
 
+type AdominView = ModelBasicInfos;
+
 type AdminUser = Record<string, unknown>;
 
 export interface AdominConfig {
   title: string;
   footerText: string;
-  models: ModelBasicInfos[];
+  views: AdominView[];
   userDisplayKey: string;
   user: AdminUser;
 }
 
-export interface SidebarProps extends Pick<AdominConfig, "models" | "title"> {
-  currentModel?: string;
+export interface SidebarProps extends Pick<AdominConfig, "views" | "title"> {
+  currentView?: string;
 }
 
-export const Sidebar = ({ models, title, currentModel }: SidebarProps) => {
+export const Sidebar = ({ views, title, currentView }: SidebarProps) => {
   const { setShowMenu } = useMobileContext();
-  const modelsToShow = useMemo(
-    () => models.filter((model) => !model.isHidden),
-    [models]
+  const viewsToShow = useMemo(
+    () =>
+      views.filter((view) => {
+        if (view.type !== "model") return false;
+
+        return !view.isHidden;
+      }),
+    [views]
   );
 
-  if (currentModel === undefined && modelsToShow.length > 0) {
-    return <Navigate to={`/adomin/${modelsToShow[0].model}`} />;
+  if (currentView === undefined && viewsToShow.length > 0) {
+    return <Navigate to={`/adomin/${viewsToShow[0].model}`} />;
   }
 
   return (
@@ -44,19 +52,19 @@ export const Sidebar = ({ models, title, currentModel }: SidebarProps) => {
       <h2 className="text-center text-l text-adomin_2 mb-2">Back-office</h2>
 
       <div onClick={() => setShowMenu(false)}>
-        {modelsToShow.map(({ label, model: modelName }) => (
+        {viewsToShow.map(({ label, model: modelName }) => (
           <Link to={`/adomin/${modelName}`} key={modelName}>
             <div className="flex items-center w-full p-4">
               <CropSquare
                 className={clsx({
                   "text-adomin_3": true,
-                  "text-white": modelName === currentModel,
+                  "text-white": modelName === currentView,
                 })}
               />
               <p
                 className={clsx({
                   "flex-1 ml-2 text-adomin_2 hover:text-white": true,
-                  "text-white": modelName === currentModel,
+                  "text-white": modelName === currentView,
                 })}
               >
                 {label}

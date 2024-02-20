@@ -5,7 +5,7 @@ function HomePage() {
   const { model: modelParam } = useParams();
 
   return (
-    <CustomPage modelProp={modelParam}>
+    <CustomPage currentView={modelParam}>
       <Outlet />
     </CustomPage>
   );

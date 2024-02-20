@@ -3,7 +3,7 @@ import { IconButton } from "@mui/material";
 import { useMobileContext } from "../../utils/useMobileContext";
 import { Sidebar, SidebarProps } from "./Sidebar";
 
-export const MobileMenu = ({ models, title, currentModel }: SidebarProps) => {
+export const MobileMenu = ({ views, title, currentView }: SidebarProps) => {
   const { showMenu, setShowMenu } = useMobileContext();
 
   return (
@@ -24,7 +24,7 @@ export const MobileMenu = ({ models, title, currentModel }: SidebarProps) => {
       </div>
 
       <div className="h-[70%] flex flex-col items-center justify-center">
-        <Sidebar models={models} title={title} currentModel={currentModel} />
+        <Sidebar views={views} title={title} currentView={currentView} />
       </div>
     </div>
   );
