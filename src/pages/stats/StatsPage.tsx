@@ -1,34 +1,10 @@
 import { Alert } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import { CenteredSpinner } from "../../components/CenteredSpinner";
-import { PageHeading } from "../../components/PageHeading";
-import { _assert } from "../../utils/assertions";
 import { useConfigQuery } from "../home/useConfigQuery";
-import { StatConfigContext, useStatConfig } from "./StatConfigContext";
-import { FullStatViewConfig } from "./stat.types";
+import { StatConfigContext } from "./StatConfigContext";
+import { StatView } from "./StatView";
 import { useStatConfigQuery } from "./useStatConfigQuery";
-
-const StatViewContent = ({
-  statConfig,
-}: {
-  statConfig: FullStatViewConfig;
-}) => {
-  _assert(statConfig, "TODO");
-  return null;
-};
-
-const StatView = () => {
-  const statConfig = useStatConfig();
-
-  return (
-    <div className="flex w-full flex-col">
-      <PageHeading text={statConfig.label} />
-      <div className="flex-1">
-        <StatViewContent statConfig={statConfig} />
-      </div>
-    </div>
-  );
-};
 
 const StatsPage = () => {
   const { view } = useParams();
