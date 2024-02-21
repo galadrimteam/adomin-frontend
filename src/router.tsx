@@ -5,6 +5,7 @@ import ModelsPageLayout from "./pages/models/ModelsPageLayout";
 import CreateModelPage from "./pages/models/create/CreateModelPage";
 import ModelListPage from "./pages/models/list/ModelListPage";
 import EditModelPage from "./pages/models/update/EditModelPage";
+import StatsPage from "./pages/stats/StatsPage";
 
 export const adominRoutes = createBrowserRouter([
   {
@@ -16,7 +17,7 @@ export const adominRoutes = createBrowserRouter([
     children: [
       {
         path: ":view",
-        element: <h1>are there stats!?</h1>,
+        element: <StatsPage />,
       },
     ],
     element: <HomePage />,
