@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { privateAxiosWithoutToasts } from "../../axios/privateAxios";
-import { AdominConfig } from "./Sidebar";
+import { AdominConfig } from "../../utils/adominConfig";
 
 export const useConfigQuery = () => {
   const configQuery = useQuery({

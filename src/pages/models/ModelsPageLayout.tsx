@@ -6,16 +6,16 @@ import { ModelConfigContext } from "./ModelConfigContext";
 import { useModelConfigQuery } from "./useModelConfigQuery";
 
 const ModelsPageLayout = () => {
-  const { model } = useParams<{ model: string }>();
+  const { view } = useParams();
   const configQuery = useConfigQuery();
   const navigate = useNavigate();
 
-  if (!model) {
+  if (!view) {
     navigate("/");
     throw new Error("Problème lors de la séléction du Model");
   }
 
-  const modelQuery = useModelConfigQuery(model);
+  const modelQuery = useModelConfigQuery(view);
 
   if (modelQuery.isLoading) {
     return <CenteredSpinner />;

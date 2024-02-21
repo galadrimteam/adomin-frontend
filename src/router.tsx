@@ -12,10 +12,20 @@ export const adominRoutes = createBrowserRouter([
     element: <Navigate to="/adomin" />,
   },
   {
+    path: "/adomin/stats",
+    children: [
+      {
+        path: ":view",
+        element: <h1>are there stats!?</h1>,
+      },
+    ],
+    element: <HomePage />,
+  },
+  {
     path: "/adomin",
     children: [
       {
-        path: ":model",
+        path: ":view",
         children: [
           { index: true, element: <ModelListPage /> },
           { path: "create", element: <CreateModelPage /> },

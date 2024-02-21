@@ -2,10 +2,10 @@ import { Outlet, useParams } from "react-router-dom";
 import CustomPage from "./CustomPage";
 
 function HomePage() {
-  const { model: modelParam } = useParams();
+  const { view } = useParams();
 
   return (
-    <CustomPage currentView={modelParam}>
+    <CustomPage currentView={view}>
       <Outlet />
     </CustomPage>
   );
