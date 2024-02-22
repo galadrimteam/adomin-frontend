@@ -1,4 +1,10 @@
-import { BarChart, ColumnChart, LineChart, PieChart } from "react-chartkick";
+import {
+  AreaChart,
+  BarChart,
+  ColumnChart,
+  LineChart,
+  PieChart,
+} from "react-chartkick";
 import { PageHeading } from "../../components/PageHeading";
 import { useStatConfig } from "./StatConfigContext";
 import { ChartConfig } from "./stat.types";
@@ -18,6 +24,10 @@ const StatRenderer = ({ stat }: { stat: ChartConfig }) => {
 
   if (stat.type === "column") {
     return <ColumnChart data={stat.data} label={stat.label} />;
+  }
+
+  if (stat.type === "area") {
+    return <AreaChart data={stat.data} label={stat.label} />;
   }
 
   return null;

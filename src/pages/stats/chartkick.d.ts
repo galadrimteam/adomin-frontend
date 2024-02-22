@@ -13,4 +13,5 @@ declare module "react-chartkick" {
   export const BarChart: ChartComponent;
   export const ColumnChart: ChartComponent;
   export const LineChart: ChartComponent;
+  export const AreaChart: ChartComponent;
 }

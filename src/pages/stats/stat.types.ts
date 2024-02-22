@@ -4,7 +4,7 @@ export interface ChartConfigBase {
 }
 
 export interface ChartConfig extends ChartConfigBase {
-  type: "line" | "bar" | "column" | "pie";
+  type: "line" | "bar" | "column" | "pie" | "area";
   data: unknown;
 }
 
