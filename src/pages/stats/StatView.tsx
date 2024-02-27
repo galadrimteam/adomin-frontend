@@ -11,23 +11,23 @@ import { ChartConfig } from "./stat.types";
 
 const StatRenderer = ({ stat }: { stat: ChartConfig }) => {
   if (stat.type === "pie") {
-    return <PieChart data={stat.data} label={stat.label} />;
+    return <PieChart data={stat.data} {...stat.options} />;
   }
 
   if (stat.type === "bar") {
-    return <BarChart data={stat.data} label={stat.label} />;
+    return <BarChart data={stat.data} {...stat.options} />;
   }
 
   if (stat.type === "line") {
-    return <LineChart data={stat.data} label={stat.label} />;
+    return <LineChart data={stat.data} {...stat.options} />;
   }
 
   if (stat.type === "column") {
-    return <ColumnChart data={stat.data} label={stat.label} />;
+    return <ColumnChart data={stat.data} {...stat.options} />;
   }
 
   if (stat.type === "area") {
-    return <AreaChart data={stat.data} label={stat.label} />;
+    return <AreaChart data={stat.data} {...stat.options} />;
   }
 
   return null;
