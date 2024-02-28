@@ -9,10 +9,10 @@ import { Sidebar } from "./Sidebar";
 import { useConfigQuery } from "./useConfigQuery";
 
 type CustomPageProps = PropsWithChildren<{
-  modelProp?: string;
+  currentView?: string;
 }>;
 
-function CustomPage({ children, modelProp }: CustomPageProps) {
+function CustomPage({ children, currentView }: CustomPageProps) {
   const configQuery = useConfigQuery();
   const isSmallScreen = useIsSmallScreen();
 
@@ -31,9 +31,9 @@ function CustomPage({ children, modelProp }: CustomPageProps) {
   }
 
   const title = configQuery.data?.title;
-  const models = configQuery.data?.models;
+  const views = configQuery.data?.views;
 
-  if (!title || !models) {
+  if (!title || !views) {
     return (
       <Alert severity="error">
         Une erreur est survenue (le backend à renvoyé une réponse mal formattée)
@@ -44,9 +44,9 @@ function CustomPage({ children, modelProp }: CustomPageProps) {
   return (
     <div className="flex min-h-screen">
       {isSmallScreen ? (
-        <MobileMenu title={title} models={models} currentModel={modelProp} />
+        <MobileMenu title={title} views={views} currentView={currentView} />
       ) : (
-        <Sidebar title={title} models={models} currentModel={modelProp} />
+        <Sidebar title={title} views={views} currentView={currentView} />
       )}
       {children}
     </div>

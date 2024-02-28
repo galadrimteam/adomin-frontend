@@ -9,14 +9,12 @@ import { getModelDefaultValuesForEdition } from "./getModelDefaultValuesForEditi
 import { useShowModelQuery } from "./useShowModelQuery";
 
 const EditModelPage = () => {
-  const { primaryKeyValue } = useParams<{
-    primaryKeyValue: string;
-  }>();
+  const { primaryKeyValue } = useParams();
 
   const modelConfig = useModelConfig();
 
   if (!primaryKeyValue) {
-    throw new Error("Identifiant du model manquant");
+    throw new Error("Identifiant (primary key) du model manquant");
   }
 
   const modelName = modelConfig.name;

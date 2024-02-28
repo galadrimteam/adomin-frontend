@@ -1,30 +1,31 @@
 import { Alert } from "@mui/material";
-import { Outlet, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { CenteredSpinner } from "../../components/CenteredSpinner";
 import { useConfigQuery } from "../home/useConfigQuery";
-import { ModelConfigContext } from "./ModelConfigContext";
-import { useModelConfigQuery } from "./useModelConfigQuery";
+import { StatConfigContext } from "./StatConfigContext";
+import { StatView } from "./StatView";
+import { useStatConfigQuery } from "./useStatConfigQuery";
 
-const ModelsPageLayout = () => {
+const StatsPage = () => {
   const { view } = useParams();
   const configQuery = useConfigQuery();
   const navigate = useNavigate();
 
   if (!view) {
     navigate("/");
-    throw new Error("Problème lors de la séléction du Model");
+    throw new Error("Problème lors de la séléction de la vue");
   }
 
-  const modelQuery = useModelConfigQuery(view);
+  const statQuery = useStatConfigQuery(view);
 
-  if (modelQuery.isLoading) {
+  if (statQuery.isLoading) {
     return <CenteredSpinner />;
   }
 
-  if (!modelQuery.data || modelQuery.isError) {
+  if (!statQuery.data || statQuery.isError) {
     return (
       <Alert severity="error">
-        Erreur lors du chargement de la config du model
+        Erreur lors du chargement de la config de la vue
       </Alert>
     );
   }
@@ -32,9 +33,9 @@ const ModelsPageLayout = () => {
   return (
     <div className="w-full flex flex-col bg-blue-50 overflow-hidden">
       <div className="flex-1 ">
-        <ModelConfigContext.Provider value={modelQuery.data}>
-          <Outlet />
-        </ModelConfigContext.Provider>
+        <StatConfigContext.Provider value={statQuery.data}>
+          <StatView />
+        </StatConfigContext.Provider>
       </div>
       <div className="bg-adomin_4 text-adomin_2 p-2">
         {configQuery.data?.footerText ?? "Loading footer text..."}
@@ -43,4 +44,4 @@ const ModelsPageLayout = () => {
   );
 };
 
-export default ModelsPageLayout;
+export default StatsPage;

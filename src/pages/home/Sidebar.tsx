@@ -3,39 +3,61 @@ import { Divider } from "@mui/material";
 import clsx from "clsx";
 import { useMemo } from "react";
 import { Link, Navigate } from "react-router-dom";
+import {
+  AdominConfig,
+  AdominView,
+  getFirstLink,
+  getViewPath,
+} from "../../utils/adominConfig";
 import { useMobileContext } from "../../utils/useMobileContext";
 import { LogoutButton } from "./LogoutButton";
 
-interface ModelBasicInfos {
-  model: string;
-  label: string;
-  labelPluralized: string;
-  isHidden: boolean;
+const AdominViewLink = ({
+  view,
+  currentView,
+}: {
+  view: AdominView;
+  currentView?: string;
+}) => {
+  const viewName = view.type === "model" ? view.model : view.path;
+
+  return (
+    <Link to={getViewPath(view)}>
+      <div className="flex items-center w-full p-4">
+        <CropSquare
+          className={clsx({
+            "text-adomin_3": true,
+            "text-white": viewName === currentView,
+          })}
+        />
+        <p
+          className={clsx({
+            "flex-1 ml-2 text-adomin_2 hover:text-white": true,
+            "text-white": viewName === currentView,
+          })}
+        >
+          {view.label}
+        </p>
+      </div>
+    </Link>
+  );
+};
+
+export interface SidebarProps extends Pick<AdominConfig, "views" | "title"> {
+  currentView?: string;
 }
 
-type AdminUser = Record<string, unknown>;
-
-export interface AdominConfig {
-  title: string;
-  footerText: string;
-  models: ModelBasicInfos[];
-  userDisplayKey: string;
-  user: AdminUser;
-}
-
-export interface SidebarProps extends Pick<AdominConfig, "models" | "title"> {
-  currentModel?: string;
-}
-
-export const Sidebar = ({ models, title, currentModel }: SidebarProps) => {
+export const Sidebar = ({ views, title, currentView }: SidebarProps) => {
   const { setShowMenu } = useMobileContext();
-  const modelsToShow = useMemo(
-    () => models.filter((model) => !model.isHidden),
-    [models]
+  const viewsToShow = useMemo(
+    () => views.filter((view) => !view.isHidden),
+    [views]
   );
 
-  if (currentModel === undefined && modelsToShow.length > 0) {
-    return <Navigate to={`/adomin/${modelsToShow[0].model}`} />;
+  const firstLink = useMemo(() => getFirstLink(viewsToShow), [viewsToShow]);
+
+  if (currentView === undefined && viewsToShow.length > 0 && firstLink) {
+    return <Navigate to={firstLink} />;
   }
 
   return (
@@ -44,25 +66,12 @@ export const Sidebar = ({ models, title, currentModel }: SidebarProps) => {
       <h2 className="text-center text-l text-adomin_2 mb-2">Back-office</h2>
 
       <div onClick={() => setShowMenu(false)}>
-        {modelsToShow.map(({ label, model: modelName }) => (
-          <Link to={`/adomin/${modelName}`} key={modelName}>
-            <div className="flex items-center w-full p-4">
-              <CropSquare
-                className={clsx({
-                  "text-adomin_3": true,
-                  "text-white": modelName === currentModel,
-                })}
-              />
-              <p
-                className={clsx({
-                  "flex-1 ml-2 text-adomin_2 hover:text-white": true,
-                  "text-white": modelName === currentModel,
-                })}
-              >
-                {label}
-              </p>
-            </div>
-          </Link>
+        {viewsToShow.map((view) => (
+          <AdominViewLink
+            key={getViewPath(view)}
+            view={view}
+            currentView={currentView}
+          />
         ))}
       </div>
       <Divider />

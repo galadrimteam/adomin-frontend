@@ -29,6 +29,6 @@ export const makeOverridePage = (
 
   return {
     path,
-    element: <CustomPage modelProp={params.model}>{node}</CustomPage>,
+    element: <CustomPage currentView={params.model}>{node}</CustomPage>,
   };
 };

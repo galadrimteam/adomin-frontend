@@ -2,7 +2,7 @@ import { Logout } from "@mui/icons-material";
 import { IconButton, Tooltip } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
 import { privateAxios } from "../../axios/privateAxios";
-import { AdominConfig } from "./Sidebar";
+import { AdominConfig } from "../../utils/adominConfig";
 import { useConfigQuery } from "./useConfigQuery";
 
 const getUserDisplayName = (config?: AdominConfig) => {
