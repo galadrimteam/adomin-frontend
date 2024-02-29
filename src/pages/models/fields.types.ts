@@ -188,7 +188,7 @@ export interface AdominArrayFieldConfig extends AdominBaseFieldConfig {
   type: "array";
 }
 
-export interface AdominFileFieldConfig extends AdominBaseFieldConfig {
+export type AdominFileFieldConfig = AdominBaseFieldConfig & {
   type: "file";
 
   /**
@@ -222,7 +222,21 @@ export interface AdominFileFieldConfig extends AdominBaseFieldConfig {
    * @default 0.5
    */
   quality?: number;
-}
+} & FileSubType;
+
+type FileSubType =
+  | {
+      /** Use this when your file is an Adonis AttachmentLite */
+      subType: "attachment";
+    }
+  | {
+      /** Use this when your file is represented as a string in your DB */
+      subType: "url";
+    }
+  | {
+      /** Use this when your file is stored in a custom way in your DB (e.g. a json format) */
+      subType: "custom";
+    };
 
 export interface AdominObjectFieldConfig extends AdominBaseFieldConfig {
   type: "object";
