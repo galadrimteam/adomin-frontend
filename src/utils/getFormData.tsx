@@ -10,6 +10,9 @@ const appendData = (formData: FormData, field: ModelField, data: any) => {
 
   if (field.adomin.type === "file" && dataToAppend instanceof FileStore) {
     const file = dataToAppend.resizedBlob ?? dataToAppend.file;
+    // if file = null and we don't want to destroy the file, we don't append it to the form data
+    // if file = null and we want to destroy the file, we append it to the form data with "" value (with be parsed as null in the backend)
+    if (file === null && !dataToAppend.shouldDestroy) return;
     return formData.append(field.name, file ?? "");
   }
   if (field.adomin.type === "date" && field.adomin.subType === "date") {

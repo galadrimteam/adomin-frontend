@@ -9,12 +9,12 @@ export type FileInputRhfProps<T extends FieldValues> = {
 
 export const FileInputRhf = observer(
   <T extends FieldValues>(props: FileInputRhfProps<T>) => {
-    const { name, control } = props;
+    const { name, control, config } = props;
 
     const {
       field: { value },
     } = useController({ name, control });
 
-    return <FileInput fileStore={value} />;
+    return <FileInput fileStore={value} config={config} />;
   }
 );

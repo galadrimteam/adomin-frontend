@@ -1,5 +1,7 @@
-import { Box, Button } from "@mui/material";
+import { Delete } from "@mui/icons-material";
+import { Box, Button, IconButton } from "@mui/material";
 import { observer } from "mobx-react-lite";
+import { AdominFileFieldConfig } from "../../../pages/models/fields.types";
 import { FileStore } from "./FileStore";
 
 export interface ApiAttachment {
@@ -12,9 +14,10 @@ export interface ApiAttachment {
 
 export interface FileInputProps {
   fileStore: FileStore;
+  config?: AdominFileFieldConfig;
 }
 
-export const FileInput = observer(({ fileStore }: FileInputProps) => (
+export const FileInput = observer(({ fileStore, config }: FileInputProps) => (
   <Box>
     {fileStore.inputOptions.isImage && fileStore.fileSrc !== null && (
       <Box sx={{ display: "flex", justifyContent: "center", my: 2 }}>
@@ -38,6 +41,11 @@ export const FileInput = observer(({ fileStore }: FileInputProps) => (
           onChange={(e) => fileStore.setUploadedFile(e.target)}
         />
       </Button>
+      {(config?.nullable === true || config?.optional === true) && (
+        <IconButton onClick={() => fileStore.setFileToBeDestroyed()}>
+          <Delete />
+        </IconButton>
+      )}
       {fileStore.file !== null && (
         <span style={{ marginLeft: "12px" }}>({fileStore.file.name})</span>
       )}

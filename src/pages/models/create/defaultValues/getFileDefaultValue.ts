@@ -1,5 +1,6 @@
 import { ApiAttachment } from "../../../../components/form/files/FileInput";
 import { FileStore } from "../../../../components/form/files/FileStore";
+import { getFileUrl } from "../../../../utils/getFileUrl";
 import { AdominFileFieldConfig } from "../../fields.types";
 
 export const getFileDefaultValue = (
@@ -10,7 +11,7 @@ export const getFileDefaultValue = (
     maxWidth: fieldConfig.maxWidth,
     maxHeight: fieldConfig.maxHeight,
     quality: fieldConfig.quality,
-    url: value?.url,
+    url: getFileUrl(value) ?? undefined,
     shouldResize: fieldConfig.isImage && fieldConfig.noResize !== true,
     inputOptions: {
       inputText: fieldConfig.label ?? "Upload file",

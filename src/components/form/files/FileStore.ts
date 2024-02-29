@@ -7,6 +7,8 @@ interface FileInputOptions {
 }
 
 export class FileStore {
+  public shouldDestroy = false;
+
   public file: File | null = null;
 
   public resizedBlob: Blob | null = null;
@@ -56,8 +58,12 @@ export class FileStore {
     makeAutoObservable(this);
   }
 
-  setFileSrc(state: string) {
+  setFileSrc(state: string | null) {
     this.fileSrc = state;
+  }
+
+  setShouldDestroy(state: boolean) {
+    this.shouldDestroy = state;
   }
 
   setResizedBlob(blob: Blob | null) {
@@ -69,6 +75,9 @@ export class FileStore {
     this.onChangeCallback?.(file);
     const isResizableImage =
       file?.type === "image/png" || file?.type === "image/jpeg";
+    if (!file) {
+      this.setFileSrc(null);
+    }
     if (!file || !isResizableImage) {
       this.setResizedBlob(null);
       return;
@@ -99,6 +108,11 @@ export class FileStore {
     const image: File | null =
       input.files && input.files.length >= 1 ? input.files[0] : null;
     this.setFile(image);
+  }
+
+  setFileToBeDestroyed() {
+    this.setShouldDestroy(true);
+    this.setFile(null);
   }
 
   setVisited(state: boolean) {

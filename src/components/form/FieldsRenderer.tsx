@@ -153,7 +153,14 @@ export const FieldsRenderer = ({ config, control, mode }: Props) => {
         }
 
         if (field.adomin.type === "file") {
-          return <FileInputRhf key={key} control={control} name={field.name} />;
+          return (
+            <FileInputRhf
+              key={key}
+              control={control}
+              name={field.name}
+              config={field.adomin}
+            />
+          );
         }
 
         if (field.adomin.type === "array") {
