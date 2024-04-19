@@ -361,6 +361,53 @@ export interface AdominBelongsToRelationFieldConfig
   preload?: boolean;
 }
 
+export interface AdominHasOneRelationFieldConfig extends AdominBaseFieldConfig {
+  type: "hasOneRelation";
+  /**
+   * Model referenced by this foreign key
+   */
+  modelName: string;
+  /**
+   * Fields to use for label
+   */
+  labelFields: string[];
+  /**
+   * Separator between label fields
+   * @default ', '
+   */
+  labelFieldsSeparator?: string;
+  /**
+   * type of the foreign key
+   * @default 'number'
+   */
+  fkType?: "string" | "number";
+  /**
+   * Name of the local key in the referenced model
+   * @default 'id'
+   */
+  localKeyName?: string;
+  /**
+   * If true, adomin will preload the relation
+   *
+   * Setting to false can be usefull if you need to customize the query with queryBuilderCallback
+   * @default true
+   */
+  preload?: boolean;
+  /**
+   * If true, adomin will allow to search in the related models through the global filter
+   * @default false
+   */
+  allowGlobalFilterSearch?: boolean;
+  /**
+   * Creation of related models on the fly is not possible yet
+   */
+  creatable: false;
+  /**
+   * Edition of related models on the fly is not possible yet
+   */
+  editable: false;
+}
+
 export type AdominFieldConfig =
   | AdominStringFieldConfig
   | AdominNumberFieldConfig
@@ -371,5 +418,6 @@ export type AdominFieldConfig =
   | AdominArrayFieldConfig
   | AdominForeignKeyFieldConfig
   | AdominHasManyRelationFieldConfig
-  | AdominBelongsToRelationFieldConfig;
+  | AdominBelongsToRelationFieldConfig
+  | AdominHasOneRelationFieldConfig;
 // | AdominObjectFieldConfig

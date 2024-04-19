@@ -8,6 +8,7 @@ import { FileCell } from "../../components/cells/FileCell";
 import { ForeignKeyCell } from "../../components/cells/ForeignKeyCell";
 import { ForeignKeyCellWithLabel } from "../../components/cells/ForeignKeyCellWithLabel";
 import { HasManyRelationCell } from "../../components/cells/HasManyRelationCell";
+import { HasOneRelationCell } from "../../components/cells/HasOneRelationCell";
 import { ImageCell } from "../../components/cells/ImageCell";
 import { StringArrayCell } from "../../components/cells/StringArrayCell";
 import { UnkownTypeCell } from "../../components/cells/UnknownTypeCell";
@@ -143,6 +144,15 @@ export const getColumn = (
       ...baseColumn,
       muiEditTextFieldProps: getMuiEditTextFieldProps(validationErrors),
       Cell: HasManyRelationCell,
+      enableSorting: false,
+    };
+  }
+
+  if (field.adomin.type === "hasOneRelation") {
+    return {
+      ...baseColumn,
+      muiEditTextFieldProps: getMuiEditTextFieldProps(validationErrors),
+      Cell: HasOneRelationCell,
       enableSorting: false,
     };
   }
