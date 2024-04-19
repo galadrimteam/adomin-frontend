@@ -6,11 +6,11 @@ This is the frontend for the Adomin backoffice.
 
 ## Configuration
 
-If you are planning on not touching anything on this repo (unlikely IMO) the only configuration you need on the frontend is changing VITE_API_URL and set it to your backend URL
+The only configuration you need on the frontend is changing VITE_API_URL and set it to your backend URL
 
 The real configurations are on the backend side (to set which tables to show, permissions, etc, etc), for more infos [check this](https://github.com/galadrimteam/adomin?tab=readme-ov-file#adomin)
 
-All other "configurations" must be done through editing the code 🤭
+If some features that you would like to have in your backoffice are not implemented, fear not, you can just edit the code, it's yours 🤭
 
 ## How does it work, where do I edit things
 

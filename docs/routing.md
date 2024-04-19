@@ -34,7 +34,7 @@ export const adominRoutes = createBrowserRouter([
 ]);
 ```
 
-That's it, you can see that it is creating dynamic paths, those paths will be determined with your backend adomin config.
+You can see that it is creating dynamic paths, those paths will be determined with your backend adomin config.
 To be clear the following paths are created:
 
 ```bash
@@ -75,7 +75,7 @@ export const adominRoutes = createBrowserRouter([
 {
 	path: "/adomin/User/create",
 	element:
-	  <CustomPage modelProp="User">
+	  <CustomPage currentView="User">
 	    <MyOverridePage />
 	  </CustomPage>,
 };
