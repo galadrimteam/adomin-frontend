@@ -26,7 +26,9 @@ export const getModelDefaultValues = (
       modelData[field.name] = [];
     } else if (
       config.type === "foreignKey" ||
-      config.type === "belongsToRelation"
+      config.type === "belongsToRelation" ||
+      config.type === "hasManyRelation" ||
+      config.type === "hasOneRelation"
     ) {
       modelData[field.name] = null;
     }
