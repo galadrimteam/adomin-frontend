@@ -1,4 +1,3 @@
-import { CropSquare } from "@mui/icons-material";
 import { Divider } from "@mui/material";
 import clsx from "clsx";
 import { useMemo } from "react";
@@ -24,12 +23,7 @@ const AdominViewLink = ({
   return (
     <Link to={getViewPath(view)}>
       <div className="flex items-center w-full p-4">
-        <CropSquare
-          className={clsx({
-            "text-adomin_3": true,
-            "text-white": viewName === currentView,
-          })}
-        />
+        {/* YOU MIGHT WANT TO PUT AN ICON HERE */}
         <p
           className={clsx({
             "flex-1 ml-2 text-adomin_2 hover:text-white": true,
