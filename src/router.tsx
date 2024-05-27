@@ -34,7 +34,7 @@ export const adominRoutes = createBrowserRouter([
     element: <HomePage />,
   },
   {
-    path: "/adomin",
+    path: "/adomin/models",
     children: [
       {
         path: ":view",

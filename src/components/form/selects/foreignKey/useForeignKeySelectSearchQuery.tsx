@@ -13,7 +13,7 @@ export const useForeignKeySelectSearchQuery = (
       const queryParams = `pageIndex=1&pageSize=10&filtersMode=or&filters=${filtersToUse}`;
 
       const res = await privateAxios.get<ModelListResponse>(
-        `/adomin/api/crud/${modelName}` + "?" + queryParams
+        `/adomin/api/models/crud/${modelName}` + "?" + queryParams
       );
       return res.data;
     },

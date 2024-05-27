@@ -20,7 +20,7 @@ export const useUpdateModel = ({ modelConfig }: Props) => {
     mutationFn: async (values: ModelData) => {
       const primaryKeyValue = values[modelConfig.primaryKey];
       const res = await privateAxios.put<UpdateModelResponse>(
-        `/adomin/api/crud/${modelConfig.name}/${primaryKeyValue}`,
+        `/adomin/api/models/crud/${modelConfig.name}/${primaryKeyValue}`,
         getFormData(values, modelConfig)
       );
 
@@ -28,7 +28,7 @@ export const useUpdateModel = ({ modelConfig }: Props) => {
     },
     onSuccess: () => {
       notifySuccess(`${modelConfig.label.toLocaleLowerCase()} mis à jour`);
-      navigate(`/adomin/${modelConfig.name}`);
+      navigate(`/adomin/models/${modelConfig.name}`);
     },
   });
 
