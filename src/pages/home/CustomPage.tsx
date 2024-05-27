@@ -20,25 +20,19 @@ function CustomPage({ children, currentView }: CustomPageProps) {
     return <CenteredSpinner />;
   }
 
-  if (configQuery.isError) {
-    if (
-      isAxiosError(configQuery.error) &&
-      configQuery.error.response?.status === 401
-    ) {
-      return <Navigate to="/login" />;
-    }
-    return <Alert severity="error">Une erreur est survenue</Alert>;
+  if (
+    configQuery.isError &&
+    isAxiosError(configQuery.error) &&
+    configQuery.error.response?.status === 401
+  ) {
+    return <Navigate to="/login" />;
   }
 
   const title = configQuery.data?.title;
   const views = configQuery.data?.views;
 
-  if (!title || !views) {
-    return (
-      <Alert severity="error">
-        Une erreur est survenue (le backend à renvoyé une réponse mal formattée)
-      </Alert>
-    );
+  if (configQuery.isError || !title || !views) {
+    return <Alert severity="error">Une erreur est survenue</Alert>;
   }
 
   return (

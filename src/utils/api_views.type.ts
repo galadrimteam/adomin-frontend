@@ -4,6 +4,7 @@ interface ApiViewBase {
   fullPath: string;
   visibilityCheckPassed: boolean;
   name: string;
+  icon?: string;
 }
 
 export interface ApiModelView extends ApiViewBase {

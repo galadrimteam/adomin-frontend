@@ -1,45 +1,44 @@
 import { Alert } from "@mui/material";
-import { Link, useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import { PageHeading } from "../../components/PageHeading";
+import { AdominPageLayout } from "../AdominPageLayout";
+import { deepFilterHiddenViews } from "../home/deepFilterHiddenViews";
 import { useConfigQuery } from "../home/useConfigQuery";
 import { findFolderConfig } from "./findFolderConfig";
 
 const FoldersPage = () => {
   const { view } = useParams();
   const configQuery = useConfigQuery();
+  const foundFolder = findFolderConfig(configQuery.data?.views ?? [], view!);
 
-  if (!view) {
+  if (!foundFolder) {
     return (
-      <Alert severity="error">Problème lors de la séléction de la vue</Alert>
+      <AdominPageLayout>
+        <PageHeading text={`Dossier ${view}`} />
+        <div className="flex items-center my-8 flex-col">
+          <Alert severity="error">Dossier inconnu</Alert>
+        </div>
+      </AdominPageLayout>
     );
   }
 
-  const foundFolder = findFolderConfig(configQuery.data?.views ?? [], view);
+  const folderViews = deepFilterHiddenViews(foundFolder.views);
+  // Find the first view that is not a folder
+  const viewToRender = folderViews.find((v) => v.type !== "folder");
+  // If there is no view to render, just render the first view (which is a folder or there are no views at all)
+  const finalView = viewToRender ?? folderViews.find(() => true);
 
-  if (!foundFolder) {
-    return <Alert severity="error">Dossier inconnu</Alert>;
+  if (finalView) {
+    return <Navigate to={finalView.fullPath} />;
   }
 
   return (
-    <div className="w-full flex flex-col bg-blue-50 overflow-hidden">
-      <div className="flex-1 ">
-        <div className="flex w-full flex-col">
-          <PageHeading text={foundFolder?.label} />
-          <div className="flex justify-center items-center my-8 flex-col">
-            {foundFolder.views.map((v) => (
-              <Link key={v.fullPath} to={v.fullPath}>
-                <div className="flex items-center w-full p-4">
-                  <p className="flex-1 ml-2 hover:text-adomin_2">{v.label}</p>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
+    <AdominPageLayout>
+      <PageHeading text={foundFolder?.label} />
+      <div className="flex items-center my-8 flex-col">
+        <Alert severity="warning">Ce dossier est vide</Alert>
       </div>
-      <div className="bg-adomin_4 text-adomin_2 p-2">
-        {configQuery.data?.footerText ?? "Loading footer text..."}
-      </div>
-    </div>
+    </AdominPageLayout>
   );
 };
 
