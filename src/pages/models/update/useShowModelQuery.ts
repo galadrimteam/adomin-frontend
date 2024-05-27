@@ -10,7 +10,7 @@ export const useShowModelQuery = (
     queryKey: ["model", modelName, primaryKeyValue],
     queryFn: async () => {
       const res = await privateAxios.get<ModelData>(
-        `/adomin/api/crud/${modelName}/${primaryKeyValue}`
+        `/adomin/api/models/crud/${modelName}/${primaryKeyValue}`
       );
       return res.data;
     },

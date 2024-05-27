@@ -74,7 +74,7 @@ export const ModelGrid = ({
       });
 
       const res = await privateAxios.get<ModelListResponse>(
-        `/adomin/api/crud/${modelName}` + "?" + queryParams
+        `/adomin/api/models/crud/${modelName}` + "?" + queryParams
       );
       return res.data;
     },
@@ -92,7 +92,7 @@ export const ModelGrid = ({
       const fileName = `${modelName}_${Date.now()}.${fileType}`;
 
       const res = await privateAxios.post(
-        `/adomin/api/crud/export/${modelName}` +
+        `/adomin/api/models/crud/export/${modelName}` +
           "?" +
           queryParams +
           `&exportType=${fileType}`,
@@ -146,7 +146,7 @@ export const ModelGrid = ({
       <Box sx={{ display: "flex" }}>
         {staticRights.update && (
           <Tooltip arrow placement="left" title="Editer">
-            <Link to={`/adomin/${modelName}/${row.original.id}`}>
+            <Link to={`/adomin/models/${modelName}/${row.original.id}`}>
               <IconButton>
                 <Edit />
               </IconButton>
@@ -174,7 +174,7 @@ export const ModelGrid = ({
         </Tooltip>
         <ExportButton mutation={downloadExportMutation} />
         {staticRights.create && (
-          <Link to={`/adomin/${modelName}/create`}>
+          <Link to={`/adomin/models/${modelName}/create`}>
             <IconButton>
               <Add />
             </IconButton>

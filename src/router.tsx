@@ -1,5 +1,6 @@
 import { Navigate, createBrowserRouter } from "react-router-dom";
 import { LoginPage } from "./pages/LoginPage";
+import FoldersPage from "./pages/folders/FoldersPage";
 import HomePage from "./pages/home/HomePage";
 import ModelsPageLayout from "./pages/models/ModelsPageLayout";
 import CreateModelPage from "./pages/models/create/CreateModelPage";
@@ -13,6 +14,16 @@ export const adominRoutes = createBrowserRouter([
     element: <Navigate to="/adomin" />,
   },
   {
+    path: "/adomin/folders",
+    children: [
+      {
+        path: ":view",
+        element: <FoldersPage />,
+      },
+    ],
+    element: <HomePage />,
+  },
+  {
     path: "/adomin/stats",
     children: [
       {
@@ -23,7 +34,7 @@ export const adominRoutes = createBrowserRouter([
     element: <HomePage />,
   },
   {
-    path: "/adomin",
+    path: "/adomin/models",
     children: [
       {
         path: ":view",

@@ -31,7 +31,7 @@ export const EditModelForm = ({ defaultValues, modelConfig }: Props) => {
       <FieldsRenderer mode="update" config={modelConfig} control={control} />
 
       <div className="flex justify-center gap-4">
-        <Link to={`/adomin/${modelConfig.name}`}>
+        <Link to={`/adomin/models/${modelConfig.name}`}>
           <Button>Annuler</Button>
         </Link>
         <LoadingButton loading={isLoading} type="submit" variant="contained">

@@ -19,7 +19,7 @@ export const useCreateModel = ({ modelConfig }: Props) => {
   const createMutation = useMutation({
     mutationFn: async (values: ModelData) => {
       const res = await privateAxios.post<UpdateModelResponse>(
-        `/adomin/api/crud/${modelConfig.name}`,
+        `/adomin/api/models/crud/${modelConfig.name}`,
         getFormData(values, modelConfig)
       );
 
@@ -27,7 +27,7 @@ export const useCreateModel = ({ modelConfig }: Props) => {
     },
     onSuccess: () => {
       notifySuccess(`${modelConfig.label.toLocaleLowerCase()} créé`);
-      navigate(`/adomin/${modelConfig.name}`);
+      navigate(`/adomin/models/${modelConfig.name}`);
     },
   });
 

@@ -14,7 +14,7 @@ export const useDeleteModel = ({ modelName }: Props) => {
   const deleteRowMutation = useMutation({
     mutationFn: async (id: number | string) => {
       const res = await privateAxios.delete(
-        `/adomin/api/crud/${modelName}/${id}`
+        `/adomin/api/models/crud/${modelName}/${id}`
       );
       return res.data;
     },

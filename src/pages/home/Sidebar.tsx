@@ -2,38 +2,55 @@ import { Divider } from "@mui/material";
 import clsx from "clsx";
 import { useMemo } from "react";
 import { Link, Navigate } from "react-router-dom";
-import {
-  AdominConfig,
-  AdominView,
-  getFirstLink,
-  getViewPath,
-} from "../../utils/adominConfig";
+import { FontIcon } from "../../components/FontIcon";
+import { AdominConfig, getFirstLink } from "../../utils/adominConfig";
+import type { ApiAdominView } from "../../utils/api_views.type";
 import { useMobileContext } from "../../utils/useMobileContext";
 import { LogoutButton } from "./LogoutButton";
+import { deepFilterHiddenViews } from "./deepFilterHiddenViews";
 
 const AdominViewLink = ({
   view,
   currentView,
+  level = 0,
 }: {
-  view: AdominView;
+  view: ApiAdominView;
   currentView?: string;
+  level?: number;
 }) => {
-  const viewName = view.type === "model" ? view.model : view.path;
+  const viewName = view.name;
+  const style = useMemo(() => {
+    if (level === 0) return undefined;
+
+    return { marginLeft: `${level * 20}px` };
+  }, [level]);
 
   return (
-    <Link to={getViewPath(view)}>
-      <div className="flex items-center w-full p-4">
-        {/* YOU MIGHT WANT TO PUT AN ICON HERE */}
-        <p
-          className={clsx({
-            "flex-1 ml-2 text-adomin_2 hover:text-white": true,
-            "text-white": viewName === currentView,
-          })}
+    <>
+      <Link to={view.fullPath}>
+        <div
+          className={clsx(
+            "flex items-center justify-center w-full p-4 text-adomin_2 text-xl hover:text-white",
+            viewName === currentView && "text-white"
+          )}
+          style={style}
         >
-          {view.label}
-        </p>
-      </div>
-    </Link>
+          <p className="flex-1">
+            {view.icon && <FontIcon iconName={view.icon} className={"mr-2"} />}
+            {view.label}
+          </p>
+        </div>
+      </Link>
+      {view.type === "folder" &&
+        view.views.map((v) => (
+          <AdominViewLink
+            key={v.fullPath}
+            view={v}
+            currentView={currentView}
+            level={level + 1}
+          />
+        ))}
+    </>
   );
 };
 
@@ -43,10 +60,7 @@ export interface SidebarProps extends Pick<AdominConfig, "views" | "title"> {
 
 export const Sidebar = ({ views, title, currentView }: SidebarProps) => {
   const { setShowMenu } = useMobileContext();
-  const viewsToShow = useMemo(
-    () => views.filter((view) => !view.isHidden),
-    [views]
-  );
+  const viewsToShow = useMemo(() => deepFilterHiddenViews(views), [views]);
 
   const firstLink = useMemo(() => getFirstLink(viewsToShow), [viewsToShow]);
 
@@ -62,7 +76,7 @@ export const Sidebar = ({ views, title, currentView }: SidebarProps) => {
       <div onClick={() => setShowMenu(false)}>
         {viewsToShow.map((view) => (
           <AdominViewLink
-            key={getViewPath(view)}
+            key={view.fullPath}
             view={view}
             currentView={currentView}
           />

@@ -39,7 +39,7 @@ export const BelongsToRelationCell: MRT_ColumnDef<ModelData>["Cell"] = ({
 
   return (
     <Box>
-      <Link to={`/adomin/${field.adomin.modelName}/${relation.fkValue}`}>
+      <Link to={`/adomin/models/${field.adomin.modelName}/${relation.fkValue}`}>
         <Button>{relation.label}</Button>
       </Link>
     </Box>

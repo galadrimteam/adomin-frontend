@@ -35,7 +35,7 @@ export const HasOneRelationCell: MRT_ColumnDef<ModelData>["Cell"] = ({
 
   return (
     <Box>
-      <Link key={fkValue} to={`/adomin/${modelName}/${fkValue}`}>
+      <Link key={fkValue} to={`/adomin/models/${modelName}/${fkValue}`}>
         {label}
       </Link>
     </Box>

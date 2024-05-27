@@ -19,7 +19,7 @@ export const ForeignKeyCell: MRT_ColumnDef<ModelData>["Cell"] = ({ cell }) => {
 
   return (
     <Box>
-      <Link to={`/adomin/${field.adomin.modelName}/${cellValue}`}>
+      <Link to={`/adomin/models/${field.adomin.modelName}/${cellValue}`}>
         <Button>Aller voir</Button>
       </Link>
     </Box>

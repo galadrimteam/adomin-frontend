@@ -7,7 +7,7 @@ export const useModelConfigQuery = (modelName: string) => {
     queryKey: ["modelParams", modelName],
     queryFn: async () => {
       const res = await privateAxios.get<ModelFieldsConfig>(
-        `/adomin/api/config/${modelName}`
+        `/adomin/api/config/models/${modelName}`
       );
       return res.data;
     },

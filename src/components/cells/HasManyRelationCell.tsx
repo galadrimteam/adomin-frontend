@@ -30,7 +30,7 @@ export const HasManyRelationCell: MRT_ColumnDef<ModelData>["Cell"] = ({
   return (
     <Box>
       {values.map(({ fkValue, label }) => (
-        <Link key={fkValue} to={`/adomin/${modelName}/${fkValue}`}>
+        <Link key={fkValue} to={`/adomin/models/${modelName}/${fkValue}`}>
           <Chip label={label} size="small" className="m-1" />
         </Link>
       ))}
