@@ -14,6 +14,10 @@ export const adominRoutes = createBrowserRouter([
     element: <Navigate to="/adomin" />,
   },
   {
+    path: "/adomin",
+    element: <Navigate to="/adomin/folders" />,
+  },
+  {
     path: "/adomin/folders",
     children: [
       {
