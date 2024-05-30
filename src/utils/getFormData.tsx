@@ -36,10 +36,20 @@ const appendData = (formData: FormData, field: ModelField, data: any) => {
   formData.append(field.name, dataToAppend);
 };
 
-export const getFormData = (data: unknown, config: ModelFieldsConfig) => {
+export const getFormData = (
+  data: unknown,
+  config: ModelFieldsConfig,
+  mode: "create" | "update"
+) => {
   const formData = new FormData();
 
-  for (const field of config.fields) {
+  const filteredFields = config.fields.filter((field) => {
+    if (mode === "create") return field.adomin.creatable ?? true;
+
+    return field.adomin.editable ?? true;
+  });
+
+  for (const field of filteredFields) {
     appendData(formData, field, data);
   }
 

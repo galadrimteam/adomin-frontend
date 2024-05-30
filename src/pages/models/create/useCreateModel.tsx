@@ -20,7 +20,7 @@ export const useCreateModel = ({ modelConfig }: Props) => {
     mutationFn: async (values: ModelData) => {
       const res = await privateAxios.post<UpdateModelResponse>(
         `/adomin/api/models/crud/${modelConfig.name}`,
-        getFormData(values, modelConfig)
+        getFormData(values, modelConfig, "create")
       );
 
       return res.data;

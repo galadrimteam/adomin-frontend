@@ -21,7 +21,7 @@ export const useUpdateModel = ({ modelConfig }: Props) => {
       const primaryKeyValue = values[modelConfig.primaryKey];
       const res = await privateAxios.put<UpdateModelResponse>(
         `/adomin/api/models/crud/${modelConfig.name}/${primaryKeyValue}`,
-        getFormData(values, modelConfig)
+        getFormData(values, modelConfig, "update")
       );
 
       return res.data;
