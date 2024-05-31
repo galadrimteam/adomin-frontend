@@ -3,6 +3,7 @@ import { Alert, Box, Button } from "@mui/material";
 import { MRT_ColumnDef } from "material-react-table";
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
+import { getModelPath } from "../../adominPaths";
 import { useModelConfig } from "../../pages/models/ModelConfigContext";
 import type { ModelData } from "../../pages/models/model.types";
 import { getForeignKeyOptionLabel } from "../form/selects/foreignKey/getForeignKeyOptionLabel";
@@ -37,9 +38,15 @@ export const BelongsToRelationCell: MRT_ColumnDef<ModelData>["Cell"] = ({
 
   if (relation === null) return <Clear />;
 
+  const updatePath = getModelPath({
+    name: field.adomin.modelName,
+    type: "update",
+    primaryKeyValue: relation.fkValue,
+  });
+
   return (
     <Box>
-      <Link to={`/adomin/models/${field.adomin.modelName}/${relation.fkValue}`}>
+      <Link to={updatePath}>
         <Button>{relation.label}</Button>
       </Link>
     </Box>

@@ -2,6 +2,7 @@ import { Alert } from "@mui/material";
 import { isAxiosError } from "axios";
 import { PropsWithChildren } from "react";
 import { Navigate } from "react-router-dom";
+import { ADOMIN_LOGIN_PATH } from "../../adominPaths";
 import { CenteredSpinner } from "../../components/CenteredSpinner";
 import { useIsSmallScreen } from "../../utils/useIsSmallScreen";
 import { MobileMenu } from "./MobileMenu";
@@ -25,7 +26,7 @@ function CustomPage({ children, currentView }: CustomPageProps) {
     isAxiosError(configQuery.error) &&
     configQuery.error.response?.status === 401
   ) {
-    return <Navigate to="/login" />;
+    return <Navigate to={ADOMIN_LOGIN_PATH} />;
   }
 
   const title = configQuery.data?.title;

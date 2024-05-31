@@ -3,6 +3,7 @@ import { Alert, Box, Button, CircularProgress } from "@mui/material";
 import { MRT_ColumnDef } from "material-react-table";
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
+import { getModelPath } from "../../adominPaths";
 import { useModelConfig } from "../../pages/models/ModelConfigContext";
 import type { ModelData } from "../../pages/models/model.types";
 import { useShowModelQuery } from "../../pages/models/update/useShowModelQuery";
@@ -46,9 +47,15 @@ export const ForeignKeyCellWithLabel: MRT_ColumnDef<ModelData>["Cell"] = ({
 
   if (cellValue === null) return <Clear />;
 
+  const updatePath = getModelPath({
+    name: field.adomin.modelName,
+    type: "update",
+    primaryKeyValue: cellValue,
+  });
+
   return (
     <Box>
-      <Link to={`/adomin/models/${field.adomin.modelName}/${cellValue}`}>
+      <Link to={updatePath}>
         <Button>{label}</Button>
       </Link>
     </Box>

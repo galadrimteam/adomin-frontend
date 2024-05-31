@@ -1,27 +1,7 @@
 import { ReactNode } from "react";
 import { RouteObject } from "react-router-dom";
-import { ApiAdominView } from "../../utils/api_views.type";
+import { AdominMakePathParams, getAdominRouterPath } from "../../adominPaths";
 import CustomPage from "./CustomPage";
-
-type SimplePluralize<T extends string> = T extends `${infer U}s`
-  ? `${U}s`
-  : `${T}s`;
-type ViewType = SimplePluralize<ApiAdominView["type"]>;
-
-export interface MakeOverridePageParams {
-  model: string;
-  viewType: ViewType;
-  type: "create" | "update" | "list";
-}
-
-const getPath = ({ model, type, viewType }: MakeOverridePageParams) => {
-  if (viewType !== "models") return `/adomin/${viewType}/${model}`;
-
-  if (type === "create") return `/adomin/${viewType}/${model}/create`;
-  if (type === "update") return `/adomin/${viewType}/${model}/:primaryKeyValue`;
-
-  return `/adomin/${viewType}/${model}`;
-};
 
 /**
  * Can be used to override a page in the adomin app.
@@ -31,13 +11,13 @@ const getPath = ({ model, type, viewType }: MakeOverridePageParams) => {
  * const { primaryKeyValue } = useParams();
  */
 export const makeOverridePage = (
-  params: MakeOverridePageParams,
+  params: AdominMakePathParams,
   node: ReactNode
 ): RouteObject => {
-  const path = getPath(params);
+  const path = getAdominRouterPath(params);
 
   return {
     path,
-    element: <CustomPage currentView={params.model}>{node}</CustomPage>,
+    element: <CustomPage currentView={params.name}>{node}</CustomPage>,
   };
 };

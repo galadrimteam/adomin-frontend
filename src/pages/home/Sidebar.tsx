@@ -2,6 +2,7 @@ import { Divider } from "@mui/material";
 import clsx from "clsx";
 import { useMemo } from "react";
 import { Link, Navigate } from "react-router-dom";
+import { getAdominRouterPath, simplePluralize } from "../../adominPaths";
 import { FontIcon } from "../../components/FontIcon";
 import { AdominConfig, getFirstLink } from "../../utils/adominConfig";
 import type { ApiAdominView } from "../../utils/api_views.type";
@@ -25,9 +26,15 @@ const AdominViewLink = ({
     return { marginLeft: `${level * 20}px` };
   }, [level]);
 
+  const viewPath = getAdominRouterPath({
+    name: view.name,
+    type: "list",
+    viewType: simplePluralize(view.type),
+  });
+
   return (
     <>
-      <Link to={view.fullPath}>
+      <Link to={viewPath}>
         <div
           className={clsx(
             "flex items-center justify-center w-full p-4 text-adomin_2 text-xl hover:text-white",
@@ -44,7 +51,7 @@ const AdominViewLink = ({
       {view.type === "folder" &&
         view.views.map((v) => (
           <AdominViewLink
-            key={v.fullPath}
+            key={v.name + v.type}
             view={v}
             currentView={currentView}
             level={level + 1}
@@ -76,7 +83,7 @@ export const Sidebar = ({ views, title, currentView }: SidebarProps) => {
       <div onClick={() => setShowMenu(false)}>
         {viewsToShow.map((view) => (
           <AdominViewLink
-            key={view.fullPath}
+            key={view.name + view.type}
             view={view}
             currentView={currentView}
           />

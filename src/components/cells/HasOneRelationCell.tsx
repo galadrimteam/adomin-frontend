@@ -2,6 +2,7 @@ import { Clear } from "@mui/icons-material";
 import { Alert, Box } from "@mui/material";
 import { MRT_ColumnDef } from "material-react-table";
 import { Link } from "react-router-dom";
+import { getModelPath } from "../../adominPaths";
 import { useModelConfig } from "../../pages/models/ModelConfigContext";
 import type { ModelData } from "../../pages/models/model.types";
 import { getForeignKeyOptionLabel } from "../form/selects/foreignKey/getForeignKeyOptionLabel";
@@ -33,9 +34,15 @@ export const HasOneRelationCell: MRT_ColumnDef<ModelData>["Cell"] = ({
     labelFieldsSeparator
   );
 
+  const updatePath = getModelPath({
+    name: modelName,
+    type: "update",
+    primaryKeyValue: fkValue,
+  });
+
   return (
     <Box>
-      <Link key={fkValue} to={`/adomin/models/${modelName}/${fkValue}`}>
+      <Link key={fkValue} to={updatePath}>
         {label}
       </Link>
     </Box>

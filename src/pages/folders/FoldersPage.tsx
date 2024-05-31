@@ -1,5 +1,6 @@
 import { Alert } from "@mui/material";
 import { Navigate, useParams } from "react-router-dom";
+import { getAdominRouterPath, simplePluralize } from "../../adominPaths";
 import { PageHeading } from "../../components/PageHeading";
 import { AdominPageLayout } from "../AdominPageLayout";
 import { deepFilterHiddenViews } from "../home/deepFilterHiddenViews";
@@ -29,7 +30,13 @@ const FoldersPage = () => {
   const finalView = viewToRender ?? folderViews.find(() => true);
 
   if (finalView) {
-    return <Navigate to={finalView.fullPath} />;
+    const finalViewPath = getAdominRouterPath({
+      name: finalView.name,
+      type: "list",
+      viewType: simplePluralize(finalView.type),
+    });
+
+    return <Navigate to={finalViewPath} />;
   }
 
   return (

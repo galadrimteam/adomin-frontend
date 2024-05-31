@@ -1,4 +1,11 @@
 import { Navigate, createBrowserRouter } from "react-router-dom";
+import {
+  ADOMIN_FOLDERS_PATH,
+  ADOMIN_HOME_PATH,
+  ADOMIN_LOGIN_PATH,
+  ADOMIN_MODELS_PATH,
+  ADOMIN_STATS_PATH,
+} from "./adominPaths";
 import { LoginPage } from "./pages/LoginPage";
 import FoldersPage from "./pages/folders/FoldersPage";
 import HomePage from "./pages/home/HomePage";
@@ -11,14 +18,14 @@ import StatsPage from "./pages/stats/StatsPage";
 export const adominRoutes = createBrowserRouter([
   {
     path: "/",
-    element: <Navigate to="/adomin" />,
+    element: <Navigate to={ADOMIN_HOME_PATH} />,
   },
   {
-    path: "/adomin",
-    element: <Navigate to="/adomin/folders" />,
+    path: ADOMIN_HOME_PATH,
+    element: <Navigate to={ADOMIN_FOLDERS_PATH} />,
   },
   {
-    path: "/adomin/folders",
+    path: ADOMIN_FOLDERS_PATH,
     children: [
       {
         path: ":view",
@@ -28,7 +35,7 @@ export const adominRoutes = createBrowserRouter([
     element: <HomePage />,
   },
   {
-    path: "/adomin/stats",
+    path: ADOMIN_STATS_PATH,
     children: [
       {
         path: ":view",
@@ -38,7 +45,7 @@ export const adominRoutes = createBrowserRouter([
     element: <HomePage />,
   },
   {
-    path: "/adomin/models",
+    path: ADOMIN_MODELS_PATH,
     children: [
       {
         path: ":view",
@@ -53,7 +60,7 @@ export const adominRoutes = createBrowserRouter([
     element: <HomePage />,
   },
   {
-    path: "/login",
+    path: ADOMIN_LOGIN_PATH,
     element: <LoginPage />,
   },
 ]);

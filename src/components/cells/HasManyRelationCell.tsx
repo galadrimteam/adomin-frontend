@@ -1,6 +1,7 @@
 import { Alert, Box, Chip } from "@mui/material";
 import { MRT_ColumnDef } from "material-react-table";
 import { Link } from "react-router-dom";
+import { getModelPath } from "../../adominPaths";
 import { useModelConfig } from "../../pages/models/ModelConfigContext";
 import type { ModelData } from "../../pages/models/model.types";
 import { getForeignKeyOptionLabel } from "../form/selects/foreignKey/getForeignKeyOptionLabel";
@@ -30,7 +31,14 @@ export const HasManyRelationCell: MRT_ColumnDef<ModelData>["Cell"] = ({
   return (
     <Box>
       {values.map(({ fkValue, label }) => (
-        <Link key={fkValue} to={`/adomin/models/${modelName}/${fkValue}`}>
+        <Link
+          key={fkValue}
+          to={getModelPath({
+            name: modelName,
+            type: "update",
+            primaryKeyValue: fkValue,
+          })}
+        >
           <Chip label={label} size="small" className="m-1" />
         </Link>
       ))}

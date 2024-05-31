@@ -13,6 +13,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { MRT_Localization_FR } from "material-react-table/locales/fr";
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import { getModelPath } from "../../../adominPaths";
 import { privateAxios } from "../../../axios/privateAxios";
 import { DeleteModelModal } from "../delete/DeleteModelModal";
 import { useDeleteModel } from "../delete/useDeleteModel";
@@ -146,7 +147,13 @@ export const ModelGrid = ({
       <Box sx={{ display: "flex" }}>
         {staticRights.update && (
           <Tooltip arrow placement="left" title="Editer">
-            <Link to={`/adomin/models/${modelName}/${row.original.id}`}>
+            <Link
+              to={getModelPath({
+                name: modelName,
+                type: "update",
+                primaryKeyValue: row.original.id,
+              })}
+            >
               <IconButton>
                 <Edit />
               </IconButton>
@@ -174,7 +181,7 @@ export const ModelGrid = ({
         </Tooltip>
         <ExportButton mutation={downloadExportMutation} />
         {staticRights.create && (
-          <Link to={`/adomin/models/${modelName}/create`}>
+          <Link to={getModelPath({ name: modelName, type: "create" })}>
             <IconButton>
               <Add />
             </IconButton>

@@ -3,6 +3,7 @@ import { TextField } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ADOMIN_HOME_PATH } from "../adominPaths";
 import { privateAxios, setToken } from "../axios/privateAxios";
 
 export const LoginPage = () => {
@@ -24,7 +25,7 @@ export const LoginPage = () => {
         throw new Error("No token in response");
       }
       setToken(data.token);
-      navigate("/adomin");
+      navigate(ADOMIN_HOME_PATH);
     },
   });
 

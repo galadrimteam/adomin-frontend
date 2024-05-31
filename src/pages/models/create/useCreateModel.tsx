@@ -1,5 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
+import { getModelPath } from "../../../adominPaths";
 import { privateAxios } from "../../../axios/privateAxios";
 import { notifySuccess } from "../../../errors/notifiySuccess";
 import { getFormData } from "../../../utils/getFormData";
@@ -27,7 +28,11 @@ export const useCreateModel = ({ modelConfig }: Props) => {
     },
     onSuccess: () => {
       notifySuccess(`${modelConfig.label.toLocaleLowerCase()} créé`);
-      navigate(`/adomin/models/${modelConfig.name}`);
+      const modelListPath = getModelPath({
+        name: modelConfig.name,
+        type: "list",
+      });
+      navigate(modelListPath);
     },
   });
 
