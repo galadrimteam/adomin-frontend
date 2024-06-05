@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import { FullStatViewConfig } from "./stat.types";
+import type { FullStatViewConfig } from "./stat.types";
 
 export const StatConfigContext = createContext<FullStatViewConfig | null>(null);
 

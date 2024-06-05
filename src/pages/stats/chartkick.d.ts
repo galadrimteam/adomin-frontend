@@ -10,7 +10,7 @@ type ChartRowData = ChartMultipleSeriesDataRow[] | ChartDataRow[];
 
 type ChartComponent = React.FC<{
   /** Data for the chart */
-  data: ChartRowData[];
+  data: ChartRowData;
   /** Title of x axis */
   xtitle?: string;
   /** Title of y axis */
