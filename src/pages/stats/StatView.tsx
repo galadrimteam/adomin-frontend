@@ -71,6 +71,16 @@ export const StatView = () => {
     );
   }, [isSmallScreen, statConfig.gridTemplateAreas, fallbackTemplate]);
 
+  const gridTemplateColumns = useMemo(() => {
+    const firstLine = gridTemplateAreas.trim().split("\n")[0];
+    const columns = firstLine
+      .split(" ")
+      .map(() => "1fr")
+      .join(" ");
+
+    return columns;
+  }, [gridTemplateAreas]);
+
   return (
     <div className="flex w-full flex-col">
       <PageHeading text={statConfig.label} />
@@ -79,6 +89,7 @@ export const StatView = () => {
           className="grid gap-4"
           style={{
             gridTemplateAreas,
+            gridTemplateColumns,
           }}
         >
           {statConfig.stats.map((stat) => (
