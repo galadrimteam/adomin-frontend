@@ -194,6 +194,7 @@ export const FieldsRenderer = ({ config, control, mode }: Props) => {
               modelName={field.adomin.modelName}
               inputLabel={field.adomin.label ?? field.name}
               separator={field.adomin.labelFieldsSeparator}
+              sx={sx}
             />
           );
         }

@@ -1,4 +1,4 @@
-import { Autocomplete, TextField } from "@mui/material";
+import { Autocomplete, SxProps, TextField } from "@mui/material";
 import { useMemo, useState } from "react";
 import { prepareQsObject } from "../../../../pages/models/list/getModelListQueryString";
 import { useModelConfigQuery } from "../../../../pages/models/useModelConfigQuery";
@@ -20,6 +20,7 @@ export interface ForeignKeySelectProps {
   autocompleteVariant?: "filled" | "outlined" | "standard";
   autocompletePlaceholder?: string;
   afterChange?: (newValue: string | null) => void;
+  sx?: SxProps;
 }
 
 export type ForeignKeySelectOption = {
@@ -39,6 +40,7 @@ export const ForeignKeySelect = ({
   autocompleteVariant = "outlined",
   afterChange,
   autocompletePlaceholder,
+  sx,
 }: ForeignKeySelectProps) => {
   const [inputValue, setInputValue] = useState("");
   const debouncedSearchTerm = useDebounce(inputValue, 500); // 500 ms de délai
@@ -82,6 +84,7 @@ export const ForeignKeySelect = ({
 
   return (
     <Autocomplete
+      sx={sx}
       size={autocompleteSize}
       value={selectValue}
       onChange={(_e, newValue) => {
