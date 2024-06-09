@@ -147,6 +147,7 @@ export const FieldsRenderer = ({ config, control, mode }: Props) => {
               name={field.name}
               control={control}
               options={field.adomin.options}
+              addNullOption={optionalOrNullable}
               sx={sx}
             />
           );

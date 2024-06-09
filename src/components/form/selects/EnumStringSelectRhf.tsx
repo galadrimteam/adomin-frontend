@@ -12,11 +12,19 @@ interface EnumOption {
 interface Props<T extends FieldValues>
   extends Omit<BasicSelectRhfProps<T, string>, "options"> {
   options: EnumOption[];
+  addNullOption?: boolean;
 }
 
 export const EnumStringSelectRhf = <T extends FieldValues>(props: Props<T>) => {
-  const { name, control, beforeChange, afterChange, options, ...inputProps } =
-    props;
+  const {
+    name,
+    control,
+    beforeChange,
+    afterChange,
+    options,
+    addNullOption,
+    ...inputProps
+  } = props;
 
   const {
     field: { value, onChange },
@@ -29,14 +37,25 @@ export const EnumStringSelectRhf = <T extends FieldValues>(props: Props<T>) => {
     afterChange?.(newValue);
   };
 
-  const optionsProxy = useMemo(
-    () =>
-      options.map((o) => ({
-        ...o,
-        value: o.value ?? "",
-      })),
-    [options]
-  );
+  const optionsProxy = useMemo(() => {
+    const optionsToUse = options.map((o) => ({
+      ...o,
+      value: o.value ?? "",
+    }));
+    const hasNullOption = optionsToUse.some((o) => o.value === "");
+
+    if (!hasNullOption && addNullOption) {
+      return [
+        {
+          label: "(Aucune valeur)",
+          value: "",
+        },
+        ...optionsToUse,
+      ];
+    }
+
+    return optionsToUse;
+  }, [options, addNullOption]);
 
   return (
     <BasicSelect

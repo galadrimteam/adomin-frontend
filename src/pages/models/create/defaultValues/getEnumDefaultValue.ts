@@ -5,6 +5,10 @@ export const getEnumDefaultValue = (fieldConfig: AdominEnumFieldConfig) => {
     return fieldConfig.defaultValue;
   }
 
+  if (fieldConfig.nullable) {
+    return null;
+  }
+
   if (fieldConfig.options.length > 0) {
     return fieldConfig.options[0].value;
   }
