@@ -1,6 +1,6 @@
 import { Collapse, Divider } from "@mui/material";
 import clsx from "clsx";
-import { useMemo } from "react";
+import { MouseEventHandler, useMemo, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { getAdominRouterPath, simplePluralize } from "../../adominPaths";
 import { FontIcon } from "../../components/FontIcon";
@@ -36,17 +36,26 @@ const AdominViewLink = ({
     viewType: simplePluralize(view.type),
   });
 
-  const folderIsOpen = useMemo(
-    () => folderNames.includes(viewName),
-    [folderNames, viewName]
+  const [isFolderOpen, setFolderOpen] = useState(
+    folderNames.includes(viewName)
   );
-  const hideMenuIfNotFolder = () => {
-    if (view.type !== "folder") setShowMenu(false);
+
+  const onLinkClick: MouseEventHandler<HTMLAnchorElement> = (e) => {
+    if (view.type === "folder") {
+      // if we click on a folder, we want to open/close it
+      setFolderOpen((v) => !v);
+      // we don't want to navigate to the folder, just open/close it
+      e.preventDefault();
+      e.stopPropagation();
+    } else {
+      // on mobile, we want to close the menu if we click on a link that is not a folder
+      setShowMenu(false);
+    }
   };
 
   return (
     <>
-      <Link to={viewPath} onClick={hideMenuIfNotFolder}>
+      <Link to={viewPath} onClick={onLinkClick}>
         <div
           className={clsx(
             "flex items-center justify-center w-full p-4 text-adomin_2 text-xl hover:text-white",
@@ -60,7 +69,7 @@ const AdominViewLink = ({
           </p>
         </div>
       </Link>
-      <Collapse in={folderIsOpen}>
+      <Collapse in={isFolderOpen}>
         <div>
           {view.type === "folder" &&
             view.views.map((v) => (
