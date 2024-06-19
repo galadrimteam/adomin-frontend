@@ -31,6 +31,22 @@ const getMuiEditTextFieldProps = (
   });
 };
 
+const getSortValue = (
+  baseConfig: Partial<MRT_ColumnDef<ModelData>>,
+  potentialValue: boolean
+) => {
+  if (baseConfig.enableSorting === false) return false;
+  return potentialValue;
+};
+
+const getFilterValue = (
+  baseConfig: Partial<MRT_ColumnDef<ModelData>>,
+  potentialValue: boolean
+) => {
+  if (baseConfig.enableColumnFilter === false) return false;
+  return potentialValue;
+};
+
 export const getColumn = (
   field: ModelField,
   validationErrors: ValidationErrors
@@ -40,6 +56,7 @@ export const getColumn = (
     header: field.adomin.label ?? field.name,
     size: field.adomin.size ?? 120,
     enableColumnFilter: field.adomin.computed !== true,
+    enableSorting: field.adomin.computed !== true,
   };
 
   if (
@@ -74,8 +91,11 @@ export const getColumn = (
       ...baseColumn,
       muiEditTextFieldProps: getMuiEditTextFieldProps(validationErrors, "text"),
       accessorFn: (row) => generateDisplayValue(row, field),
-      enableSorting: field.adomin.isPassword !== true,
-      enableColumnFilter: field.adomin.isPassword !== true,
+      enableSorting: getSortValue(baseColumn, field.adomin.isPassword !== true),
+      enableColumnFilter: getFilterValue(
+        baseColumn,
+        field.adomin.isPassword !== true
+      ),
     };
   }
 
