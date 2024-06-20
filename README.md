@@ -6,4 +6,4 @@ This is the frontend for the Adomin backoffice.
 
 ## Docs
 
-See [here](https://galadrimteam.github.io/adomin/docs/frontend/setup/)
+See [here](https://galadrimteam.github.io/adomin)
