@@ -7,6 +7,7 @@ import { FontIcon } from "../../components/FontIcon";
 import { AdominConfig, getFirstLink } from "../../utils/adominConfig";
 import type { ApiAdominView } from "../../utils/api_views.type";
 import { useMobileContext } from "../../utils/useMobileContext";
+import { CmsSidebarLinks } from "./CmsSidebarLinks";
 import { LogoutButton } from "./LogoutButton";
 import { deepFilterHiddenViews } from "./deepFilterHiddenViews";
 import { getCurrentFolderNames } from "./getCurrentFolderNames";
@@ -87,11 +88,17 @@ const AdominViewLink = ({
   );
 };
 
-export interface SidebarProps extends Pick<AdominConfig, "views" | "title"> {
+export interface SidebarProps
+  extends Pick<AdominConfig, "views" | "title" | "plugins"> {
   currentView?: string;
 }
 
-export const Sidebar = ({ views, title, currentView }: SidebarProps) => {
+export const Sidebar = ({
+  views,
+  title,
+  currentView,
+  plugins,
+}: SidebarProps) => {
   const viewsToShow = useMemo(() => deepFilterHiddenViews(views), [views]);
   const folderNames = useMemo(
     () => getCurrentFolderNames(viewsToShow, currentView ?? null),
@@ -120,6 +127,7 @@ export const Sidebar = ({ views, title, currentView }: SidebarProps) => {
         ))}
       </div>
       <Divider />
+      {plugins.includes("cms") && <CmsSidebarLinks currentView={currentView} />}
       <div className="mt-auto">
         <LogoutButton />
       </div>

@@ -31,6 +31,7 @@ function CustomPage({ children, currentView }: CustomPageProps) {
 
   const title = configQuery.data?.title;
   const views = configQuery.data?.views;
+  const plugins = configQuery.data?.plugins ?? [];
 
   if (configQuery.isError || !title || !views) {
     return <Alert severity="error">Une erreur est survenue</Alert>;
@@ -39,9 +40,19 @@ function CustomPage({ children, currentView }: CustomPageProps) {
   return (
     <div className="flex min-h-screen">
       {isSmallScreen ? (
-        <MobileMenu title={title} views={views} currentView={currentView} />
+        <MobileMenu
+          title={title}
+          views={views}
+          currentView={currentView}
+          plugins={plugins}
+        />
       ) : (
-        <Sidebar title={title} views={views} currentView={currentView} />
+        <Sidebar
+          title={title}
+          views={views}
+          currentView={currentView}
+          plugins={plugins}
+        />
       )}
       {children}
     </div>

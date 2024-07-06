@@ -1,5 +1,6 @@
 import { Navigate, createBrowserRouter } from "react-router-dom";
 import {
+  ADOMIN_CMS_PATH,
   ADOMIN_FOLDERS_PATH,
   ADOMIN_HOME_PATH,
   ADOMIN_LOGIN_PATH,
@@ -7,6 +8,7 @@ import {
   ADOMIN_STATS_PATH,
 } from "./adominPaths";
 import { LoginPage } from "./pages/LoginPage";
+import { CmsPages } from "./pages/cms/pages/CmsPages";
 import FoldersPage from "./pages/folders/FoldersPage";
 import HomePage from "./pages/home/HomePage";
 import ModelsPageLayout from "./pages/models/ModelsPageLayout";
@@ -58,6 +60,19 @@ export const adominRoutes = createBrowserRouter([
       },
     ],
     element: <HomePage />,
+  },
+  {
+    path: ADOMIN_CMS_PATH,
+    children: [
+      {
+        index: true,
+        element: <Navigate to={`${ADOMIN_CMS_PATH}/pages`} />,
+      },
+      {
+        path: "pages",
+        element: <CmsPages />,
+      },
+    ],
   },
   {
     path: ADOMIN_LOGIN_PATH,
