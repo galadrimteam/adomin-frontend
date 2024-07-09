@@ -34,6 +34,7 @@ export type BlockProps<T = object> = T & { gridIdentifier: string };
 export interface BlockParams {
   name: string;
   props: BlockProps<Record<string, any>>;
+  id: string;
 }
 
 export interface CmsPage {

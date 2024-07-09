@@ -1,5 +1,6 @@
 import { Navigate, createBrowserRouter } from "react-router-dom";
 import {
+  ADOMIN_CMS_PAGES_PATH,
   ADOMIN_CMS_PATH,
   ADOMIN_FOLDERS_PATH,
   ADOMIN_HOME_PATH,
@@ -9,6 +10,7 @@ import {
 } from "./adominPaths";
 import { LoginPage } from "./pages/LoginPage";
 import { CmsPages } from "./pages/cms/pages/CmsPages";
+import EditCmsPage from "./pages/cms/pages/EditCmsPage";
 import FoldersPage from "./pages/folders/FoldersPage";
 import HomePage from "./pages/home/HomePage";
 import ModelsPageLayout from "./pages/models/ModelsPageLayout";
@@ -66,11 +68,15 @@ export const adominRoutes = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Navigate to={`${ADOMIN_CMS_PATH}/pages`} />,
+        element: <Navigate to={ADOMIN_CMS_PAGES_PATH} />,
       },
       {
-        path: "pages",
+        path: ADOMIN_CMS_PAGES_PATH,
         element: <CmsPages />,
+      },
+      {
+        path: "pages/:cmsPageId",
+        element: <EditCmsPage />,
       },
     ],
   },

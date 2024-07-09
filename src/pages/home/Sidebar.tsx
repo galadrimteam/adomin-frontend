@@ -112,7 +112,7 @@ export const Sidebar = ({
   }
 
   return (
-    <div className="bg-adomin_1 w-[300px] select-none flex flex-col">
+    <div className="bg-adomin_1 min-w-[300px] select-none flex flex-col">
       <h1 className="text-center text-2xl text-white mt-4">{title}</h1>
       <h2 className="text-center text-l text-adomin_2 mb-2">Back-office</h2>
 

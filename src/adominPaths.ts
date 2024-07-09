@@ -11,6 +11,7 @@ export const ADOMIN_FOLDERS_PATH = `/${ADOMIN_WORD}/${FOLDERS_WORD}`;
 export const ADOMIN_STATS_PATH = `/${ADOMIN_WORD}/${STATS_WORD}`;
 export const ADOMIN_MODELS_PATH = `/${ADOMIN_WORD}/${MODELS_WORD}`;
 export const ADOMIN_CMS_PATH = `/${ADOMIN_WORD}/${CMS_WORD}`;
+export const ADOMIN_CMS_PAGES_PATH = `/${ADOMIN_WORD}/${CMS_WORD}/pages`;
 export const ADOMIN_LOGIN_PATH = "/login";
 
 type ViewType = SimplePluralize<ApiAdominView["type"]>;

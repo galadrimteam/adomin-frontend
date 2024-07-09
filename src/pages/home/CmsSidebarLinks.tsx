@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { ADOMIN_CMS_PATH } from "../../adominPaths";
 import { FontIcon } from "../../components/FontIcon";
 import { useMobileContext } from "../../utils/useMobileContext";
+import { CMS_PAGE_NAME } from "../cms/CmsLayout";
 
 interface Props {
   currentView?: string;
@@ -39,7 +40,7 @@ export const CmsSidebarLinks = ({ currentView }: Props) => {
             <div
               className={clsx(
                 "flex items-center justify-center w-full p-4 text-adomin_2 text-xl hover:text-white",
-                currentView === "cms-pages" && "text-white"
+                currentView === CMS_PAGE_NAME && "text-white"
               )}
               style={CMS_LINK_STYLE}
             >

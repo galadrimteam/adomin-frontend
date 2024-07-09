@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { privateAxios } from "../../../axios/privateAxios";
-import { CmsPage } from "./cms.types";
+import { privateAxios } from "../../../../axios/privateAxios";
+import { CmsPage } from "../../utils/cms.types";
 
 export const useCmsPages = () => {
   return useQuery({

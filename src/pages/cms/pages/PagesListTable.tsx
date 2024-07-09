@@ -12,9 +12,9 @@ import { getApiUrl } from "../../../axios/privateAxios";
 import { BooleanCell } from "../../../components/cells/BooleanCell";
 import { DateCell } from "../../../components/cells/DateCell";
 import { CmsPage } from "../utils/cms.types";
-import { useCmsPages } from "../utils/useCmsPages";
 import { DeletePageModal } from "./DeletePageModal";
-import { useDeletePage } from "./useDeletePage";
+import { useCmsPages } from "./hooks/useCmsPages";
+import { useDeletePage } from "./hooks/useDeletePage";
 
 const COLUMNS: MRT_ColumnDef<CmsPage>[] = [
   {

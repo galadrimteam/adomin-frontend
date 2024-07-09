@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { privateAxios } from "../../../axios/privateAxios";
-import type { DeletePageModalProps } from "./DeletePageModal";
+import { privateAxios } from "../../../../axios/privateAxios";
+import type { DeletePageModalProps } from "../DeletePageModal";
 
 export const useDeletePage = (): DeletePageModalProps => {
   const [deleteId, setDeleteId] = useState<number | null>(null);
