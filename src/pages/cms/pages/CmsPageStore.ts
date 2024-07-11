@@ -91,13 +91,14 @@ export class CmsPageStore {
     if ("gridIdentifier" in newData === false) {
       return notifyApiError({ error: "gridIdentifier est requis" });
     }
-    if (typeof newData.gridIdentifier !== "string") {
+
+    const props = newData as BlockProps;
+
+    if (typeof props.gridIdentifier !== "string") {
       return notifyApiError({
         error: "gridIdentifier doit être une chaîne de caractères",
       });
     }
-
-    const props = newData as BlockProps;
 
     const gridIdentifier = {
       old: "",

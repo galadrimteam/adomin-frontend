@@ -7,7 +7,7 @@ import {
 } from "material-react-table";
 import { MRT_Localization_FR } from "material-react-table/locales/fr";
 import { Link } from "react-router-dom";
-import { ADOMIN_CMS_PATH } from "../../../adominPaths";
+import { ADOMIN_CMS_PAGES_PATH } from "../../../adominPaths";
 import { getApiUrl } from "../../../axios/privateAxios";
 import { BooleanCell } from "../../../components/cells/BooleanCell";
 import { DateCell } from "../../../components/cells/DateCell";
@@ -75,7 +75,7 @@ export const PagesListTable = () => {
       return (
         <Box sx={{ display: "flex" }}>
           <Tooltip arrow placement="left" title="Editer">
-            <Link to={`${ADOMIN_CMS_PATH}/pages/${row.original.id}`}>
+            <Link to={`${ADOMIN_CMS_PAGES_PATH}/${row.original.id}`}>
               <IconButton>
                 <Edit />
               </IconButton>
@@ -99,7 +99,7 @@ export const PagesListTable = () => {
             <Refresh />
           </IconButton>
         </Tooltip>
-        <Link to={`${ADOMIN_CMS_PATH}/pages/create`}>
+        <Link to={`${ADOMIN_CMS_PAGES_PATH}/create`}>
           <IconButton>
             <Add />
           </IconButton>

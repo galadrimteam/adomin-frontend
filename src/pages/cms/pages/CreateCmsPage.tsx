@@ -1,6 +1,6 @@
 import { Alert } from "@mui/material";
 import { CenteredSpinner } from "../../../components/CenteredSpinner";
-import { CmsLayout } from "../CmsLayout";
+import { CMS_PAGE_NAME, CmsLayout } from "../CmsLayout";
 import { useCmsConfig } from "../utils/useCmsConfig";
 import { CreateOrUpdateCmsPage } from "./CreateOrUpdateCmsPage";
 
@@ -16,7 +16,7 @@ const CreateCmsPage = () => {
   }
 
   return (
-    <CmsLayout heading="Création de page">
+    <CmsLayout heading="Création de page" viewName={CMS_PAGE_NAME}>
       <div className="flex justify-center">
         <CreateOrUpdateCmsPage cmsConfig={cmsConfig.data} />
       </div>

@@ -11,3 +11,27 @@ export const useCmsConfig = () => {
     },
   });
 };
+
+export const useCmsBlocks = () => {
+  return useQuery({
+    queryKey: ["cmsBlocksConfig"],
+    queryFn: async () => {
+      const res = await privateAxios.get<Pick<CmsConfig, "blocks">>(
+        "/adomin/api/cms/blocks"
+      );
+      return res.data;
+    },
+  });
+};
+
+export const useCmsLayouts = () => {
+  return useQuery({
+    queryKey: ["cmsLayoutsConfig"],
+    queryFn: async () => {
+      const res = await privateAxios.get<Pick<CmsConfig, "layouts">>(
+        "/adomin/api/cms/layouts"
+      );
+      return res.data;
+    },
+  });
+};

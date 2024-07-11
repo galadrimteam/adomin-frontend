@@ -2,10 +2,13 @@ import { Collapse } from "@mui/material";
 import clsx from "clsx";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ADOMIN_CMS_PATH } from "../../adominPaths";
+import {
+  ADOMIN_CMS_BLOCKS_PATH,
+  ADOMIN_CMS_PAGES_PATH,
+} from "../../adominPaths";
 import { FontIcon } from "../../components/FontIcon";
 import { useMobileContext } from "../../utils/useMobileContext";
-import { CMS_PAGE_NAME } from "../cms/CmsLayout";
+import { CMS_BLOCK_NAME, CMS_PAGE_NAME } from "../cms/CmsLayout";
 
 interface Props {
   currentView?: string;
@@ -36,7 +39,7 @@ export const CmsSidebarLinks = ({ currentView }: Props) => {
       </div>
       <Collapse in={isFolderOpen}>
         <div>
-          <Link to={`${ADOMIN_CMS_PATH}/pages`} onClick={onLinkClick}>
+          <Link to={ADOMIN_CMS_PAGES_PATH} onClick={onLinkClick}>
             <div
               className={clsx(
                 "flex items-center justify-center w-full p-4 text-adomin_2 text-xl hover:text-white",
@@ -47,6 +50,20 @@ export const CmsSidebarLinks = ({ currentView }: Props) => {
               <p className="flex-1">
                 <FontIcon iconName="license" className="mr-2" />
                 Pages
+              </p>
+            </div>
+          </Link>
+          <Link to={ADOMIN_CMS_BLOCKS_PATH} onClick={onLinkClick}>
+            <div
+              className={clsx(
+                "flex items-center justify-center w-full p-4 text-adomin_2 text-xl hover:text-white",
+                currentView === CMS_BLOCK_NAME && "text-white"
+              )}
+              style={CMS_LINK_STYLE}
+            >
+              <p className="flex-1">
+                <FontIcon iconName="layout-2" className="mr-2" />
+                Blocks
               </p>
             </div>
           </Link>
