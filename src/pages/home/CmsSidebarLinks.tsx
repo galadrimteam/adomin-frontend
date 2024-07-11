@@ -4,11 +4,16 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   ADOMIN_CMS_BLOCKS_PATH,
+  ADOMIN_CMS_LAYOUTS_PATH,
   ADOMIN_CMS_PAGES_PATH,
 } from "../../adominPaths";
 import { FontIcon } from "../../components/FontIcon";
 import { useMobileContext } from "../../utils/useMobileContext";
-import { CMS_BLOCK_NAME, CMS_PAGE_NAME } from "../cms/CmsLayout";
+import {
+  CMS_BLOCK_NAME,
+  CMS_LAYOUT_NAME,
+  CMS_PAGE_NAME,
+} from "../cms/CmsLayout";
 
 interface Props {
   currentView?: string;
@@ -50,6 +55,20 @@ export const CmsSidebarLinks = ({ currentView }: Props) => {
               <p className="flex-1">
                 <FontIcon iconName="license" className="mr-2" />
                 Pages
+              </p>
+            </div>
+          </Link>
+          <Link to={ADOMIN_CMS_LAYOUTS_PATH} onClick={onLinkClick}>
+            <div
+              className={clsx(
+                "flex items-center justify-center w-full p-4 text-adomin_2 text-xl hover:text-white",
+                currentView === CMS_LAYOUT_NAME && "text-white"
+              )}
+              style={CMS_LINK_STYLE}
+            >
+              <p className="flex-1">
+                <FontIcon iconName="layout-navbar" className="mr-2" />
+                Layouts
               </p>
             </div>
           </Link>

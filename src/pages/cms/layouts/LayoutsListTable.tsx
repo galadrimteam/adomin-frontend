@@ -9,23 +9,23 @@ import { MRT_Localization_FR } from "material-react-table/locales/fr";
 import { useState } from "react";
 import { getApiUrl } from "../../../axios/privateAxios";
 import { HtmlPreview } from "../utils/HtmlPreview";
-import { BlockConfig } from "../utils/cms.types";
-import { useCmsBlocks } from "../utils/useCmsConfig";
+import { LayoutConfig } from "../utils/cms.types";
+import { useCmsLayouts } from "../utils/useCmsConfig";
 
-const COLUMNS: MRT_ColumnDef<BlockConfig>[] = [
+const COLUMNS: MRT_ColumnDef<LayoutConfig>[] = [
   {
     accessorKey: "name",
     header: "Nom",
   },
 ];
 
-export const BlocksListTable = () => {
+export const LayoutsListTable = () => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const listQuery = useCmsBlocks();
+  const listQuery = useCmsLayouts();
   const table = useMaterialReactTable({
     localization: MRT_Localization_FR,
     columns: COLUMNS,
-    data: listQuery.data?.blocks ?? [],
+    data: listQuery.data?.layouts ?? [],
     enableRowActions: true,
     renderRowActions: ({ row }) => {
       return (
@@ -34,7 +34,7 @@ export const BlocksListTable = () => {
             <IconButton
               onClick={() =>
                 setPreviewUrl(
-                  `${getApiUrl()}/adomin/api/cms/blocks/${
+                  `${getApiUrl()}/adomin/api/cms/layouts/${
                     row.original.name
                   }?noHud=true&height=500&width=300`
                 )

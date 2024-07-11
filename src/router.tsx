@@ -1,6 +1,7 @@
 import { Navigate, createBrowserRouter } from "react-router-dom";
 import {
   ADOMIN_CMS_BLOCKS_PATH,
+  ADOMIN_CMS_LAYOUTS_PATH,
   ADOMIN_CMS_PAGES_PATH,
   ADOMIN_CMS_PATH,
   ADOMIN_FOLDERS_PATH,
@@ -11,6 +12,7 @@ import {
 } from "./adominPaths";
 import { LoginPage } from "./pages/LoginPage";
 import { CmsBlocks } from "./pages/cms/blocks/CmsBlocks";
+import { CmsLayouts } from "./pages/cms/layouts/CmsLayouts";
 import { CmsPages } from "./pages/cms/pages/CmsPages";
 import CreateCmsPage from "./pages/cms/pages/CreateCmsPage";
 import EditCmsPage from "./pages/cms/pages/EditCmsPage";
@@ -88,6 +90,10 @@ export const adominRoutes = createBrowserRouter([
       {
         path: ADOMIN_CMS_BLOCKS_PATH,
         element: <CmsBlocks />,
+      },
+      {
+        path: ADOMIN_CMS_LAYOUTS_PATH,
+        element: <CmsLayouts />,
       },
     ],
   },

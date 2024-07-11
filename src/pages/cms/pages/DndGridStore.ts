@@ -32,18 +32,6 @@ function generateGridLayoutFromAreas(
   };
 }
 
-console.log(
-  generateGridAreasFromLayout({
-    columns: 2,
-    grid: [
-      { gridIdentifier: "1", id: "1" },
-      { gridIdentifier: "2", id: "2" },
-      { gridIdentifier: "3", id: "3" },
-      { gridIdentifier: "4", id: "4" },
-    ],
-  })
-);
-
 // more or less transforms [1,2,3,4] into [[1,2],[3,4]]
 function generateGridAreasFromLayout(
   layout: DndGridLayout[Breakpoint]

@@ -27,11 +27,27 @@ const UrlPreview = ({ url }: { url: string }) => {
   return (
     <div className="w-full h-full flex justify-center">
       <iframe
-        srcDoc={`<html><head><title>Preview</title></head><body style="${bodyStyle}">
-          <div style="border: 1px solid #ccc;">
-            ${htmlQuery.data}
-          </div>
-        </body></html>`}
+        className="iframe-preview"
+        srcDoc={`<html>
+          <head>
+            <title>Preview</title>
+            <script>
+              document.addEventListener('DOMContentLoaded', function() {
+                var links = document.getElementsByTagName('a');
+                for (var i = 0; i < links.length; i++) {
+                  links[i].addEventListener('click', function(event) {
+                    event.preventDefault();
+                  });
+                }
+              });
+            </script>
+          </head>
+          <body style="${bodyStyle}">
+            <div style="border: 1px solid #ccc;">
+              ${htmlQuery.data}
+            </div>
+          </body>
+        </html>`}
         title="Preview"
         width="100%"
         height="600px"
