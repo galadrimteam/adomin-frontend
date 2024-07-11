@@ -1,9 +1,9 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { FC } from "react";
-import Item, { ItemProps } from "./Item";
+import { DndItem, ItemProps } from "./DndItem";
 
-const SortableItem: FC<ItemProps> = (props) => {
+export const DndSortableItem: FC<ItemProps & { id: string }> = (props) => {
   const {
     isDragging,
     attributes,
@@ -19,7 +19,7 @@ const SortableItem: FC<ItemProps> = (props) => {
   };
 
   return (
-    <Item
+    <DndItem
       ref={setNodeRef}
       style={style}
       withOpacity={isDragging}
@@ -29,5 +29,3 @@ const SortableItem: FC<ItemProps> = (props) => {
     />
   );
 };
-
-export default SortableItem;

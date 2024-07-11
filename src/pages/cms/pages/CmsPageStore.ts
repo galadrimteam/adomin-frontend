@@ -1,7 +1,14 @@
 import { makeAutoObservable } from "mobx";
 import { BasicSelectOption } from "../../../components/form/selects/BasicSelect";
-import { CmsConfig, CmsPage, LayoutParams } from "../utils/cms.types";
+import { notifyApiError } from "../../../errors/notifyApiError";
+import {
+  BlockProps,
+  CmsConfig,
+  CmsPage,
+  LayoutParams,
+} from "../utils/cms.types";
 import { DndGridStore } from "./DndGridStore";
+import type { PageDto } from "./hooks/useCreateOrUpdatePage";
 
 type CmsPageCrud = Omit<CmsPage, "id" | "config"> & {
   id: number | null;
@@ -23,9 +30,9 @@ const getDefaultPage = (): CmsPageCrud => {
       blocks: [],
       gridLayout: {
         sm: [],
-        medium: [],
-        large: [],
-        xl: [],
+        medium: null,
+        large: null,
+        xl: null,
       },
     },
     created_at: new Date(),
@@ -40,11 +47,80 @@ export class CmsPageStore {
 
   public gridStore: DndGridStore;
 
+  public blockIdToEdit: string | null = null;
+  public editLayoutProps = false;
+
   constructor(config: CmsConfig, page?: CmsPageCrud) {
     this.config = config;
     this.page = page ?? getDefaultPage();
     this.gridStore = new DndGridStore(this);
     makeAutoObservable(this);
+  }
+
+  setEditLayoutProps(state: boolean) {
+    this.editLayoutProps = state;
+  }
+
+  setBlockIdToEdit(id: string | null) {
+    this.blockIdToEdit = id;
+  }
+
+  get blockPropsToEdit() {
+    if (!this.blockIdToEdit) return null;
+
+    const block = this.page.config.blocks.find(
+      ({ id }) => id === this.blockIdToEdit
+    );
+
+    if (!block) return null;
+
+    return block.props;
+  }
+
+  updateLayoutProps(newData: object) {
+    if (!this.editLayoutProps || this.page.config.layout === null) return;
+
+    const props = newData as LayoutParams["props"];
+
+    this.page.config.layout.props = props;
+  }
+
+  updateBlockProps(newData: object) {
+    if (!this.blockIdToEdit) return;
+
+    if ("gridIdentifier" in newData === false) {
+      return notifyApiError({ error: "gridIdentifier est requis" });
+    }
+    if (typeof newData.gridIdentifier !== "string") {
+      return notifyApiError({
+        error: "gridIdentifier doit être une chaîne de caractères",
+      });
+    }
+
+    const props = newData as BlockProps;
+
+    const gridIdentifier = {
+      old: "",
+      new: props.gridIdentifier,
+    };
+
+    this.page.config.blocks = this.page.config.blocks.map((block) => {
+      if (block.id !== this.blockIdToEdit) return block;
+
+      gridIdentifier.old = block.props.gridIdentifier;
+
+      return {
+        ...block,
+        props,
+      };
+    });
+
+    if (gridIdentifier.old !== gridIdentifier.new) {
+      this.gridStore.renameGridIdentifier(
+        gridIdentifier.old,
+        gridIdentifier.new
+      );
+    }
   }
 
   setStringField(field: "url" | "title" | "internal_label", value: string) {
@@ -89,28 +165,6 @@ export class CmsPageStore {
     return [{ label: "Aucun", value: "" }, ...baseOptions];
   }
 
-  removeBlock(idToRemove: string) {
-    this.page.config.blocks = this.page.config.blocks.filter(
-      ({ id }) => id !== idToRemove
-    );
-  }
-
-  duplicateBlock(idToDuplicate: string) {
-    const blockIndex = this.page.config.blocks.findIndex(
-      ({ id }) => id === idToDuplicate
-    );
-
-    if (blockIndex === -1) return;
-
-    const block = this.page.config.blocks[blockIndex];
-
-    this.page.config.blocks.splice(blockIndex, 0, {
-      name: block.name,
-      props: { ...block.props },
-      id: crypto.randomUUID(),
-    });
-  }
-
   addBlock(name: string) {
     const foundBlock = this.config.blocks.find(({ name: n }) => n === name);
 
@@ -122,10 +176,16 @@ export class CmsPageStore {
 
     const gridIdentifier = `${foundBlock.name}-${occurrences.length}`;
 
-    this.page.config.blocks.push({
+    const block = {
       name: foundBlock.name,
       props: { ...foundBlock.propsExample, gridIdentifier },
       id: crypto.randomUUID(),
+    };
+
+    this.page.config.blocks.push(block);
+    this.gridStore.add({
+      gridIdentifier,
+      id: block.id,
     });
   }
 
@@ -134,5 +194,24 @@ export class CmsPageStore {
       id: block.id,
       block,
     }));
+  }
+
+  get formDto(): PageDto | string {
+    if (!this.page.config.layout) {
+      return "Le layout est requis";
+    }
+
+    return {
+      id: this.page.id ?? -1,
+      title: this.page.title,
+      url: this.page.url,
+      internal_label: this.page.internal_label,
+      is_published: this.page.is_published,
+      config: {
+        layout: this.page.config.layout,
+        blocks: this.page.config.blocks,
+        gridLayout: this.gridStore.generateAreas(),
+      },
+    };
   }
 }

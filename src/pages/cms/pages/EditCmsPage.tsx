@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { CenteredSpinner } from "../../../components/CenteredSpinner";
 import { CmsLayout } from "../CmsLayout";
 import { useCmsConfig } from "../utils/useCmsConfig";
-import { EditCmsPageForm } from "./EditCmsPageForm";
+import { CreateOrUpdateCmsPage } from "./CreateOrUpdateCmsPage";
 import { useShowPageQuery } from "./hooks/useShowPageQuery";
 
 const EditCmsPage = () => {
@@ -33,7 +33,10 @@ const EditCmsPage = () => {
   return (
     <CmsLayout heading="Edition de page">
       <div className="flex justify-center">
-        <EditCmsPageForm config={cmsConfig.data} page={cmsPageQuery.data} />
+        <CreateOrUpdateCmsPage
+          cmsConfig={cmsConfig.data}
+          page={cmsPageQuery.data}
+        />
       </div>
     </CmsLayout>
   );

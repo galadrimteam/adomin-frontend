@@ -4,52 +4,74 @@ import { BasicSelectOption } from "../../../components/form/selects/BasicSelect"
 import { GridLayout, GridTemplateAreas } from "../utils/cms.types";
 import { CmsPageStore } from "./CmsPageStore";
 
+const BREAKPOINTS = ["sm", "medium", "large", "xl"] as const;
+
+type Breakpoint = (typeof BREAKPOINTS)[number];
+
 type DndGridLayout = {
-  [K in keyof GridLayout]: { gridIdentifier: string; id: string }[] | null;
+  [K in Breakpoint]: {
+    grid: { gridIdentifier: string; id: string }[];
+    columns: number;
+  } | null;
 };
 
+// more or less transforms [[1,2],[3,4]] into [1,2,3,4]
 function generateGridLayoutFromAreas(
   areas: GridTemplateAreas | null
-): DndGridLayout[keyof GridLayout] {
+): DndGridLayout[Breakpoint] {
   if (!areas) return null;
 
-  return areas.flatMap((area) =>
+  const columns = areas[0]?.length ?? 1;
+  const grid = areas.flatMap((area) =>
     area.map((gridIdentifier) => ({ gridIdentifier, id: crypto.randomUUID() }))
   );
+
+  return {
+    columns,
+    grid,
+  };
 }
 
+console.log(
+  generateGridAreasFromLayout({
+    columns: 2,
+    grid: [
+      { gridIdentifier: "1", id: "1" },
+      { gridIdentifier: "2", id: "2" },
+      { gridIdentifier: "3", id: "3" },
+      { gridIdentifier: "4", id: "4" },
+    ],
+  })
+);
+
+// more or less transforms [1,2,3,4] into [[1,2],[3,4]]
 function generateGridAreasFromLayout(
-  layout: DndGridLayout[keyof GridLayout],
-  columns: number
+  layout: DndGridLayout[Breakpoint]
 ): GridTemplateAreas | null {
   if (!layout) return null;
 
-  const areas: GridTemplateAreas = Array.from({ length: columns }, () => []);
+  const areas: GridTemplateAreas = [];
 
-  for (let i = 0; i < layout.length; i++) {
-    const item = layout[i];
-    areas[i % columns].push(item.gridIdentifier);
+  for (let i = 0; i < layout.grid.length; i++) {
+    const item = layout.grid[i];
+    const index = Math.floor(i / layout.columns);
+
+    if (!areas[index]) areas.push([]);
+
+    areas[index].push(item.gridIdentifier);
   }
 
   return areas;
 }
 
 export class DndGridStore {
-  public columns = 1;
+  public activeGridLayoutKey: Breakpoint = "sm";
 
-  public activeGridLayoutKey: keyof GridLayout = "sm";
-
-  public gridLayouts: DndGridLayout = {
-    sm: [],
-    medium: null,
-    large: null,
-    xl: null,
-  };
+  public gridLayouts: DndGridLayout;
 
   public activeId: string | null = null;
 
   constructor(private pageStore: CmsPageStore) {
-    this.columns = this.pageStore.page.config.gridLayout.sm[0]?.length ?? 1;
     this.activeGridLayoutKey = "sm";
     this.gridLayouts = {
       sm: generateGridLayoutFromAreas(this.pageStore.page.config.gridLayout.sm),
@@ -65,8 +87,51 @@ export class DndGridStore {
     makeAutoObservable(this);
   }
 
+  getPreviousGridLayoutKey(layoutKey: Breakpoint) {
+    const index = BREAKPOINTS.indexOf(layoutKey);
+
+    if (index === -1) return null;
+
+    return BREAKPOINTS[index - 1] ?? null;
+  }
+
+  generateDefaultGridLayout(): DndGridLayout[Breakpoint] {
+    return generateGridLayoutFromAreas(
+      this.pageStore.page.config.gridLayout.sm
+    );
+  }
+
+  findRecursivelyPreviousGridLayout(
+    layoutKey: Breakpoint
+  ): DndGridLayout[Breakpoint] {
+    if (layoutKey === "sm") return this.generateDefaultGridLayout();
+
+    const previousLayoutKey = this.getPreviousGridLayoutKey(layoutKey)!;
+    const previousLayout = this.gridLayouts[previousLayoutKey];
+
+    if (!previousLayout) {
+      return this.findRecursivelyPreviousGridLayout(previousLayoutKey);
+    }
+
+    return previousLayout;
+  }
+
+  addGridLayout(layoutKey: Breakpoint) {
+    const layoutToDuplicate = this.findRecursivelyPreviousGridLayout(layoutKey);
+
+    if (!layoutToDuplicate) return;
+
+    this.gridLayouts[layoutKey] = {
+      columns: layoutToDuplicate.columns,
+      grid: layoutToDuplicate.grid.map(({ id, gridIdentifier }) => ({
+        id,
+        gridIdentifier,
+      })),
+    };
+  }
+
   get activeGridIdentifier() {
-    const foundInLayout = this.activeGridLayout?.find(
+    const foundInLayout = this.activeGridLayout?.grid.find(
       ({ id }) => id === this.activeId
     );
 
@@ -75,7 +140,7 @@ export class DndGridStore {
     return foundInLayout.gridIdentifier;
   }
 
-  setActiveGridLayoutKey(layoutKey: keyof GridLayout) {
+  setActiveGridLayoutKey(layoutKey: Breakpoint) {
     this.activeGridLayoutKey = layoutKey;
   }
 
@@ -83,12 +148,21 @@ export class DndGridStore {
     return this.gridLayouts[this.activeGridLayoutKey];
   }
 
+  get activeColumns() {
+    return this.activeGridLayout?.columns ?? 1;
+  }
+
   setColumns(columns: number) {
+    const layout = this.gridLayouts[this.activeGridLayoutKey];
+
+    if (!layout) return;
+
     if (columns < 1) {
-      this.columns = 1;
+      layout.columns = 1;
       return;
     }
-    this.columns = columns;
+
+    layout.columns = columns;
   }
 
   setActiveId(id: string | null) {
@@ -96,9 +170,11 @@ export class DndGridStore {
   }
 
   orderLayout(sourceId: string, targetId: string) {
-    const items = this.gridLayouts[this.activeGridLayoutKey];
+    const layout = this.gridLayouts[this.activeGridLayoutKey];
 
-    if (!items) return;
+    if (!layout) return;
+
+    const items = layout.grid;
 
     const oldIndex = items.findIndex(({ id }) => id === sourceId);
     const newIndex = items.findIndex(({ id }) => id === targetId);
@@ -106,35 +182,117 @@ export class DndGridStore {
     if (oldIndex === newIndex) return items;
     if (oldIndex === -1 || newIndex === -1) return items;
 
-    this.gridLayouts[this.activeGridLayoutKey] = arrayMove(
-      items,
-      oldIndex,
-      newIndex
-    );
+    layout.grid = arrayMove(items, oldIndex, newIndex);
   }
 
-  get gridLayoutsOptions(): BasicSelectOption<keyof GridLayout>[] {
+  renameGridIdentifier(oldGridIdentifier: string, newGridIdentifier: string) {
+    for (const layout of BREAKPOINTS) {
+      if (!this.gridLayouts[layout]?.grid) continue;
+
+      const layoutGrid = this.gridLayouts[layout]!.grid;
+
+      this.gridLayouts[layout]!.grid = layoutGrid.map((block) => {
+        if (block.gridIdentifier === oldGridIdentifier) {
+          return {
+            ...block,
+            gridIdentifier: newGridIdentifier,
+          };
+        }
+
+        return block;
+      });
+    }
+  }
+
+  get gridLayoutsOptions(): BasicSelectOption<Breakpoint>[] {
     const opts = Object.keys(this.gridLayouts).map((layout) => ({
       label: layout,
-      value: layout as keyof GridLayout,
+      value: layout as Breakpoint,
     }));
 
     return opts;
   }
 
   generateAreas(): GridLayout {
-    const sm = generateGridAreasFromLayout(this.gridLayouts.sm, this.columns);
+    const sm = generateGridAreasFromLayout(this.gridLayouts.sm);
 
     if (!sm) throw new Error("sm grid layout is null, this should not happen");
 
     return {
       sm,
-      medium: generateGridAreasFromLayout(
-        this.gridLayouts.medium,
-        this.columns
-      ),
-      large: generateGridAreasFromLayout(this.gridLayouts.large, this.columns),
-      xl: generateGridAreasFromLayout(this.gridLayouts.xl, this.columns),
+      medium: generateGridAreasFromLayout(this.gridLayouts.medium),
+      large: generateGridAreasFromLayout(this.gridLayouts.large),
+      xl: generateGridAreasFromLayout(this.gridLayouts.xl),
     };
+  }
+
+  remove(idToRemove: string) {
+    const key = this.activeGridLayoutKey;
+
+    if (!this.gridLayouts[key]) return;
+
+    this.gridLayouts[key]!.grid = this.gridLayouts[key]!.grid.filter(
+      ({ id }) => id !== idToRemove
+    );
+  }
+
+  duplicate(idToDuplicate: string) {
+    const key = this.activeGridLayoutKey;
+    const foundIndex =
+      this.gridLayouts[key]?.grid.findIndex(({ id }) => id === idToDuplicate) ??
+      -1;
+
+    if (foundIndex === -1) return;
+
+    if (!this.gridLayouts[key]) return;
+
+    const itemToDuplicate = this.gridLayouts[key]!.grid[foundIndex];
+
+    if (!itemToDuplicate) return;
+
+    this.gridLayouts[key]!.grid.splice(foundIndex, 0, {
+      id: crypto.randomUUID(),
+      gridIdentifier: itemToDuplicate.gridIdentifier,
+    });
+  }
+
+  setBlockIdToEdit(idToEdit: string | null) {
+    if (!idToEdit) {
+      this.pageStore.setBlockIdToEdit(null);
+      return;
+    }
+
+    const key = this.activeGridLayoutKey;
+    const foundIndex =
+      this.gridLayouts[key]?.grid.findIndex(({ id }) => id === idToEdit) ?? -1;
+
+    if (foundIndex === -1) return;
+
+    if (!this.gridLayouts[key]) return;
+
+    const { gridIdentifier } = this.gridLayouts[key]!.grid[foundIndex];
+
+    const blockIdToEdit = this.pageStore.page.config.blocks.find(
+      ({ props }) => props.gridIdentifier === gridIdentifier
+    )?.id;
+
+    if (!blockIdToEdit) return;
+
+    this.pageStore.setBlockIdToEdit(blockIdToEdit);
+  }
+
+  add({
+    gridIdentifier,
+    id,
+  }: NonNullable<DndGridLayout[Breakpoint]>["grid"][number]) {
+    for (const layout of BREAKPOINTS) {
+      const layoutGrid = this.gridLayouts[layout];
+      if (!layoutGrid) continue;
+
+      layoutGrid.grid.push({
+        id,
+        gridIdentifier,
+      });
+    }
   }
 }

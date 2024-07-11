@@ -1,15 +1,13 @@
 import { CSSProperties, HTMLAttributes, forwardRef } from "react";
 
 export type ItemProps = HTMLAttributes<HTMLDivElement> & {
-  id: string;
   displayName: string;
   withOpacity?: boolean;
   isDragging?: boolean;
 };
 
-const Item = forwardRef<HTMLDivElement, ItemProps>(
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ({ id, displayName, withOpacity, isDragging, style, ...props }, ref) => {
+export const DndItem = forwardRef<HTMLDivElement, ItemProps>(
+  ({ displayName, withOpacity, isDragging, style, ...props }, ref) => {
     const inlineStyles: CSSProperties = {
       opacity: withOpacity ? "0.5" : "1",
       transformOrigin: "50% 50%",
@@ -36,5 +34,3 @@ const Item = forwardRef<HTMLDivElement, ItemProps>(
     );
   }
 );
-
-export default Item;

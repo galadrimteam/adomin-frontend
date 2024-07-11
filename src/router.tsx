@@ -10,6 +10,7 @@ import {
 } from "./adominPaths";
 import { LoginPage } from "./pages/LoginPage";
 import { CmsPages } from "./pages/cms/pages/CmsPages";
+import CreateCmsPage from "./pages/cms/pages/CreateCmsPage";
 import EditCmsPage from "./pages/cms/pages/EditCmsPage";
 import FoldersPage from "./pages/folders/FoldersPage";
 import HomePage from "./pages/home/HomePage";
@@ -73,6 +74,10 @@ export const adominRoutes = createBrowserRouter([
       {
         path: ADOMIN_CMS_PAGES_PATH,
         element: <CmsPages />,
+      },
+      {
+        path: "pages/create",
+        element: <CreateCmsPage />,
       },
       {
         path: "pages/:cmsPageId",
