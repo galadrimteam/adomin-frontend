@@ -127,7 +127,9 @@ export const Sidebar = ({
         ))}
       </div>
       <Divider />
-      {plugins.includes("cms") && <CmsSidebarLinks currentView={currentView} />}
+      {plugins?.includes("cms") && (
+        <CmsSidebarLinks currentView={currentView} />
+      )}
       <div className="mt-auto">
         <LogoutButton />
       </div>
