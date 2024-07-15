@@ -3,12 +3,15 @@ import type { ApiAdominView, ApiModelView } from "./api_views.type";
 
 type AdminUser = Record<string, unknown>;
 
+export type AdominPlugin = "cms";
+
 export interface AdominConfig {
   title: string;
   footerText: string;
   views: ApiAdominView[];
   userDisplayKey: string;
   user: AdminUser;
+  plugins: AdominPlugin[];
 }
 
 export const isModelView = (view: ApiAdominView): view is ApiModelView => {

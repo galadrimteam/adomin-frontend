@@ -1,5 +1,9 @@
 import { Navigate, createBrowserRouter } from "react-router-dom";
 import {
+  ADOMIN_CMS_BLOCKS_PATH,
+  ADOMIN_CMS_LAYOUTS_PATH,
+  ADOMIN_CMS_PAGES_PATH,
+  ADOMIN_CMS_PATH,
   ADOMIN_FOLDERS_PATH,
   ADOMIN_HOME_PATH,
   ADOMIN_LOGIN_PATH,
@@ -7,6 +11,11 @@ import {
   ADOMIN_STATS_PATH,
 } from "./adominPaths";
 import { LoginPage } from "./pages/LoginPage";
+import { CmsBlocks } from "./pages/cms/blocks/CmsBlocks";
+import { CmsLayouts } from "./pages/cms/layouts/CmsLayouts";
+import { CmsPages } from "./pages/cms/pages/CmsPages";
+import CreateCmsPage from "./pages/cms/pages/CreateCmsPage";
+import EditCmsPage from "./pages/cms/pages/EditCmsPage";
 import FoldersPage from "./pages/folders/FoldersPage";
 import HomePage from "./pages/home/HomePage";
 import ModelsPageLayout from "./pages/models/ModelsPageLayout";
@@ -58,6 +67,35 @@ export const adominRoutes = createBrowserRouter([
       },
     ],
     element: <HomePage />,
+  },
+  {
+    path: ADOMIN_CMS_PATH,
+    children: [
+      {
+        index: true,
+        element: <Navigate to={ADOMIN_CMS_PAGES_PATH} />,
+      },
+      {
+        path: ADOMIN_CMS_PAGES_PATH,
+        element: <CmsPages />,
+      },
+      {
+        path: "pages/create",
+        element: <CreateCmsPage />,
+      },
+      {
+        path: "pages/:cmsPageId",
+        element: <EditCmsPage />,
+      },
+      {
+        path: ADOMIN_CMS_BLOCKS_PATH,
+        element: <CmsBlocks />,
+      },
+      {
+        path: ADOMIN_CMS_LAYOUTS_PATH,
+        element: <CmsLayouts />,
+      },
+    ],
   },
   {
     path: ADOMIN_LOGIN_PATH,

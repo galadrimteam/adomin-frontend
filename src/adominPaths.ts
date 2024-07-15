@@ -4,11 +4,17 @@ export const ADOMIN_WORD = "backoffice";
 export const FOLDERS_WORD = "folders";
 export const STATS_WORD = "stats";
 export const MODELS_WORD = "models";
+export const CMS_WORD = "cms";
 
 export const ADOMIN_HOME_PATH = `/${ADOMIN_WORD}`;
 export const ADOMIN_FOLDERS_PATH = `/${ADOMIN_WORD}/${FOLDERS_WORD}`;
 export const ADOMIN_STATS_PATH = `/${ADOMIN_WORD}/${STATS_WORD}`;
 export const ADOMIN_MODELS_PATH = `/${ADOMIN_WORD}/${MODELS_WORD}`;
+export const ADOMIN_CMS_PATH = `/${ADOMIN_WORD}/${CMS_WORD}`;
+export const ADOMIN_CMS_PAGES_PATH = `/${ADOMIN_WORD}/${CMS_WORD}/pages`;
+export const ADOMIN_CMS_LAYOUTS_PATH = `/${ADOMIN_WORD}/${CMS_WORD}/layouts`;
+export const ADOMIN_CMS_BLOCKS_PATH = `/${ADOMIN_WORD}/${CMS_WORD}/blocks`;
+
 export const ADOMIN_LOGIN_PATH = "/login";
 
 type ViewType = SimplePluralize<ApiAdominView["type"]>;

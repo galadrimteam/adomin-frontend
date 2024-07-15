@@ -1,5 +1,6 @@
 import { Box } from "@mui/material";
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useMemo } from "react";
+import { useIsSmallScreen } from "../../utils/useIsSmallScreen";
 
 export type MultipleFieldsProps = PropsWithChildren<{
   numberOfFieldsPerLine: number;
@@ -15,12 +16,19 @@ export function MultipleFields({
   mt,
   mb,
 }: MultipleFieldsProps) {
+  const isSmallScreen = useIsSmallScreen();
+
+  const perLine = useMemo(() => {
+    if (isSmallScreen) return 1;
+    return numberOfFieldsPerLine;
+  }, [isSmallScreen, numberOfFieldsPerLine]);
+
   return (
     <Box
       sx={{
         display: "grid",
-        gridTemplateColumns: `repeat(${numberOfFieldsPerLine}, 1fr)`,
-        columnGap: 2,
+        gridTemplateColumns: `repeat(${perLine}, 1fr)`,
+        gap: 2,
         my,
         mt,
         mb,
