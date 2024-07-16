@@ -313,14 +313,6 @@ export interface AdominHasManyRelationFieldConfig
    * @default false
    */
   allowGlobalFilterSearch?: boolean;
-  /**
-   * Creation of related models on the fly is not possible yet
-   */
-  creatable: false;
-  /**
-   * Edition of related models on the fly is not possible yet
-   */
-  editable: false;
 }
 
 export interface AdominBelongsToRelationFieldConfig

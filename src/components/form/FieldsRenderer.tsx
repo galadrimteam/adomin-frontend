@@ -23,11 +23,8 @@ export const FieldsRenderer = ({ config, control, mode }: Props) => {
   const fieldsToUse = config.fields.filter((field) => {
     if (field.name === config.primaryKey) return false;
 
-    const creatable = field.adomin.creatable;
-    const editable = field.adomin.editable;
-
-    if (mode === "create") return creatable;
-    if (mode === "update") return editable;
+    if (mode === "create") return field.adomin.creatable;
+    if (mode === "update") return field.adomin.editable;
 
     return true;
   });
