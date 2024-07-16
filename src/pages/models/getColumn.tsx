@@ -31,22 +31,6 @@ const getMuiEditTextFieldProps = (
   });
 };
 
-const getSortValue = (
-  baseConfig: Partial<MRT_ColumnDef<ModelData>>,
-  potentialValue: boolean
-) => {
-  if (baseConfig.enableSorting === false) return false;
-  return potentialValue;
-};
-
-const getFilterValue = (
-  baseConfig: Partial<MRT_ColumnDef<ModelData>>,
-  potentialValue: boolean
-) => {
-  if (baseConfig.enableColumnFilter === false) return false;
-  return potentialValue;
-};
-
 export const getColumn = (
   field: ModelField,
   validationErrors: ValidationErrors
@@ -55,8 +39,8 @@ export const getColumn = (
     accessorKey: field.name,
     header: field.adomin.label ?? field.name,
     size: field.adomin.size ?? 120,
-    enableColumnFilter: field.adomin.computed !== true,
-    enableSorting: field.adomin.computed !== true,
+    enableColumnFilter: field.adomin.filterable,
+    enableSorting: field.adomin.sortable,
   };
 
   if (
@@ -91,11 +75,6 @@ export const getColumn = (
       ...baseColumn,
       muiEditTextFieldProps: getMuiEditTextFieldProps(validationErrors, "text"),
       accessorFn: (row) => generateDisplayValue(row, field),
-      enableSorting: getSortValue(baseColumn, field.adomin.isPassword !== true),
-      enableColumnFilter: getFilterValue(
-        baseColumn,
-        field.adomin.isPassword !== true
-      ),
     };
   }
 
@@ -164,7 +143,6 @@ export const getColumn = (
       ...baseColumn,
       muiEditTextFieldProps: getMuiEditTextFieldProps(validationErrors),
       Cell: HasManyRelationCell,
-      enableSorting: false,
     };
   }
 
@@ -173,7 +151,6 @@ export const getColumn = (
       ...baseColumn,
       muiEditTextFieldProps: getMuiEditTextFieldProps(validationErrors),
       Cell: HasOneRelationCell,
-      enableSorting: false,
     };
   }
 
@@ -183,7 +160,6 @@ export const getColumn = (
       muiEditTextFieldProps: getMuiEditTextFieldProps(validationErrors),
       Cell: BelongsToRelationCell,
       Filter: ForeignKeyCellFilter,
-      enableSorting: false,
     };
   }
 
@@ -195,7 +171,6 @@ export const getColumn = (
         ? ForeignKeyCellWithLabel
         : ForeignKeyCell,
       Filter: ForeignKeyCellFilter,
-      enableSorting: false,
     };
   }
 

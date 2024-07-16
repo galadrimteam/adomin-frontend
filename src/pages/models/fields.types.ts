@@ -8,11 +8,15 @@ export interface AdominBaseFieldConfig {
   /**
    * If false, user cannot edit this field
    */
-  editable?: boolean;
+  editable: boolean;
   /**
    * If false, user cannot create this field
    */
-  creatable?: boolean;
+  creatable: boolean;
+  /** If false, user cannot sort by this field */
+  sortable: boolean;
+  /** If false, user cannot filter by this field */
+  filterable: boolean;
   /**
    * Size of the field on the frontend
    * @default 120
