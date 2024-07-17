@@ -103,7 +103,7 @@ export const HasManyRelationFieldRhf = <T extends FieldValues>(
         afterChange={afterChange}
       />
 
-      <div className="relative bottom-5">
+      <div>
         {castedValue.map((o) => (
           <Chip
             key={getForeignKeyValue(o, fieldConfig)}
