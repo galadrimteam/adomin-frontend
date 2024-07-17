@@ -8,11 +8,15 @@ export interface AdominBaseFieldConfig {
   /**
    * If false, user cannot edit this field
    */
-  editable?: boolean;
+  editable: boolean;
   /**
    * If false, user cannot create this field
    */
-  creatable?: boolean;
+  creatable: boolean;
+  /** If false, user cannot sort by this field */
+  sortable: boolean;
+  /** If false, user cannot filter by this field */
+  filterable: boolean;
   /**
    * Size of the field on the frontend
    * @default 120
@@ -287,6 +291,11 @@ export interface AdominHasManyRelationFieldConfig
    * @default ', '
    */
   labelFieldsSeparator?: string;
+  /** Name of the foreign key for the referenced model
+   *
+   * e.g. if you have User that hasMany Idea, the default value will be 'userId'
+   */
+  fkName?: string;
   /**
    * type of the foreign key
    * @default 'number'
@@ -294,9 +303,16 @@ export interface AdominHasManyRelationFieldConfig
   fkType?: "string" | "number";
   /**
    * Name of the local key in the referenced model
+   *
+   * e.g. if you have User that hasMany Idea, the value should be the primary key of the Idea model
    * @default 'id'
    */
   localKeyName?: string;
+  /**
+   * Local key type
+   * @default 'number'
+   */
+  localKeyType?: "string" | "number";
   /**
    * If true, adomin will preload the relation
    *
@@ -310,13 +326,12 @@ export interface AdominHasManyRelationFieldConfig
    */
   allowGlobalFilterSearch?: boolean;
   /**
-   * Creation of related models on the fly is not possible yet
+   * If true, adomin will allow to set the relation to null
+   *
+   * e.g. if you have User that hasMany Idea, with allowRemove = true, you allow to set Idea.userId to null
+   * @default false
    */
-  creatable: false;
-  /**
-   * Edition of related models on the fly is not possible yet
-   */
-  editable: false;
+  allowRemove?: boolean;
 }
 
 export interface AdominBelongsToRelationFieldConfig

@@ -12,6 +12,7 @@ import { numberToString, stringToNumber } from "./TextFieldRhfUtils";
 import { FileInputRhf } from "./files/FileInputRhf";
 import { EnumStringSelectRhf } from "./selects/EnumStringSelectRhf";
 import { ForeignKeySelectRhf } from "./selects/foreignKey/ForeignKeySelectRhf";
+import { HasManyRelationFieldRhf } from "./selects/hasManyRelation/HasManyRelationFieldRhf";
 
 interface Props {
   config: ModelFieldsConfig;
@@ -23,13 +24,8 @@ export const FieldsRenderer = ({ config, control, mode }: Props) => {
   const fieldsToUse = config.fields.filter((field) => {
     if (field.name === config.primaryKey) return false;
 
-    const creatable =
-      field.adomin.creatable !== false && field.adomin.computed !== true;
-    const editable =
-      field.adomin.editable !== false && field.adomin.computed !== true;
-
-    if (mode === "create") return creatable;
-    if (mode === "update") return editable;
+    if (mode === "create") return field.adomin.creatable;
+    if (mode === "update") return field.adomin.editable;
 
     return true;
   });
@@ -195,6 +191,18 @@ export const FieldsRenderer = ({ config, control, mode }: Props) => {
               modelName={field.adomin.modelName}
               inputLabel={field.adomin.label ?? field.name}
               separator={field.adomin.labelFieldsSeparator}
+              sx={sx}
+            />
+          );
+        }
+
+        if (field.adomin.type === "hasManyRelation") {
+          return (
+            <HasManyRelationFieldRhf
+              key={key}
+              control={control}
+              name={field.name}
+              fieldConfig={field.adomin}
               sx={sx}
             />
           );

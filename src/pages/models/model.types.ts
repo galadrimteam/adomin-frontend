@@ -3,6 +3,7 @@ import { AdominFieldConfig } from "./fields.types";
 export interface ModelField {
   name: string;
   adomin: AdominFieldConfig;
+  isVirtual: boolean;
 }
 
 export interface AdominStaticRightsConfig {
