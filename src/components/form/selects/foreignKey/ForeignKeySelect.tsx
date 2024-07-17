@@ -1,5 +1,5 @@
 import { Autocomplete, SxProps, TextField } from "@mui/material";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { prepareQsObject } from "../../../../pages/models/list/getModelListQueryString";
 import { useModelConfigQuery } from "../../../../pages/models/useModelConfigQuery";
 import { useDebounce } from "../../../../utils/useDebounce";
@@ -19,7 +19,11 @@ export interface ForeignKeySelectProps {
   autocompleteSize?: "small" | "medium";
   autocompleteVariant?: "filled" | "outlined" | "standard";
   autocompletePlaceholder?: string;
-  afterChange?: (newValue: string | null) => void;
+  afterChange?: (
+    newValue: string | null,
+    inputHtmlElement: HTMLInputElement | null
+  ) => void;
+  optionsFilter?: (options: ForeignKeySelectOption) => boolean;
   sx?: SxProps;
 }
 
@@ -41,10 +45,12 @@ export const ForeignKeySelect = ({
   afterChange,
   autocompletePlaceholder,
   sx,
+  optionsFilter,
 }: ForeignKeySelectProps) => {
   const [inputValue, setInputValue] = useState("");
   const debouncedSearchTerm = useDebounce(inputValue, 500); // 500 ms de délai
   const modelQuery = useModelConfigQuery(modelName);
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   const filtersToUse = useMemo(() => {
     if (debouncedSearchTerm === "") return JSON.stringify([]);
@@ -62,7 +68,7 @@ export const ForeignKeySelect = ({
     filtersToUse
   );
 
-  const options: { label: string; value: string }[] = useMemo(() => {
+  const baseOptions: { label: string; value: string }[] = useMemo(() => {
     if (!listQuery.data || !modelQuery.data) {
       if (selectValue === null) return [];
       return [selectValue];
@@ -82,6 +88,12 @@ export const ForeignKeySelect = ({
     return [selectValue, ...opts];
   }, [listQuery.data, modelQuery.data, selectValue, labelFields, separator]);
 
+  const options = useMemo(() => {
+    if (!optionsFilter) return baseOptions;
+
+    return baseOptions.filter(optionsFilter);
+  }, [baseOptions, optionsFilter]);
+
   return (
     <Autocomplete
       sx={sx}
@@ -90,7 +102,7 @@ export const ForeignKeySelect = ({
       onChange={(_e, newValue) => {
         const valueOrNull = newValue?.value ?? null;
 
-        if (afterChange) afterChange(valueOrNull);
+        if (afterChange) afterChange(valueOrNull, inputRef.current);
         if (!valueOrNull) setSelectValue(null);
 
         onChange(valueOrNull);
@@ -106,6 +118,7 @@ export const ForeignKeySelect = ({
           label={inputLabel}
           variant={autocompleteVariant}
           placeholder={autocompletePlaceholder}
+          inputRef={inputRef}
         />
       )}
       loading={listQuery.isLoading}

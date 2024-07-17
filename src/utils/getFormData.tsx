@@ -8,6 +8,12 @@ const appendData = (formData: FormData, field: ModelField, data: any) => {
 
   if (dataToAppend === undefined) return;
 
+  if (field.adomin.type === "hasManyRelation" && Array.isArray(dataToAppend)) {
+    const localKey = field.adomin.localKeyName ?? "id";
+    const arrValues = dataToAppend.map((v) => v[localKey]);
+    arrValues.forEach((v) => formData.append(`${field.name}[]`, v));
+    return;
+  }
   if (field.adomin.type === "file" && dataToAppend instanceof FileStore) {
     const file = dataToAppend.resizedBlob ?? dataToAppend.file;
     // if file = null and we don't want to destroy the file, we don't append it to the form data
