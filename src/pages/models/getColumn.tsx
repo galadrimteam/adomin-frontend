@@ -10,6 +10,7 @@ import { ForeignKeyCellWithLabel } from "../../components/cells/ForeignKeyCellWi
 import { HasManyRelationCell } from "../../components/cells/HasManyRelationCell";
 import { HasOneRelationCell } from "../../components/cells/HasOneRelationCell";
 import { ImageCell } from "../../components/cells/ImageCell";
+import { ManyToManyRelationCell } from "../../components/cells/ManyToManyRelationCell";
 import { StringArrayCell } from "../../components/cells/StringArrayCell";
 import { UnkownTypeCell } from "../../components/cells/UnknownTypeCell";
 import { ForeignKeyCellFilter } from "../../components/filters/ForeignKeyCellFilter";
@@ -143,6 +144,14 @@ export const getColumn = (
       ...baseColumn,
       muiEditTextFieldProps: getMuiEditTextFieldProps(validationErrors),
       Cell: HasManyRelationCell,
+    };
+  }
+
+  if (field.adomin.type === "manyToManyRelation") {
+    return {
+      ...baseColumn,
+      muiEditTextFieldProps: getMuiEditTextFieldProps(validationErrors),
+      Cell: ManyToManyRelationCell,
     };
   }
 

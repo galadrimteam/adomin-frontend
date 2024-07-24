@@ -6,6 +6,7 @@ const isAdominEnumField = (
 ): field is {
   name: string;
   adomin: AdominEnumFieldConfig;
+  isVirtual: boolean;
 } => {
   return field.adomin.type === "enum";
 };

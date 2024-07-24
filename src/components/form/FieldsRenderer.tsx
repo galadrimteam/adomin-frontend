@@ -13,6 +13,7 @@ import { FileInputRhf } from "./files/FileInputRhf";
 import { EnumStringSelectRhf } from "./selects/EnumStringSelectRhf";
 import { ForeignKeySelectRhf } from "./selects/foreignKey/ForeignKeySelectRhf";
 import { HasManyRelationFieldRhf } from "./selects/hasManyRelation/HasManyRelationFieldRhf";
+import { ManyToManyRelationFieldRhf } from "./selects/manyToManyRelation/ManyToManyFieldRhf.tsx";
 
 interface Props {
   config: ModelFieldsConfig;
@@ -199,6 +200,18 @@ export const FieldsRenderer = ({ config, control, mode }: Props) => {
         if (field.adomin.type === "hasManyRelation") {
           return (
             <HasManyRelationFieldRhf
+              key={key}
+              control={control}
+              name={field.name}
+              fieldConfig={field.adomin}
+              sx={sx}
+            />
+          );
+        }
+
+        if (field.adomin.type === "manyToManyRelation") {
+          return (
+            <ManyToManyRelationFieldRhf
               key={key}
               control={control}
               name={field.name}
