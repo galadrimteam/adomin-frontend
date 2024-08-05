@@ -5,15 +5,16 @@ import { BitsetFieldRhf } from "./BitsetFieldRhf";
 import { CheckboxRhf } from "./CheckboxRhf";
 import { DatePickerRhf } from "./DatePickerRhf";
 import { DateTimePickerRhf } from "./DateTimePickerRhf";
-import { DoubleFields } from "./MultipleFields";
-import { SwitchRhf } from "./SwitchRhf";
-import { TextFieldRhf } from "./TextFieldRhf";
-import { numberToString, stringToNumber } from "./TextFieldRhfUtils";
 import { FileInputRhf } from "./files/FileInputRhf";
+import { DoubleFields } from "./MultipleFields";
 import { EnumStringSelectRhf } from "./selects/EnumStringSelectRhf";
 import { ForeignKeySelectRhf } from "./selects/foreignKey/ForeignKeySelectRhf";
 import { HasManyRelationFieldRhf } from "./selects/hasManyRelation/HasManyRelationFieldRhf";
 import { ManyToManyRelationFieldRhf } from "./selects/manyToManyRelation/ManyToManyFieldRhf.tsx";
+import { SelectArrayRhf } from "./selects/SelectArrayRhf.tsx";
+import { SwitchRhf } from "./SwitchRhf";
+import { TextFieldRhf } from "./TextFieldRhf";
+import { numberToString, stringToNumber } from "./TextFieldRhfUtils";
 
 interface Props {
   config: ModelFieldsConfig;
@@ -160,6 +161,19 @@ export const FieldsRenderer = ({ config, control, mode }: Props) => {
               config={field.adomin}
             />
           );
+        }
+
+        if (field.adomin.type === "array" && field.adomin.options) {
+          return (
+            <SelectArrayRhf
+              key={key}
+              label={label}
+              name={field.name}
+              control={control}
+              options={field.adomin.options}
+              sx={sx}
+             />
+          )
         }
 
         if (field.adomin.type === "array") {
