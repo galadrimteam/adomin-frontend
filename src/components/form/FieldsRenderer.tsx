@@ -111,6 +111,7 @@ export const FieldsRenderer = ({ config, control, mode }: Props) => {
           return (
             <TextFieldRhf
               key={key}
+              multiline={field.adomin.multiline}
               label={label}
               type="text"
               name={field.name}

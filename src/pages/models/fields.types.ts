@@ -96,6 +96,11 @@ export interface AdominStringFieldConfig extends AdominBaseFieldConfig {
    * e.g. "{{value}} €"
    */
   valueDisplayTemplate?: string;
+  /**
+   * If `true`, a `textarea` element is rendered instead of an input.
+   * @default false
+   */
+  multiline?: boolean;
 }
 
 export interface AdominBooleanFieldConfig extends AdominBaseFieldConfig {
