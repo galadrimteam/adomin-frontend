@@ -3,6 +3,7 @@ import clsx from "clsx";
 interface TablerIconProps {
   className?: string;
   iconName: string;
+  color?: string;
 }
 
 /**
@@ -10,8 +11,13 @@ interface TablerIconProps {
  * You can browse the list of available icons at:
  * https://tabler.io/icons
  */
-export const TablerIcon = ({ iconName, className }: TablerIconProps) => {
-  return <span className={clsx("ti", `ti-${iconName}`, className)}></span>;
+export const TablerIcon = ({ iconName, className, color }: TablerIconProps) => {
+  return (
+    <span
+      className={clsx("ti", `ti-${iconName}`, className)}
+      style={{ color }}
+    ></span>
+  );
 };
 
 /**
@@ -35,9 +41,13 @@ by
 export const GoogleMaterialIcon = ({
   iconName,
   className,
+  color,
 }: TablerIconProps) => {
   return (
-    <span className={clsx("material-symbols-outlined", className)}>
+    <span
+      className={clsx("material-symbols-outlined", className)}
+      style={{ color }}
+    >
       {iconName}
     </span>
   );

@@ -15,6 +15,7 @@ import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { getModelPath } from "../../../adominPaths";
 import { privateAxios } from "../../../axios/privateAxios";
+import { FontIcon } from "../../../components/FontIcon";
 import { DeleteModelModal } from "../delete/DeleteModelModal";
 import { useDeleteModel } from "../delete/useDeleteModel";
 import { getColumn } from "../getColumn";
@@ -23,6 +24,7 @@ import { ExportButton } from "./ExportButton";
 import { ExportFileType } from "./ExportDialog";
 import { getModelListQueryString } from "./getModelListQueryString";
 import { transformEnumValueToLabels } from "./transformEnumValueToLabels";
+import { useActionMutation } from "./useActionMutation";
 
 interface ModelGridProps {
   modelConfig: ModelFieldsConfig;
@@ -34,7 +36,13 @@ export interface ModelListResponse {
 }
 
 export const ModelGrid = ({
-  modelConfig: { fields, name: modelName, staticRights },
+  modelConfig: {
+    fields,
+    name: modelName,
+    staticRights,
+    globalActions = [],
+    instanceActions = [],
+  },
 }: ModelGridProps) => {
   const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>(
     []
@@ -80,6 +88,8 @@ export const ModelGrid = ({
       return res.data;
     },
   });
+
+  const actionMutation = useActionMutation(modelName, listQuery.refetch);
 
   const downloadExportMutation = useMutation({
     mutationFn: async (fileType: ExportFileType) => {
@@ -170,6 +180,17 @@ export const ModelGrid = ({
             </IconButton>
           </Tooltip>
         )}
+
+        {instanceActions.map((a) => (
+          <Tooltip key={a.name} arrow title={a.tooltip}>
+            <IconButton
+              disabled={actionMutation.isPending}
+              onClick={() => actionMutation.mutateAsync({ actionName: a.name, primaryKeyValue: row.original.id })}
+            >
+              <FontIcon iconName={a.icon} color={a.iconColor} />
+            </IconButton>
+          </Tooltip>
+        ))}
       </Box>
     ),
     renderTopToolbarCustomActions: () => (
@@ -187,6 +208,16 @@ export const ModelGrid = ({
             </IconButton>
           </Link>
         )}
+        {globalActions.map((a) => (
+          <Tooltip key={a.name} arrow title={a.tooltip}>
+            <IconButton
+              disabled={actionMutation.isPending}
+              onClick={() => actionMutation.mutateAsync({ actionName: a.name })}
+            >
+              <FontIcon iconName={a.icon} color={a.iconColor} />
+            </IconButton>
+          </Tooltip>
+        ))}
       </Box>
     ),
     state: {
