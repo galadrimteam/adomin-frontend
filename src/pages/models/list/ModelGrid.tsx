@@ -42,6 +42,7 @@ export const ModelGrid = ({
     staticRights,
     globalActions = [],
     instanceActions = [],
+    primaryKey
   },
 }: ModelGridProps) => {
   const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>(
@@ -161,7 +162,7 @@ export const ModelGrid = ({
               to={getModelPath({
                 name: modelName,
                 type: "update",
-                primaryKeyValue: row.original.id,
+                primaryKeyValue: row.original[primaryKey],
               })}
             >
               <IconButton>
@@ -174,7 +175,7 @@ export const ModelGrid = ({
           <Tooltip arrow placement="right" title="Supprimer">
             <IconButton
               color="error"
-              onClick={() => deleteModelProps.setDeleteId(row.original.id)}
+              onClick={() => deleteModelProps.setDeleteId(row.original[primaryKey])}
             >
               <Delete />
             </IconButton>
@@ -185,7 +186,7 @@ export const ModelGrid = ({
           <Tooltip key={a.name} arrow title={a.tooltip}>
             <IconButton
               disabled={actionMutation.isPending}
-              onClick={() => actionMutation.mutateAsync({ actionName: a.name, primaryKeyValue: row.original.id })}
+              onClick={() => actionMutation.mutateAsync({ actionName: a.name, primaryKeyValue: row.original[primaryKey] })}
             >
               <FontIcon iconName={a.icon} color={a.iconColor} />
             </IconButton>
