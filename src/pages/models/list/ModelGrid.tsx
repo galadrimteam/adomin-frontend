@@ -2,9 +2,6 @@ import { Add, Delete, Edit, Refresh } from "@mui/icons-material";
 import { Box, IconButton, Tooltip } from "@mui/material";
 import {
   MRT_ColumnDef,
-  MRT_ColumnFiltersState,
-  MRT_PaginationState,
-  MRT_SortingState,
   MaterialReactTable,
   useMaterialReactTable,
 } from "material-react-table";
@@ -25,6 +22,7 @@ import { ExportFileType } from "./ExportDialog";
 import { getModelListQueryString } from "./getModelListQueryString";
 import { transformEnumValueToLabels } from "./transformEnumValueToLabels";
 import { useActionMutation } from "./useActionMutation";
+import { useModelGridParams } from "./useModelGridParams";
 
 interface ModelGridProps {
   modelConfig: ModelFieldsConfig;
@@ -42,18 +40,19 @@ export const ModelGrid = ({
     staticRights,
     globalActions = [],
     instanceActions = [],
-    primaryKey
+    primaryKey,
   },
 }: ModelGridProps) => {
-  const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>(
-    []
-  );
-  const [globalFilter, setGlobalFilter] = useState("");
-  const [sorting, setSorting] = useState<MRT_SortingState>([]);
-  const [pagination, setPagination] = useState<MRT_PaginationState>({
-    pageIndex: 0,
-    pageSize: 10,
-  });
+  const {
+    pagination,
+    setPagination,
+    globalFilter,
+    setGlobalFilter,
+    sorting,
+    setSorting,
+    columnFilters,
+    setColumnFilters,
+  } = useModelGridParams();
 
   const [validationErrors] = useState<{
     [cellId: string]: string;
@@ -175,7 +174,9 @@ export const ModelGrid = ({
           <Tooltip arrow placement="right" title="Supprimer">
             <IconButton
               color="error"
-              onClick={() => deleteModelProps.setDeleteId(row.original[primaryKey])}
+              onClick={() =>
+                deleteModelProps.setDeleteId(row.original[primaryKey])
+              }
             >
               <Delete />
             </IconButton>
@@ -186,7 +187,12 @@ export const ModelGrid = ({
           <Tooltip key={a.name} arrow title={a.tooltip}>
             <IconButton
               disabled={actionMutation.isPending}
-              onClick={() => actionMutation.mutateAsync({ actionName: a.name, primaryKeyValue: row.original[primaryKey] })}
+              onClick={() =>
+                actionMutation.mutateAsync({
+                  actionName: a.name,
+                  primaryKeyValue: row.original[primaryKey],
+                })
+              }
             >
               <FontIcon iconName={a.icon} color={a.iconColor} />
             </IconButton>

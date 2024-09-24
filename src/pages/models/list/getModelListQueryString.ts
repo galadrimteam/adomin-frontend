@@ -12,6 +12,10 @@ export const prepareQsObject = (
   return encodeURIComponent(JSON.stringify(input));
 };
 
+export const consumeQsObject = <T>(input: string) => {
+  return JSON.parse(decodeURIComponent(input)) as T;
+};
+
 interface Params {
   columnFilters: MRT_ColumnFiltersState;
   sorting: MRT_SortingState;
