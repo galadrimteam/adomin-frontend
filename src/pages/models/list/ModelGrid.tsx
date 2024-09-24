@@ -12,11 +12,11 @@ import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { getModelPath } from "../../../adominPaths";
 import { privateAxios } from "../../../axios/privateAxios";
-import { FontIcon } from "../../../components/FontIcon";
 import { DeleteModelModal } from "../delete/DeleteModelModal";
 import { useDeleteModel } from "../delete/useDeleteModel";
 import { getColumn } from "../getColumn";
 import { ModelData, ModelFieldsConfig } from "../model.types";
+import { AdominAction } from "./AdominAction";
 import { ExportButton } from "./ExportButton";
 import { ExportFileType } from "./ExportDialog";
 import { getModelListQueryString } from "./getModelListQueryString";
@@ -184,19 +184,12 @@ export const ModelGrid = ({
         )}
 
         {instanceActions.map((a) => (
-          <Tooltip key={a.name} arrow title={a.tooltip}>
-            <IconButton
-              disabled={actionMutation.isPending}
-              onClick={() =>
-                actionMutation.mutateAsync({
-                  actionName: a.name,
-                  primaryKeyValue: row.original[primaryKey],
-                })
-              }
-            >
-              <FontIcon iconName={a.icon} color={a.iconColor} />
-            </IconButton>
-          </Tooltip>
+          <AdominAction
+            key={a.name}
+            action={a}
+            actionMutation={actionMutation}
+            primaryKeyValue={row.original[primaryKey]}
+          />
         ))}
       </Box>
     ),
@@ -216,14 +209,11 @@ export const ModelGrid = ({
           </Link>
         )}
         {globalActions.map((a) => (
-          <Tooltip key={a.name} arrow title={a.tooltip}>
-            <IconButton
-              disabled={actionMutation.isPending}
-              onClick={() => actionMutation.mutateAsync({ actionName: a.name })}
-            >
-              <FontIcon iconName={a.icon} color={a.iconColor} />
-            </IconButton>
-          </Tooltip>
+          <AdominAction
+            key={a.name}
+            action={a}
+            actionMutation={actionMutation}
+          />
         ))}
       </Box>
     ),

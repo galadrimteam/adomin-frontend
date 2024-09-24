@@ -40,7 +40,22 @@ export type AdominActionConfig = {
   iconColor?: string
   /** Tooltip shown on the frontend, when hovering the button */
   tooltip: string
+} & AdominActionTypes
+
+type AdominActionTypes = AdominActionLink | AdominActionBackend
+
+export interface AdominActionBackend {
+  type: 'backend-action'
 }
+
+export interface AdominActionLink {
+  type: 'link'
+  /** Link to open */
+  href: string
+  /** Open the link in a new tab @default false */
+  openInNewTab?: boolean
+}
+
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type ModelData = Record<string, any>;
