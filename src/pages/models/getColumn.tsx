@@ -132,12 +132,12 @@ export const getColumn = (
     };
   }
 
-  if (field.adomin.type === 'array' && field.adomin.options) {
+  if (field.adomin.type === "array" && field.adomin.options) {
     return {
       ...baseColumn,
       muiEditTextFieldProps: getMuiEditTextFieldProps(validationErrors),
       Cell: SelectArrayCell,
-    }
+    };
   }
 
   if (field.adomin.type === "array") {
