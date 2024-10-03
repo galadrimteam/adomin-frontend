@@ -6,6 +6,7 @@ import { CheckboxRhf } from "./CheckboxRhf";
 import { DatePickerRhf } from "./DatePickerRhf";
 import { DateTimePickerRhf } from "./DateTimePickerRhf";
 import { FileInputRhf } from "./files/FileInputRhf";
+import { JsonRhf } from "./JsonRhf.tsx";
 import { DoubleFields } from "./MultipleFields";
 import { EnumStringSelectRhf } from "./selects/EnumStringSelectRhf";
 import { ForeignKeySelectRhf } from "./selects/foreignKey/ForeignKeySelectRhf";
@@ -163,6 +164,18 @@ export const FieldsRenderer = ({ config, control, mode }: Props) => {
           );
         }
 
+        if (field.adomin.type === "json") {
+          return (
+            <JsonRhf
+              key={key}
+              control={control}
+              name={field.name}
+              label={label}
+              sx={sx}
+            />
+          );
+        }
+
         if (field.adomin.type === "array" && field.adomin.options) {
           return (
             <SelectArrayRhf
@@ -172,8 +185,8 @@ export const FieldsRenderer = ({ config, control, mode }: Props) => {
               control={control}
               options={field.adomin.options}
               sx={sx}
-             />
-          )
+            />
+          );
         }
 
         if (field.adomin.type === "array") {

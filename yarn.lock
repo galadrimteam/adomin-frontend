@@ -2837,7 +2837,7 @@ __metadata:
     eslint: "npm:^8.56.0"
     eslint-plugin-react-hooks: "npm:^4.6.0"
     eslint-plugin-react-refresh: "npm:^0.4.3"
-    json-edit-react: "npm:^1.13.2"
+    json-edit-react: "npm:^1.16.3"
     material-react-table: "npm:^2.0.4"
     mobx: "npm:^6.10.2"
     mobx-react-lite: "npm:^4.0.5"
@@ -3298,16 +3298,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"json-edit-react@npm:^1.13.2":
-  version: 1.13.2
-  resolution: "json-edit-react@npm:1.13.2"
+"json-edit-react@npm:^1.16.3":
+  version: 1.16.3
+  resolution: "json-edit-react@npm:1.16.3"
   dependencies:
-    json5: "npm:^2.2.3"
     object-property-assigner: "npm:^1.3.0"
     object-property-extractor: "npm:^1.0.11"
   peerDependencies:
     react: ">=16.0.0"
-  checksum: 10c0/3a807e0bd3253e54f1282cbff6f855b9fc1df197f4cc1a072b55eba56d879cdd785d3b56b8267675a1615c7d3ef0d351633329dd6f5f00847c1f12225edc7cd1
+  checksum: 10c0/cd4310308264ff5bacba9273c57ec60ad3f18bf1bedf3b2c76427fe80e3b2f763ecf3885b9ace9a955c677528151a42f34d9b69717222f3c2247af69d10ccfb1
   languageName: node
   linkType: hard
 

@@ -198,7 +198,7 @@ export interface AdominArrayFieldConfig extends AdominBaseFieldConfig {
   /**
    * options for the select component
    */
-  options?: AdominSelectOption<string | number>[]
+  options?: AdominSelectOption<string | number>[];
 }
 
 export type AdominFileFieldConfig = AdominBaseFieldConfig & {
@@ -239,20 +239,20 @@ export type AdominFileFieldConfig = AdominBaseFieldConfig & {
 
 type FileSubType =
   | {
-      /** Use this when your file is an Adonis AttachmentLite */
-      subType: "attachment";
-    }
+    /** Use this when your file is an Adonis AttachmentLite */
+    subType: "attachment";
+  }
   | {
-      /** Use this when your file is represented as a string in your DB */
-      subType: "url";
-    }
+    /** Use this when your file is represented as a string in your DB */
+    subType: "url";
+  }
   | {
-      /** Use this when your file is stored in a custom way in your DB (e.g. a json format) */
-      subType: "custom";
-    };
+    /** Use this when your file is stored in a custom way in your DB (e.g. a json format) */
+    subType: "custom";
+  };
 
-export interface AdominObjectFieldConfig extends AdominBaseFieldConfig {
-  type: "object";
+export interface AdominJsonFieldConfig extends AdominBaseFieldConfig {
+  type: "json";
 }
 
 export interface AdominForeignKeyFieldConfig extends AdominBaseFieldConfig {
@@ -526,5 +526,5 @@ export type AdominFieldConfig =
   | AdominHasManyRelationFieldConfig
   | AdominBelongsToRelationFieldConfig
   | AdominHasOneRelationFieldConfig
-  | AdominManyToManyRelationFieldConfig;
-// | AdominObjectFieldConfig
+  | AdominManyToManyRelationFieldConfig
+  | AdominJsonFieldConfig;

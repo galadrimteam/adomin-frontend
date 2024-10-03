@@ -23,7 +23,7 @@ export const EditLayoutPropsModal = observer<Props>(({ store }) => {
         <JsonEditor
           data={store.page.config.layout.props}
           onUpdate={({ newData }) => {
-            store.updateLayoutProps(newData);
+            store.updateLayoutProps(newData as object);
           }}
         />
       )}

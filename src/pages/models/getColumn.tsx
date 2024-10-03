@@ -10,6 +10,7 @@ import { ForeignKeyCellWithLabel } from "../../components/cells/ForeignKeyCellWi
 import { HasManyRelationCell } from "../../components/cells/HasManyRelationCell";
 import { HasOneRelationCell } from "../../components/cells/HasOneRelationCell";
 import { ImageCell } from "../../components/cells/ImageCell";
+import { JsonCell } from "../../components/cells/JsonCell";
 import { ManyToManyRelationCell } from "../../components/cells/ManyToManyRelationCell";
 import { SelectArrayCell } from "../../components/cells/SelectArrayCell";
 import { StringArrayCell } from "../../components/cells/StringArrayCell";
@@ -129,6 +130,14 @@ export const getColumn = (
       ...baseColumn,
       muiEditTextFieldProps: getMuiEditTextFieldProps(validationErrors),
       Cell: FileCell,
+    };
+  }
+
+  if (field.adomin.type === "json") {
+    return {
+      ...baseColumn,
+      muiEditTextFieldProps: getMuiEditTextFieldProps(validationErrors),
+      Cell: JsonCell,
     };
   }
 

@@ -30,10 +30,18 @@ const appendData = (formData: FormData, field: ModelField, data: any) => {
     if (file === null && !dataToAppend.shouldDestroy) return;
     return formData.append(field.name, file ?? "");
   }
-  if (field.adomin.type === "date" && field.adomin.subType === "date" && dataToAppend) {
+  if (
+    field.adomin.type === "date" &&
+    field.adomin.subType === "date" &&
+    dataToAppend
+  ) {
     return formData.append(field.name, format(dataToAppend, "yyyy-MM-dd"));
   }
-  if (field.adomin.type === "date" && field.adomin.subType === "datetime" && dataToAppend) {
+  if (
+    field.adomin.type === "date" &&
+    field.adomin.subType === "datetime" &&
+    dataToAppend
+  ) {
     return formData.append(field.name, dataToAppend.toISOString());
   }
 
@@ -42,6 +50,10 @@ const appendData = (formData: FormData, field: ModelField, data: any) => {
       formData.append(`${field.name}[]`, item);
     }
     return;
+  }
+
+  if (field.adomin.type === "json" && dataToAppend) {
+    return formData.append(field.name, JSON.stringify(dataToAppend));
   }
 
   if (dataToAppend === null) {

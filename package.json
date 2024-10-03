@@ -28,7 +28,7 @@
     "chart.js": "^4.4.1",
     "clsx": "^2.0.0",
     "date-fns": "^3.6.0",
-    "json-edit-react": "^1.13.2",
+    "json-edit-react": "^1.16.3",
     "material-react-table": "^2.0.4",
     "mobx": "^6.10.2",
     "mobx-react-lite": "^4.0.5",

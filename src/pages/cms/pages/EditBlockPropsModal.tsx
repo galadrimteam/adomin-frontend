@@ -23,7 +23,7 @@ export const EditBlockPropsModal = observer<Props>(({ store }) => {
         <JsonEditor
           data={store.blockPropsToEdit}
           onUpdate={({ newData }) => {
-            store.updateBlockProps(newData);
+            store.updateBlockProps(newData as object);
           }}
           restrictDelete={({ key }) => key === "gridIdentifier"}
         />
