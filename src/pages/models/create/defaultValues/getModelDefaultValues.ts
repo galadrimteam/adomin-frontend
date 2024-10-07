@@ -24,6 +24,8 @@ export const getModelDefaultValues = (
       modelData[field.name] = getFileDefaultValue(config);
     } else if (config.type === "array") {
       modelData[field.name] = [];
+    } else if (config.type === 'json') {
+      modelData[field.name] = null;
     } else if (
       config.type === "foreignKey" ||
       config.type === "belongsToRelation" ||
