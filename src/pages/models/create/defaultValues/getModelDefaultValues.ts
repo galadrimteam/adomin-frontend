@@ -1,14 +1,16 @@
-import { ModelData, ModelFieldsConfig } from "../../model.types";
+import { AdominFormField, ModelData } from "../../model.types";
 import { getDateDefaultValue } from "./getDateDefaultValue";
 import { getEnumDefaultValue } from "./getEnumDefaultValue";
 import { getFileDefaultValue } from "./getFileDefaultValue";
 
 export const getModelDefaultValues = (
-  modelFieldsConfig: ModelFieldsConfig
+  config: {
+    fields: AdominFormField[]
+  }
 ): ModelData => {
   const modelData: ModelData = {};
 
-  modelFieldsConfig.fields.forEach((field) => {
+  config.fields.forEach((field) => {
     const config = field.adomin;
     if (config.type === "string") {
       modelData[field.name] = config.defaultValue ?? "";

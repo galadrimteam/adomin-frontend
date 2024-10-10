@@ -1,11 +1,17 @@
 import { Box, CircularProgress, Typography } from "@mui/material";
-import type { KpiStat } from "./stat.types";
+import type { KpiStat, KpiStatData } from "./stat.types";
 
-export const KpiStatView = ({ stat }: { stat: KpiStat }) => {
+export const KpiStatView = ({
+  stat,
+  data,
+}: {
+  stat: KpiStat;
+  data: KpiStatData;
+}) => {
   const isPercent = stat.options?.isPercentage ?? false;
-  const valuePercent = isPercent ? +stat.data : 100;
+  const valuePercent = isPercent ? +data : 100;
   const color = stat.options?.color;
-  const textValue = isPercent ? `${stat.data}%` : stat.data;
+  const textValue = isPercent ? `${data}%` : data;
 
   return (
     <div className="w-full flex justify-center">

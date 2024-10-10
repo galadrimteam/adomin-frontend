@@ -1,16 +1,9 @@
 import { useMemo } from "react";
-import {
-  AreaChart,
-  BarChart,
-  ColumnChart,
-  LineChart,
-  PieChart,
-} from "react-chartkick";
 import { PageHeading } from "../../components/PageHeading";
 import { useIsSmallScreen } from "../../utils/useIsSmallScreen";
-import { KpiStatView } from "./KpiStatView";
+import { AdominStatRenderer } from "./AdominStatRenderer";
 import { useStatConfig } from "./StatConfigContext";
-import { AdominStat, FullStatViewConfig } from "./stat.types";
+import { FullStatViewConfig } from "./stat.types";
 
 const getGridTemplateArea = (
   gridTemplate: FullStatViewConfig["gridTemplateAreas"],
@@ -28,31 +21,7 @@ const getGridTemplateArea = (
   return fallback;
 };
 
-const StatRenderer = ({ stat }: { stat: AdominStat }) => {
-  if (stat.type === "pie") {
-    return <PieChart data={stat.data} {...stat.options} />;
-  }
-
-  if (stat.type === "bar") {
-    return <BarChart data={stat.data} {...stat.options} />;
-  }
-
-  if (stat.type === "line") {
-    return <LineChart data={stat.data} {...stat.options} />;
-  }
-
-  if (stat.type === "column") {
-    return <ColumnChart data={stat.data} {...stat.options} />;
-  }
-
-  if (stat.type === "area") {
-    return <AreaChart data={stat.data} {...stat.options} />;
-  }
-
-  return null;
-};
-
-export const StatView = () => {
+export const StatView = ({ viewName }: { viewName: string }) => {
   const statConfig = useStatConfig();
   const isSmallScreen = useIsSmallScreen();
 
@@ -93,20 +62,11 @@ export const StatView = () => {
           }}
         >
           {statConfig.stats.map((stat) => (
-            <div
+            <AdominStatRenderer
               key={stat.name}
-              className="my-8"
-              style={{ gridArea: stat.name }}
-            >
-              {stat.type === "kpi" ? (
-                <KpiStatView stat={stat} />
-              ) : (
-                <>
-                  <h2 className="text-center text-2xl my-4">{stat.label}</h2>
-                  <StatRenderer stat={stat} />
-                </>
-              )}
-            </div>
+              stat={stat}
+              viewName={viewName}
+            />
           ))}
         </div>
       </div>

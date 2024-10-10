@@ -1,9 +1,16 @@
 import type { ComponentProps } from "react";
 import type { PieChart } from "react-chartkick";
+import { AdominFieldConfig } from "../models/fields.types";
 
 export type ChartkickRowData = ComponentProps<typeof PieChart>["data"];
 
 export type ChartkickOptions = Omit<ComponentProps<typeof PieChart>, "data">;
+
+export type ApiStatFilters = {
+  [K in string]: ApiStatFilter
+}
+
+export type ApiStatFilter = AdominFieldConfig
 
 interface AdominStatBase {
   /**
@@ -16,6 +23,10 @@ interface AdominStatBase {
    * (e.g. in the react key prop)
    */
   name: string;
+  /**
+   * Form filters
+   */
+  filters?: ApiStatFilters
 }
 
 export interface ChartKickStat extends AdominStatBase {
@@ -27,10 +38,6 @@ export interface ChartKickStat extends AdominStatBase {
    * Options for the chart
    */
   options?: ChartkickOptions;
-  /**
-   * Data for the chart
-   */
-  data: ChartkickRowData;
 }
 
 interface KpiStatOptions {
@@ -54,11 +61,9 @@ export interface KpiStat extends AdominStatBase {
    * Options for the chart
    */
   options?: KpiStatOptions;
-  /**
-   * Data for the chart
-   */
-  data: string | number;
 }
+
+export type KpiStatData = string | number;
 
 export type AdominStat = ChartKickStat | KpiStat;
 export interface FullStatViewConfig {

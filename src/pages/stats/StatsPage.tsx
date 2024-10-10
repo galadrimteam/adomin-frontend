@@ -15,7 +15,7 @@ const StatsPage = () => {
     return <CenteredSpinner />;
   }
 
-  if (!statQuery.data || statQuery.isError) {
+  if (!statQuery.data || statQuery.isError || !view) {
     return (
       <AdominPageLayout>
         <PageHeading text={`Vue statistique ${view}`} />
@@ -29,7 +29,7 @@ const StatsPage = () => {
   return (
     <AdominPageLayout>
       <StatConfigContext.Provider value={statQuery.data}>
-        <StatView />
+        <StatView viewName={view} />
       </StatConfigContext.Provider>
     </AdominPageLayout>
   );

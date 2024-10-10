@@ -6,6 +6,11 @@ export interface ModelField {
   isVirtual: boolean;
 }
 
+export interface AdominFormField {
+  name: string;
+  adomin: AdominFieldConfig;
+}
+
 export interface AdominStaticRightsConfig {
   create: boolean;
   read: boolean;

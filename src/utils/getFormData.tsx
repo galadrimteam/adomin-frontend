@@ -1,9 +1,17 @@
 import { format } from "date-fns";
 import { FileStore } from "../components/form/files/FileStore";
-import { ModelField, ModelFieldsConfig } from "../pages/models/model.types";
+import {
+  AdominFormField,
+  ModelFieldsConfig,
+} from "../pages/models/model.types";
+import { ApiStatFilters } from "../pages/stats/stat.types";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const appendData = (formData: FormData, field: ModelField, data: any) => {
+const appendData = (
+  formData: FormData,
+  field: AdominFormField,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data: any
+) => {
   const dataToAppend = data[field.name];
 
   if (dataToAppend === undefined) return;
@@ -78,6 +86,26 @@ export const getFormData = (
 
   for (const field of filteredFields) {
     appendData(formData, field, data);
+  }
+
+  return formData;
+};
+
+export const getFormDataForStatFilters = (
+  data: unknown,
+  config: ApiStatFilters
+) => {
+  const formData = new FormData();
+
+  for (const [key, fieldConfig] of Object.entries(config)) {
+    appendData(
+      formData,
+      {
+        name: key,
+        adomin: fieldConfig,
+      },
+      data
+    );
   }
 
   return formData;
