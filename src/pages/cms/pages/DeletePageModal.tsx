@@ -26,7 +26,7 @@ export const DeletePageModal = ({
 
         <Divider sx={{ mt: 2 }} />
 
-        <Alert severity="warning" sx={{ my: 4 }}>
+        <Alert severity="warning" sx={{ my: 2 }}>
           La suppression est définitive
         </Alert>
 

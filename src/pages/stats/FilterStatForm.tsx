@@ -42,7 +42,7 @@ export const FilterStatForm = ({
 
       <div className="flex justify-center gap-4">
         <LoadingButton loading={isLoading} type="submit" variant="contained">
-          Filtrer
+          Appliquer
         </LoadingButton>
       </div>
     </form>
