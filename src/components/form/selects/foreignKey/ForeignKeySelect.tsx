@@ -1,6 +1,7 @@
 import { Autocomplete, SxProps, TextField } from "@mui/material";
 import { useMemo, useRef, useState } from "react";
 import { prepareQsObject } from "../../../../pages/models/list/getModelListQueryString";
+import { ModelData } from "../../../../pages/models/model.types";
 import { useModelConfigQuery } from "../../../../pages/models/useModelConfigQuery";
 import { useDebounce } from "../../../../utils/useDebounce";
 import { getForeignKeyOptionLabel } from "./getForeignKeyOptionLabel";
@@ -25,6 +26,10 @@ export interface ForeignKeySelectProps {
   ) => void;
   optionsFilter?: (options: ForeignKeySelectOption) => boolean;
   sx?: SxProps;
+  multiSelectOptions?: {
+    alreadySelectedValues: ModelData[];
+    primaryKeyName: string;
+  };
 }
 
 export type ForeignKeySelectOption = {
@@ -46,6 +51,7 @@ export const ForeignKeySelect = ({
   autocompletePlaceholder,
   sx,
   optionsFilter,
+  multiSelectOptions,
 }: ForeignKeySelectProps) => {
   const [inputValue, setInputValue] = useState("");
   const debouncedSearchTerm = useDebounce(inputValue, 500); // 500 ms de délai
@@ -62,11 +68,28 @@ export const ForeignKeySelect = ({
     );
   }, [debouncedSearchTerm, labelFields]);
 
-  const listQuery = useForeignKeySelectSearchQuery(
+  const arrayFiltersToUse = useMemo(() => {
+    if (!multiSelectOptions) return "";
+
+    const fkValues = multiSelectOptions.alreadySelectedValues.map(
+      (model) => model[multiSelectOptions.primaryKeyName]
+    );
+
+    return prepareQsObject([
+      {
+        id: multiSelectOptions.primaryKeyName,
+        value: fkValues,
+        mode: "NOT IN",
+      },
+    ]);
+  }, [multiSelectOptions]);
+
+  const listQuery = useForeignKeySelectSearchQuery({
     modelName,
     debouncedSearchTerm,
-    filtersToUse
-  );
+    filtersToUse,
+    arrayFiltersToUse,
+  });
 
   const baseOptions: { label: string; value: string }[] = useMemo(() => {
     if (!listQuery.data || !modelQuery.data) {

@@ -45,6 +45,14 @@ export const HasManyRelationFieldRhf = <T extends FieldValues>(
     return value ?? ([] as ModelData[]);
   }, [value]);
 
+  const multiSelectOptions = useMemo(
+    () => ({
+      alreadySelectedValues: castedValue,
+      primaryKeyName: fieldConfig.localKeyName ?? "id",
+    }),
+    [castedValue, fieldConfig]
+  );
+
   const handleChange = (newValue: string | null) => {
     if (!newValue) return;
 
@@ -101,6 +109,7 @@ export const HasManyRelationFieldRhf = <T extends FieldValues>(
         setSelectValue={noOp}
         optionsFilter={optionsFilter}
         afterChange={afterChange}
+        multiSelectOptions={multiSelectOptions}
       />
 
       <div>

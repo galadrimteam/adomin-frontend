@@ -7,7 +7,7 @@ import {
 import { ModelField } from "../model.types";
 
 export const prepareQsObject = (
-  input: MRT_SortingState | Params["columnFilters"]
+  input: MRT_SortingState | Params["columnFilters"] | Params["arrayFilters"]
 ) => {
   return encodeURIComponent(JSON.stringify(input));
 };
@@ -16,16 +16,23 @@ export const consumeQsObject = <T>(input: string) => {
   return JSON.parse(decodeURIComponent(input)) as T;
 };
 
+interface ArrayFilter {
+  id: string;
+  value: string[] | number[]
+  mode: 'IN' | 'NOT IN'
+}
+
 interface Params {
   columnFilters: MRT_ColumnFiltersState;
   sorting: MRT_SortingState;
   pagination: MRT_PaginationState;
   globalFilter: string;
+  arrayFilters?: ArrayFilter[]
 }
 
 export const getModelListQueryString = (
   fields: ModelField[],
-  { columnFilters, sorting, pagination, globalFilter }: Params
+  { columnFilters, sorting, pagination, globalFilter, arrayFilters }: Params
 ) => {
   const searchParams = new URLSearchParams();
 
@@ -33,6 +40,7 @@ export const getModelListQueryString = (
   searchParams.append("pageSize", pagination.pageSize.toString());
   searchParams.append("globalFilter", globalFilter ?? "");
   searchParams.append("sorting", prepareQsObject(sorting ?? []));
+  searchParams.append("arrayFilters", prepareQsObject(arrayFilters ?? []))
 
   const fieldsMap = new Map<string, ModelField>(
     fields.map((field) => [field.name, field])
