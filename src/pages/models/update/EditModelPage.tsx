@@ -36,7 +36,7 @@ const EditModelPage = () => {
   }
 
   return (
-    <div className="flex w-full flex-col">
+    <div className="flex w-full flex-col p-4">
       <PageHeading text={modelConfig.label + " edition"} />
       <div className="flex justify-center">
         <EditModelForm

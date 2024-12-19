@@ -1,10 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,600;1,400;1,600&display=swap');
+@font-face {
+  font-family: "Geist";
+  src: url("./assets/fonts/Geist-var.woff2") format("woff2");
+  font-weight: 100 900;
+}
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-
-html, body, label {
-  font-family: 'Roboto', sans-serif;
+html,
+body,
+label {
+  font-family: "Geist", sans-serif;
 }

@@ -12,8 +12,8 @@ export const PageHeading = ({ text }: Props) => {
   const { setShowMenu } = useMobileContext();
 
   return (
-    <div className="my-4 flex justify-center">
-      <h1 className="text-2xl text-center font-bold p-4 rounded-md border-solid border-si flex-1">
+    <div className="my-2 flex justify-center">
+      <h1 className="text-2xl font-semibold p-4 rounded-md border-solid border-si flex-1">
         {text}
       </h1>
       {isSmallScreen && (

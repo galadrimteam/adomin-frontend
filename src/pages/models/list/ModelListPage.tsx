@@ -6,7 +6,7 @@ const ModelListPage = () => {
   const modelConfig = useModelConfig();
 
   return (
-    <div className="flex w-full flex-col">
+    <div className="flex w-full flex-col p-4">
       <PageHeading text={modelConfig.labelPluralized} />
       <div className="flex-1">
         <ModelGrid modelConfig={modelConfig} />

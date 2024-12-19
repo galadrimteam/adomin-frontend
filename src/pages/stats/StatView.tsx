@@ -51,7 +51,7 @@ export const StatView = ({ viewName }: { viewName: string }) => {
   }, [gridTemplateAreas]);
 
   return (
-    <div className="flex w-full flex-col">
+    <div className="flex w-full flex-col p-4">
       <PageHeading text={statConfig.label} />
       <div className="flex justify-center flex-col">
         <div

@@ -18,7 +18,7 @@ export const CmsLayout = ({
 }: PropsWithChildren<{ heading: string; viewName: CmsView }>) => {
   return (
     <CustomPage currentView={viewName}>
-      <div className="flex w-full flex-col">
+      <div className="flex w-full flex-col p-4">
         <PageHeading text={heading} />
         <div className="flex-1">{children}</div>
       </div>

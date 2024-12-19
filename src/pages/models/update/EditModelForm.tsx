@@ -28,7 +28,7 @@ export const EditModelForm = ({ defaultValues, modelConfig }: Props) => {
 
   return (
     <form
-      className="bg-white rounded-md w-[80%] mt-8 p-4"
+      className="bg-white rounded-md w-[80%] mt-8 p-4 border border-adomin_5"
       onSubmit={handleSubmit(updateModel)}
     >
       <FieldsRenderer mode="update" config={modelConfig} control={control} />

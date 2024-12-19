@@ -59,7 +59,7 @@ export const CreateOrUpdateCmsPage = observer<Props>(({ page, cmsConfig }) => {
 
   return (
     <form
-      className="bg-white rounded-md w-[80%] mt-8 p-4"
+      className="bg-white rounded-md w-[80%] mt-8 p-4 border border-adomin_5"
       onSubmit={handleSubmit}
     >
       <DoubleFields my={2}>

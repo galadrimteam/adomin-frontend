@@ -226,6 +226,34 @@ export const ModelGrid = ({
       showProgressBars: listQuery.isRefetching,
       sorting,
     },
+    muiPaginationProps: {
+      color: "primary",
+      shape: "rounded",
+      variant: "outlined",
+    },
+    paginationDisplayMode: "pages",
+    muiTablePaperProps: {
+      elevation: 0,
+      sx: {
+        borderRadius: 3,
+        borderWidth: 1,
+      },
+    },
+    muiTableHeadCellProps: {
+      sx: {
+        backgroundColor: "#F8FAFC",
+      },
+    },
+    muiTableBodyProps: {
+      sx: {
+        "& tr:nth-of-type(odd) > td": {
+          backgroundColor: "#FFFFFF",
+        },
+        "& tr:nth-of-type(even) > td": {
+          backgroundColor: "#F8FAFC",
+        },
+      },
+    },
   });
 
   if (listQuery.isError) {

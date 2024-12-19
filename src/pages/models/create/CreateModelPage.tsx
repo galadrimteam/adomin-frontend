@@ -6,7 +6,7 @@ const CreateModelPage = () => {
   const modelConfig = useModelConfig();
 
   return (
-    <div className="flex w-full flex-col">
+    <div className="flex w-full flex-col p-4">
       <PageHeading text={modelConfig.label + " création"} />
       <div className="flex justify-center">
         <CreateModelForm modelConfig={modelConfig} />

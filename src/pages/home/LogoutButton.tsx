@@ -1,7 +1,6 @@
-import { Logout } from "@mui/icons-material";
-import { IconButton, Tooltip } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
 import { privateAxios } from "../../axios/privateAxios";
+import { FontIcon } from "../../components/FontIcon";
 import { AdominConfig } from "../../utils/adominConfig";
 import { useConfigQuery } from "./useConfigQuery";
 
@@ -37,22 +36,18 @@ export const LogoutButton = () => {
   if (userDisplayName === null) return null;
 
   return (
-    <div className="my-2">
-      <div className="flex justify-center items-center mt-2">
-        <>
-          <div className="max-w-[250px]">
-            <Tooltip title={userDisplayName}>
-              <p className="text-center text-white mr-4 truncate text-xl">
-                {userDisplayName}
-              </p>
-            </Tooltip>
-          </div>
-          <IconButton onClick={handleLogout}>
-            <Tooltip title="Se déconnecter">
-              <Logout color="error" />
-            </Tooltip>
-          </IconButton>
-        </>
+    <div
+      className="flex justify-center items-center p-4 cursor-pointer"
+      onClick={handleLogout}
+    >
+      <div className="flex items-center rounded-md justify-start w-full p-4 hover:bg-adomin_3">
+        <FontIcon iconName="logout" color="black" className={"mr-3"} />
+        <div>
+          <p className="flex-1">Déconnexion</p>
+          {userDisplayName && (
+            <p className="text-sm text-gray-500">{userDisplayName}</p>
+          )}
+        </div>
       </div>
     </div>
   );

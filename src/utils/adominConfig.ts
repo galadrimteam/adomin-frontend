@@ -12,6 +12,15 @@ export interface AdominConfig {
   userDisplayKey: string;
   user: AdminUser;
   plugins: AdominPlugin[];
+  logo: AdominLogoConfig | null;
+}
+
+interface AdominLogoConfig {
+  url: string
+  maxWidth?: number
+  maxHeight?: number
+  /** where to show backoffice title along with logo, if not set, the title will not be shown */
+  textPosition?: 'bottom' | 'right'
 }
 
 export const isModelView = (view: ApiAdominView): view is ApiModelView => {

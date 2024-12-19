@@ -5,9 +5,11 @@ export default {
     extend: {
       colors: {
         adomin_1: "#425060",
-        adomin_2: "#adb9c6",
-        adomin_3: "#647A93",
-        adomin_4: "#303b47",
+        adomin_2: "#334155",
+        adomin_3: "#F1F5F9",
+        adomin_4: "#FCFCFD",
+        adomin_5: "#E2E8F0",
+        adomin_6: "#F8FAFC",
       },
     },
   },

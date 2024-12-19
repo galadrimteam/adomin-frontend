@@ -1,8 +1,12 @@
 import { Collapse, Divider } from "@mui/material";
 import clsx from "clsx";
-import { MouseEventHandler, useMemo, useState } from "react";
+import { MouseEventHandler, useEffect, useMemo, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
-import { getAdominRouterPath, simplePluralize } from "../../adominPaths";
+import {
+  ADOMIN_HOME_PATH,
+  getAdominRouterPath,
+  simplePluralize,
+} from "../../adominPaths";
 import { FontIcon } from "../../components/FontIcon";
 import { AdominConfig, getFirstLink } from "../../utils/adominConfig";
 import type { ApiAdominView } from "../../utils/api_views.type";
@@ -28,7 +32,7 @@ const AdominViewLink = ({
   const style = useMemo(() => {
     if (level === 0) return undefined;
 
-    return { marginLeft: `${level * 20}px` };
+    return { paddingLeft: `${level * 30}px` };
   }, [level]);
 
   const viewPath = getAdominRouterPath({
@@ -57,17 +61,29 @@ const AdominViewLink = ({
   return (
     <>
       <Link to={viewPath} onClick={onLinkClick}>
-        <div
-          className={clsx(
-            "flex items-center justify-center w-full p-4 text-adomin_2 text-xl hover:text-white",
-            viewName === currentView && "text-white"
-          )}
-          style={style}
-        >
-          <p className="flex-1">
-            {view.icon && <FontIcon iconName={view.icon} className={"mr-2"} />}
-            {view.label}
-          </p>
+        <div style={style}>
+          <div
+            className={clsx(
+              "flex items-center rounded-md justify-center w-full px-4 py-2 hover:bg-adomin_3",
+              viewName === currentView && "bg-adomin_3"
+            )}
+          >
+            <p className="flex-1">
+              {view.icon && (
+                <FontIcon
+                  iconName={view.icon}
+                  color="black"
+                  className={"mr-2"}
+                />
+              )}
+              {view.label}
+            </p>
+            {view.type === "folder" && (
+              <FontIcon
+                iconName={"chevron-" + (isFolderOpen ? "down" : "right")}
+              />
+            )}
+          </div>
         </div>
       </Link>
       <Collapse in={isFolderOpen}>
@@ -89,7 +105,7 @@ const AdominViewLink = ({
 };
 
 export interface SidebarProps
-  extends Pick<AdominConfig, "views" | "title" | "plugins"> {
+  extends Pick<AdominConfig, "views" | "title" | "plugins" | "logo"> {
   currentView?: string;
 }
 
@@ -98,6 +114,7 @@ export const Sidebar = ({
   title,
   currentView,
   plugins,
+  logo,
 }: SidebarProps) => {
   const viewsToShow = useMemo(() => deepFilterHiddenViews(views), [views]);
   const folderNames = useMemo(
@@ -107,16 +124,42 @@ export const Sidebar = ({
 
   const firstLink = useMemo(() => getFirstLink(viewsToShow), [viewsToShow]);
 
+  useEffect(() => {
+    document.title = title;
+  }, [title]);
+
   if (currentView === undefined && viewsToShow.length > 0 && firstLink) {
     return <Navigate to={firstLink} />;
   }
 
   return (
-    <div className="bg-adomin_1 min-w-[300px] select-none flex flex-col">
-      <h1 className="text-center text-2xl text-white mt-4">{title}</h1>
-      <h2 className="text-center text-l text-adomin_2 mb-2">Back-office</h2>
+    <div className="bg-white min-w-[300px] select-none flex flex-col h-screen overflow-auto no-scrollbar sticky top-0">
+      <Link to={ADOMIN_HOME_PATH}>
+        {logo && (
+          <div
+            className="p-8 pb-2 flex items-center gap-2 mx-auto mt-4 mb-4"
+            style={{
+              flexDirection: logo.textPosition === "bottom" ? "column" : "row",
+            }}
+          >
+            <img
+              src={logo.url}
+              style={{ maxWidth: logo.maxWidth, maxHeight: logo.maxHeight }}
+              alt="logo"
+            />
+            {logo.textPosition !== undefined && (
+              <h1 className="text-center text-xl">{title}</h1>
+            )}
+          </div>
+        )}
+        {!logo && (
+          <>
+            <h1 className="text-center text-xl mt-4">{title}</h1>
+          </>
+        )}
+      </Link>
 
-      <div>
+      <div className="p-4 flex flex-col gap-1">
         {viewsToShow.map((view) => (
           <AdominViewLink
             key={view.name + view.type}
@@ -130,7 +173,8 @@ export const Sidebar = ({
       {plugins?.includes("cms") && (
         <CmsSidebarLinks currentView={currentView} />
       )}
-      <div className="mt-auto">
+      <div className="mt-auto sticky bottom-0 bg-white">
+        <Divider />
         <LogoutButton />
       </div>
     </div>

@@ -1,5 +1,5 @@
 import { LoadingButton } from "@mui/lab";
-import { Alert, Button } from "@mui/material";
+import { Alert, Button, Divider } from "@mui/material";
 import { SimpleModal } from "../../../components/SimpleModal";
 
 export interface DeletePageModalProps {
@@ -19,14 +19,18 @@ export const DeletePageModal = ({
     <SimpleModal
       onClose={() => setDeleteId(null)}
       open={deleteId !== null}
-      width={420}
+      width={365}
     >
-      <div className="w-full flex flex-col justify-center">
-        <Alert severity="warning">
-          La suppression est définitive, on continue ?
+      <div className="w-full flex flex-col justify-center px-2">
+        <h2 className="text-xl">Confirmation</h2>
+
+        <Divider sx={{ mt: 2 }} />
+
+        <Alert severity="warning" sx={{ my: 4 }}>
+          La suppression est définitive
         </Alert>
 
-        <div className="flex justify-center mt-6">
+        <div className="flex justify-center">
           <Button sx={{ mr: 2 }} onClick={() => setDeleteId(null)}>
             Annuler
           </Button>

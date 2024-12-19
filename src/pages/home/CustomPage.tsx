@@ -1,4 +1,4 @@
-import { Alert } from "@mui/material";
+import { Alert, Divider } from "@mui/material";
 import { isAxiosError } from "axios";
 import { PropsWithChildren } from "react";
 import { Navigate } from "react-router-dom";
@@ -45,14 +45,23 @@ function CustomPage({ children, currentView }: CustomPageProps) {
           views={views}
           currentView={currentView}
           plugins={plugins}
+          logo={configQuery.data?.logo ?? null}
         />
       ) : (
-        <Sidebar
-          title={title}
-          views={views}
-          currentView={currentView}
-          plugins={plugins}
-        />
+        <>
+          <Sidebar
+            title={title}
+            views={views}
+            currentView={currentView}
+            plugins={plugins}
+            logo={configQuery.data?.logo ?? null}
+          />
+          <Divider
+            orientation="vertical"
+            flexItem
+            className="border-adomin_5"
+          />
+        </>
       )}
       {children}
     </div>
