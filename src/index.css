@@ -1,15 +1,12 @@
-@font-face {
-  font-family: "Geist";
-  src: url("./assets/fonts/Geist-var.woff2") format("woff2");
-  font-weight: 100 900;
-}
+@import url('https://fonts.googleapis.com/css2?family=Muli:ital,wght@0,400;0,600;1,400;1,600&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+
 html,
 body,
 label {
-  font-family: "Geist", sans-serif;
+  font-family: 'Muli', sans-serif;
 }
