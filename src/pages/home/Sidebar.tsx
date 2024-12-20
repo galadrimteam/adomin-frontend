@@ -169,9 +169,11 @@ export const Sidebar = ({
           />
         ))}
       </div>
-      <Divider />
       {plugins?.includes("cms") && (
-        <CmsSidebarLinks currentView={currentView} />
+        <>
+          <Divider />
+          <CmsSidebarLinks currentView={currentView} />
+        </>
       )}
       <div className="mt-auto sticky bottom-0 bg-white">
         <Divider />
