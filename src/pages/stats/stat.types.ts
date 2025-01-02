@@ -72,4 +72,8 @@ export interface FullStatViewConfig {
   isHidden: boolean;
   gridTemplateAreas?: string | { normal: string; sm: string };
   stats: AdominStat[];
+  /**
+   * Global form filters
+   */
+  globalFilters?: ApiStatFilters
 }

@@ -2,8 +2,10 @@ import { useMemo } from "react";
 import { PageHeading } from "../../components/PageHeading";
 import { useIsSmallScreen } from "../../utils/useIsSmallScreen";
 import { AdominStatRenderer } from "./AdominStatRenderer";
-import { useStatConfig } from "./StatConfigContext";
 import { FullStatViewConfig } from "./stat.types";
+import { useStatConfig } from "./StatConfigContext";
+import { StatViewGlobalFilters } from "./StatViewGlobalFilters";
+import { useGlobalFiltersData } from "./useGlobalFiltersData";
 
 const getGridTemplateArea = (
   gridTemplate: FullStatViewConfig["gridTemplateAreas"],
@@ -24,6 +26,11 @@ const getGridTemplateArea = (
 export const StatView = ({ viewName }: { viewName: string }) => {
   const statConfig = useStatConfig();
   const isSmallScreen = useIsSmallScreen();
+  const {
+    globalFiltersData,
+    setGlobalFiltersData,
+    globalFiltersDefaultValues,
+  } = useGlobalFiltersData(statConfig.globalFilters);
 
   const fallbackTemplate = useMemo(
     () => `${statConfig.stats.map((s) => `"${s.name}"`).join("\n")}`,
@@ -54,6 +61,15 @@ export const StatView = ({ viewName }: { viewName: string }) => {
     <div className="flex w-full flex-col p-4">
       <PageHeading text={statConfig.label} />
       <div className="flex justify-center flex-col">
+        {statConfig.globalFilters && (
+          <StatViewGlobalFilters
+            globalFilters={statConfig.globalFilters}
+            globalFiltersDefaultValues={globalFiltersDefaultValues}
+            globalFiltersData={globalFiltersData}
+            setGlobalFiltersData={setGlobalFiltersData}
+            isLoading={false}
+          />
+        )}
         <div
           className="grid gap-4"
           style={{
@@ -66,6 +82,8 @@ export const StatView = ({ viewName }: { viewName: string }) => {
               key={stat.name}
               stat={stat}
               viewName={viewName}
+              globalFilters={statConfig.globalFilters}
+              globalFiltersData={globalFiltersData}
             />
           ))}
         </div>

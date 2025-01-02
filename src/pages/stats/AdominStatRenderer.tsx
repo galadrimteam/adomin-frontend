@@ -1,3 +1,10 @@
+import { ArrowDownward } from "@mui/icons-material";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Typography,
+} from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import {
@@ -10,9 +17,10 @@ import {
 import { privateAxiosWithoutToasts } from "../../axios/privateAxios";
 import { getFormDataForStatFilters } from "../../utils/getFormData";
 import { getModelDefaultValues } from "../models/create/defaultValues/getModelDefaultValues";
+import { ModelData } from "../models/model.types";
 import { FilterStatForm } from "./FilterStatForm";
 import { KpiStatView } from "./KpiStatView";
-import { AdominStat, ChartkickRowData } from "./stat.types";
+import { AdominStat, ApiStatFilters, ChartkickRowData } from "./stat.types";
 
 const StatRenderer = ({
   stat,
@@ -47,9 +55,13 @@ const StatRenderer = ({
 export const AdominStatRenderer = ({
   stat,
   viewName,
+  globalFilters,
+  globalFiltersData,
 }: {
   stat: AdominStat;
   viewName: string;
+  globalFiltersData: ModelData;
+  globalFilters: ApiStatFilters | undefined;
 }) => {
   const defaultValues = useMemo(() => {
     const fields = Object.entries(stat.filters ?? {}).map(([key, value]) => ({
@@ -61,11 +73,24 @@ export const AdominStatRenderer = ({
   }, [stat.filters]);
   const [filtersData, setFiltersData] = useState(defaultValues);
   const dataQuery = useQuery({
-    queryKey: ["stat", stat.name, filtersData],
+    queryKey: ["stat", stat.name, globalFiltersData, filtersData],
     queryFn: async () => {
+      const formData = getFormDataForStatFilters(
+        filtersData,
+        stat.filters ?? {}
+      );
+      const globalFiltersFormData = getFormDataForStatFilters(
+        globalFiltersData,
+        globalFilters ?? {}
+      );
+
+      for (const [key, value] of globalFiltersFormData.entries()) {
+        formData.append(key, value);
+      }
+
       const res = await privateAxiosWithoutToasts.post(
         `/adomin/api/stats/${viewName}/${stat.name}`,
-        getFormDataForStatFilters(filtersData, stat.filters ?? {})
+        formData
       );
 
       return res.data;
@@ -74,15 +99,22 @@ export const AdominStatRenderer = ({
 
   return (
     <div className="my-8" style={{ gridArea: stat.name }}>
-      {stat.filters && (
-        <FilterStatForm
-          isLoading={dataQuery.isLoading}
-          startSearch={(data) => {
-            setFiltersData(data);
-          }}
-          statFilters={stat.filters ?? {}}
-          defaultValues={defaultValues}
-        />
+      {stat.filters && JSON.stringify(stat.filters) !== "{}" && (
+        <Accordion>
+          <AccordionSummary expandIcon={<ArrowDownward />}>
+            <Typography component="span">Filtres</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <FilterStatForm
+              isLoading={dataQuery.isLoading}
+              startSearch={(data) => {
+                setFiltersData(data);
+              }}
+              statFilters={stat.filters ?? {}}
+              defaultValues={defaultValues}
+            />
+          </AccordionDetails>
+        </Accordion>
       )}
       {stat.type === "kpi" ? (
         <KpiStatView stat={stat} data={dataQuery.data ?? ""} />
