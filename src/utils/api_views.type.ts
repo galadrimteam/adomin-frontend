@@ -9,6 +9,10 @@ interface ApiViewBase {
 export interface ApiModelView extends ApiViewBase {
   type: "model";
   labelPluralized: string;
+  counter?: {
+    label: string;
+    value: number;
+  }
 }
 
 export interface ApiStatView extends ApiViewBase {

@@ -1,4 +1,4 @@
-import { Collapse, Divider } from "@mui/material";
+import { Collapse, Divider, Tooltip } from "@mui/material";
 import clsx from "clsx";
 import { MouseEventHandler, useEffect, useMemo, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
@@ -9,7 +9,7 @@ import {
 } from "../../adominPaths";
 import { FontIcon } from "../../components/FontIcon";
 import { AdominConfig, getFirstLink } from "../../utils/adominConfig";
-import type { ApiAdominView } from "../../utils/api_views.type";
+import type { ApiAdominView, ApiModelView } from "../../utils/api_views.type";
 import { useMobileContext } from "../../utils/useMobileContext";
 import { CmsSidebarLinks } from "./CmsSidebarLinks";
 import { LogoutButton } from "./LogoutButton";
@@ -76,7 +76,8 @@ const AdominViewLink = ({
                   className={"mr-2"}
                 />
               )}
-              {view.label}
+              {view.type !== "model" && view.label}
+              {view.type === "model" && <ModelViewSidebarLabel view={view} />}
             </p>
             {view.type === "folder" && (
               <FontIcon
@@ -180,5 +181,20 @@ export const Sidebar = ({
         <LogoutButton />
       </div>
     </div>
+  );
+};
+
+const ModelViewSidebarLabel = ({ view }: { view: ApiModelView }) => {
+  if (!view.counter) return view.label;
+
+  return (
+    <>
+      {view.label}
+      <Tooltip title={view.counter.label}>
+        <span className="text-sm text-red-500 ml-1">
+          ({view.counter.value})
+        </span>
+      </Tooltip>
+    </>
   );
 };
