@@ -2,14 +2,11 @@ import { Collapse, Divider, Tooltip } from "@mui/material";
 import clsx from "clsx";
 import { MouseEventHandler, useEffect, useMemo, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
-import {
-  ADOMIN_HOME_PATH,
-  getAdominRouterPath,
-  simplePluralize,
-} from "../../adominPaths";
+import { ADOMIN_HOME_PATH } from "../../adominPaths";
 import { FontIcon } from "../../components/FontIcon";
 import { AdominConfig, getFirstLink } from "../../utils/adominConfig";
 import type { ApiAdominView, ApiModelView } from "../../utils/api_views.type";
+import { getViewPath } from "../../utils/get_view_path";
 import { useMobileContext } from "../../utils/useMobileContext";
 import { CmsSidebarLinks } from "./CmsSidebarLinks";
 import { LogoutButton } from "./LogoutButton";
@@ -35,11 +32,7 @@ const AdominViewLink = ({
     return { paddingLeft: `${level * 30}px` };
   }, [level]);
 
-  const viewPath = getAdominRouterPath({
-    name: view.name,
-    type: "list",
-    viewType: simplePluralize(view.type),
-  });
+  const viewPath = getViewPath(view);
 
   const [isFolderOpen, setFolderOpen] = useState(
     folderNames.includes(viewName)
@@ -92,7 +85,7 @@ const AdominViewLink = ({
           {view.type === "folder" &&
             view.views.map((v) => (
               <AdominViewLink
-                key={v.name + v.type}
+                key={`${v.name}_${v.type}`}
                 view={v}
                 currentView={currentView}
                 level={level + 1}
@@ -163,7 +156,7 @@ export const Sidebar = ({
       <div className="p-4 flex flex-col gap-1">
         {viewsToShow.map((view) => (
           <AdominViewLink
-            key={view.name + view.type}
+            key={`${view.name}_${view.type}`}
             view={view}
             currentView={currentView}
             folderNames={folderNames}

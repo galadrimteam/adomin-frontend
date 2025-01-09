@@ -1,5 +1,5 @@
-import { getAdominRouterPath, simplePluralize } from "../adominPaths";
 import type { ApiAdominView, ApiModelView } from "./api_views.type";
+import { getViewPath } from "./get_view_path";
 
 type AdminUser = Record<string, unknown>;
 
@@ -31,11 +31,7 @@ export const getFirstLink = (views: ApiAdominView[]): string | null => {
   if (views.length === 0) return null;
 
   const firstView = views[0];
-  const fullPath = getAdominRouterPath({
-    name: firstView.name,
-    type: "list",
-    viewType: simplePluralize(firstView.type),
-  });
+  const fullPath = getViewPath(firstView)
 
   return fullPath;
 };

@@ -17,7 +17,7 @@ export const ADOMIN_CMS_BLOCKS_PATH = `/${ADOMIN_WORD}/${CMS_WORD}/blocks`;
 
 export const ADOMIN_LOGIN_PATH = "/login";
 
-type ViewType = SimplePluralize<ApiAdominView["type"]>;
+type ViewType = SimplePluralize<Exclude<ApiAdominView["type"], "custom">>;
 
 export const VIEW_TYPE_TO_WORD: { [K in ViewType]: string } = {
   models: MODELS_WORD,
@@ -27,7 +27,7 @@ export const VIEW_TYPE_TO_WORD: { [K in ViewType]: string } = {
 
 export interface AdominMakePathParams {
   name: string;
-  viewType: ViewType;
+  viewType: ViewType
   type: "create" | "update" | "list";
 }
 
@@ -50,14 +50,14 @@ export const getAdominRouterPath = ({
 
 type GetModelPath =
   | {
-      type: "create" | "list";
-      name: string;
-    }
+    type: "create" | "list";
+    name: string;
+  }
   | {
-      type: "update";
-      name: string;
-      primaryKeyValue: string | number;
-    };
+    type: "update";
+    name: string;
+    primaryKeyValue: string | number;
+  };
 
 export const getModelPath = (params: GetModelPath) => {
   const routerPath = getAdominRouterPath({
