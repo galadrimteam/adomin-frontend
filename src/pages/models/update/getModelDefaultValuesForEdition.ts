@@ -18,7 +18,7 @@ export const getModelDefaultValuesForEdition = (
     if (config.type === "string") {
       dataToReturn[field.name] = fieldData ?? "";
     } else if (config.type === "date") {
-      dataToReturn[field.name] = new Date(fieldData);
+      dataToReturn[field.name] = fieldData ? new Date(fieldData) : null;
     } else if (config.type === "file") {
       dataToReturn[field.name] = getFileDefaultValue(
         config,
