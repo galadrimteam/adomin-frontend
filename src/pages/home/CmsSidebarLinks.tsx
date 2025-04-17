@@ -35,7 +35,7 @@ export const CmsSidebarLinks = ({ currentView }: Props) => {
   return (
     <>
       <div onClick={toggleFolderOpen}>
-        <div className="flex items-center justify-center w-full p-4 text-adomin_2 text-xl hover:text-white cursor-pointer">
+        <div className="flex items-center justify-center w-full p-4 text-adomin_2 text-xl hover:bg-adomin_3 cursor-pointer">
           <p className="flex-1">
             <FontIcon iconName="folder" className="mr-2" />
             CMS
@@ -47,8 +47,8 @@ export const CmsSidebarLinks = ({ currentView }: Props) => {
           <Link to={ADOMIN_CMS_PAGES_PATH} onClick={onLinkClick}>
             <div
               className={clsx(
-                "flex items-center justify-center w-full p-4 text-adomin_2 text-xl hover:text-white",
-                currentView === CMS_PAGE_NAME && "text-white"
+                "flex items-center justify-center w-full p-4 text-adomin_2 text-xl hover:bg-adomin_3",
+                currentView === CMS_PAGE_NAME && "bg-adomin_3"
               )}
               style={CMS_LINK_STYLE}
             >
@@ -61,8 +61,8 @@ export const CmsSidebarLinks = ({ currentView }: Props) => {
           <Link to={ADOMIN_CMS_LAYOUTS_PATH} onClick={onLinkClick}>
             <div
               className={clsx(
-                "flex items-center justify-center w-full p-4 text-adomin_2 text-xl hover:text-white",
-                currentView === CMS_LAYOUT_NAME && "text-white"
+                "flex items-center justify-center w-full p-4 text-adomin_2 text-xl hover:bg-adomin_3",
+                currentView === CMS_LAYOUT_NAME && "bg-adomin_3"
               )}
               style={CMS_LINK_STYLE}
             >
@@ -75,8 +75,8 @@ export const CmsSidebarLinks = ({ currentView }: Props) => {
           <Link to={ADOMIN_CMS_BLOCKS_PATH} onClick={onLinkClick}>
             <div
               className={clsx(
-                "flex items-center justify-center w-full p-4 text-adomin_2 text-xl hover:text-white",
-                currentView === CMS_BLOCK_NAME && "text-white"
+                "flex items-center justify-center w-full p-4 text-adomin_2 text-xl hover:bg-adomin_3",
+                currentView === CMS_BLOCK_NAME && "bg-adomin_3"
               )}
               style={CMS_LINK_STYLE}
             >
