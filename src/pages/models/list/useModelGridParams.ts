@@ -41,6 +41,9 @@ export const useModelGridParams = () => {
 	const setGlobalFilter: React.Dispatch<React.SetStateAction<string>> = (
 		newGlobalFilter
 	) => {
+		if (typeof newGlobalFilter === 'undefined') {
+			newGlobalFilter = ""
+		}
 		const newValue =
 			typeof newGlobalFilter === "function"
 				? newGlobalFilter(globalFilter)
