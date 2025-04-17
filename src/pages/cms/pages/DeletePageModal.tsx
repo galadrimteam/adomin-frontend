@@ -1,4 +1,3 @@
-import { LoadingButton } from "@mui/lab";
 import { Alert, Button, Divider } from "@mui/material";
 import { SimpleModal } from "../../../components/SimpleModal";
 
@@ -34,7 +33,7 @@ export const DeletePageModal = ({
           <Button sx={{ mr: 2 }} onClick={() => setDeleteId(null)}>
             Annuler
           </Button>
-          <LoadingButton
+          <Button
             sx={{ ml: 2 }}
             loading={deleteRowMutationIsLoading}
             onClick={handleDeleteRow}
@@ -42,7 +41,7 @@ export const DeletePageModal = ({
             color="error"
           >
             Supprimer
-          </LoadingButton>
+          </Button>
         </div>
       </div>
     </SimpleModal>

@@ -25,10 +25,10 @@ interface Props {
 export const FieldsRendererBase = ({ control, fieldsToUse }: Props) => {
   return (
     <DoubleFields my={2}>
-      {fieldsToUse.map((field, index) => {
+      {fieldsToUse.map((field) => {
         const key = field.name;
         const label = field.adomin.label ?? field.name;
-        const sx: SxProps = { mb: index !== fieldsToUse.length - 1 ? 4 : 0 };
+        const sx: SxProps | undefined = undefined
         const optionalOrNullable =
           field.adomin.optional || field.adomin.nullable;
         const required = !optionalOrNullable;

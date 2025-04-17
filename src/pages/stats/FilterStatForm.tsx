@@ -1,4 +1,4 @@
-import { LoadingButton } from "@mui/lab";
+import { Button } from "@mui/material";
 import { useEffect, useMemo } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { FieldsRendererBase } from "../../components/form/FieldsRendererBase";
@@ -41,9 +41,9 @@ export const FilterStatForm = ({
       <FieldsRendererBase fieldsToUse={fieldsToUse} control={control} />
 
       <div className="flex justify-center gap-4">
-        <LoadingButton loading={isLoading} type="submit" variant="contained">
+        <Button loading={isLoading} type="submit" variant="contained">
           Appliquer
-        </LoadingButton>
+        </Button>
       </div>
     </form>
   );

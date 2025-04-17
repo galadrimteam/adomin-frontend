@@ -1,4 +1,3 @@
-import { LoadingButton } from "@mui/lab";
 import { Button } from "@mui/material";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -37,9 +36,9 @@ export const EditModelForm = ({ defaultValues, modelConfig }: Props) => {
         <Link to={modelListPath}>
           <Button>Annuler</Button>
         </Link>
-        <LoadingButton loading={isLoading} type="submit" variant="contained">
+        <Button loading={isLoading} type="submit" variant="contained">
           Sauvegarder
-        </LoadingButton>
+        </Button>
       </div>
     </form>
   );

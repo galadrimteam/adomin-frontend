@@ -1,7 +1,6 @@
 import { DndContext, DragOverlay, closestCenter } from "@dnd-kit/core";
 import { SortableContext, rectSortingStrategy } from "@dnd-kit/sortable";
 import { ContentCopy, Delete, Edit } from "@mui/icons-material";
-import { LoadingButton } from "@mui/lab";
 import { Button, IconButton, Typography } from "@mui/material";
 import { observer } from "mobx-react-lite";
 import { useMemo } from "react";
@@ -208,9 +207,9 @@ export const CreateOrUpdateCmsPage = observer<Props>(({ page, cmsConfig }) => {
         <Link to={ADOMIN_CMS_PAGES_PATH}>
           <Button>Annuler</Button>
         </Link>
-        <LoadingButton loading={false} type="submit" variant="contained">
+        <Button loading={false} type="submit" variant="contained">
           Sauvegarder
-        </LoadingButton>
+        </Button>
       </div>
       <EditBlockPropsModal store={store} />
       <EditLayoutPropsModal store={store} />

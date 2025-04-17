@@ -1,7 +1,7 @@
-import { CheckboxProps, FormControlLabel, Switch } from "@mui/material";
+import { FormControlLabel, Switch, SwitchProps } from "@mui/material";
 import { Control, FieldValues, Path, useController } from "react-hook-form";
 
-type SwitchWrapperProps = Omit<CheckboxProps, "onChange"> & {
+type SwitchWrapperProps = Omit<SwitchProps, "onChange"> & {
   onBlur?: () => void;
   label?: string;
   value: boolean;

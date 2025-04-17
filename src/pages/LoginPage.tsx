@@ -1,5 +1,4 @@
-import { LoadingButton } from "@mui/lab";
-import { TextField } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -55,13 +54,13 @@ export const LoginPage = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <LoadingButton
+        <Button
           type="submit"
           loading={loginMutation.isPending}
           variant="outlined"
         >
           Se connecter
-        </LoadingButton>
+        </Button>
 
         {loginMutation.isError && (
           <div className="text-red-500 text-center">

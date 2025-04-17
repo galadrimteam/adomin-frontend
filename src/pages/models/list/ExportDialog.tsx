@@ -1,5 +1,4 @@
-import { LoadingButton } from "@mui/lab";
-import { ButtonGroup, Dialog, DialogActions, DialogTitle } from "@mui/material";
+import { Button, ButtonGroup, Dialog, DialogActions, DialogTitle } from "@mui/material";
 import { useState } from "react";
 
 export type ExportFileType = "xlsx" | "csv" | "json";
@@ -30,28 +29,28 @@ export const ExportDialog = ({
 
       <DialogActions sx={{ p: 4 }}>
         <ButtonGroup size="large">
-          <LoadingButton
+          <Button
             loading={isLoading && mode === "csv"}
             onClick={() => handleClick("csv")}
             color="primary"
             autoFocus
           >
             CSV
-          </LoadingButton>
-          <LoadingButton
+          </Button>
+          <Button
             loading={isLoading && mode === "xlsx"}
             onClick={() => handleClick("xlsx")}
             color="secondary"
           >
             XLSX (excel)
-          </LoadingButton>
-          <LoadingButton
+          </Button>
+          <Button
             loading={isLoading && mode === "json"}
             onClick={() => handleClick("json")}
             color="primary"
           >
             JSON
-          </LoadingButton>
+          </Button>
         </ButtonGroup>
       </DialogActions>
     </Dialog>
