@@ -3,7 +3,7 @@ import {
 	MRT_PaginationState,
 	MRT_SortingState,
 } from "material-react-table";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { consumeQsObject, prepareQsObject } from "./getModelListQueryString";
 
@@ -51,6 +51,7 @@ export const useModelGridParams = () => {
 		params.set("globalFilter", newValue);
 		setParams(params);
 	};
+	const [showGlobalFilter, setShowGlobalFilter] = useState(globalFilter !== "");
 
 	const rawSorting = params.get("sorting");
 
@@ -103,6 +104,8 @@ export const useModelGridParams = () => {
 		setPagination,
 		globalFilter,
 		setGlobalFilter,
+		showGlobalFilter,
+		setShowGlobalFilter,
 		sorting,
 		setSorting,
 		columnFilters,
