@@ -122,6 +122,7 @@ export interface AdominDateFieldConfig extends AdominBaseFieldConfig {
    * choose date for column type @column.date() or datetime for column type @column.dateTime()
    */
   subType: "date" | "datetime";
+  filterVariant?: "date" | "datetime" | "date-range" | "datetime-range";
   /**
    * default value for this field on the creation form, two options:
    * - dynamic Date.now() + some time

@@ -15,6 +15,7 @@ import { ManyToManyRelationCell } from "../../components/cells/ManyToManyRelatio
 import { SelectArrayCell } from "../../components/cells/SelectArrayCell";
 import { StringArrayCell } from "../../components/cells/StringArrayCell";
 import { UnkownTypeCell } from "../../components/cells/UnknownTypeCell";
+import { DateCellFilter } from "../../components/filters/DateCellFilter";
 import { ForeignKeyCellFilter } from "../../components/filters/ForeignKeyCellFilter";
 import { getBitsetFilterOptions } from "../../utils/bitsetHelpers";
 import { ModelData, ModelField } from "./model.types";
@@ -90,21 +91,15 @@ export const getColumn = (
     };
   }
 
-  if (field.adomin.type === "date" && field.adomin.subType === "datetime") {
-    return {
-      ...baseColumn,
-      filterVariant: "date",
-      muiEditTextFieldProps: getMuiEditTextFieldProps(validationErrors),
-      Cell: DateTimeCell,
-    };
-  }
-
   if (field.adomin.type === "date") {
+    const filterVariant = field.adomin.filterVariant ?? `${field.adomin.subType}-range`;
+
     return {
       ...baseColumn,
-      filterVariant: "date",
+      filterVariant,
       muiEditTextFieldProps: getMuiEditTextFieldProps(validationErrors),
-      Cell: DateCell,
+      Cell: field.adomin.subType === 'date' ? DateCell : DateTimeCell,
+      Filter: DateCellFilter,
     };
   }
 

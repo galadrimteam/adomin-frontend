@@ -47,7 +47,7 @@ export const getModelListQueryString = (
   );
   const finalColumnFilters = (columnFilters ?? []).map((columnFilter) =>
     formatFilter(columnFilter, fieldsMap)
-  );
+  ).filter((columnFilter) => columnFilter !== null);
 
   searchParams.append("filters", prepareQsObject(finalColumnFilters));
 
@@ -82,13 +82,39 @@ const formatFilter = (
     };
   }
 
-  if (field.adomin.type === "date" && field.adomin.subType === "date") {
+  if (field.adomin.type === "date" && field.adomin.filterVariant === "date") {
     const value = format(columnFilter.value as Date, "yyyy-MM-dd");
 
     return {
       id: columnFilter.id,
       value,
     };
+  }
+
+  if (field.adomin.type === "date" && (!field.adomin.filterVariant || field.adomin.filterVariant === "date-range")) {
+    const rangeValue = columnFilter.value as [string | null, string | null]
+    const startDate = !rangeValue[0] ? null : format(new Date(rangeValue[0]), "yyyy-MM-dd");
+    const endDate = !rangeValue[1] ? null : format(new Date(rangeValue[1]), "yyyy-MM-dd");
+
+    if (!startDate && !endDate) return null
+
+    return {
+      id: columnFilter.id,
+      value: JSON.stringify([startDate, endDate]),
+    }
+  }
+
+  if (field.adomin.type === "date" && (!field.adomin.filterVariant || field.adomin.filterVariant === "datetime-range")) {
+    const rangeValue = columnFilter.value as [string | null, string | null]
+    const startDate = !rangeValue[0] ? null : new Date(rangeValue[0]).toISOString();
+    const endDate = !rangeValue[1] ? null : new Date(rangeValue[1]).toISOString();
+
+    if (!startDate && !endDate) return null
+
+    return {
+      id: columnFilter.id,
+      value: JSON.stringify([startDate, endDate]),
+    }
   }
 
   return columnFilter;
