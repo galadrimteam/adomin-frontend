@@ -1,21 +1,30 @@
 import { DndContext, DragOverlay, closestCenter } from "@dnd-kit/core";
 import { SortableContext, rectSortingStrategy } from "@dnd-kit/sortable";
-import { Button, Box, Paper, Typography, ToggleButton, ToggleButtonGroup } from "@mui/material";
+import {
+  Add,
+  Settings,
+} from "@mui/icons-material";
+import {
+  Button,
+  Box,
+  Typography,
+  ToggleButton,
+  ToggleButtonGroup,
+  Fab,
+  IconButton,
+  AppBar,
+  Toolbar,
+} from "@mui/material";
 import { observer } from "mobx-react-lite";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ADOMIN_CMS_PAGES_PATH } from "../../../adominPaths";
-import {
-  numberToString,
-  stringToNumber,
-} from "../../../components/form/TextFieldRhfUtils";
-import { TextFieldWrapper } from "../../../components/form/TextFieldRhf";
 import { notifyApiError } from "../../../errors/notifyApiError";
 import { CmsConfig, CmsPage } from "../utils/cms.types";
 import { CmsPageStore } from "./CmsPageStore";
 import { EditLayoutPropsModal } from "./EditLayoutPropsModal";
-import { PageMetadataSidebar } from "./PageMetadataSidebar";
-import { BlockPalette } from "./BlockPalette";
+import { PageMetadataDrawer } from "./PageMetadataSidebar";
+import { BlockPaletteDrawer } from "./BlockPalette";
 import { BlockPropertiesPanel } from "./BlockPropertiesPanel";
 import { BlockToolbar } from "./BlockToolbar";
 import { DndGrid } from "./dndUtils/DndGrid";
@@ -40,6 +49,9 @@ export const CreateOrUpdateCmsPage = observer<Props>(({ page, cmsConfig }) => {
     [cmsConfig, page]
   );
 
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [blockPaletteOpen, setBlockPaletteOpen] = useState(false);
+
   const { sensors, handleDragStart, handleDragEnd, handleDragCancel } =
     useSortBlocs({ store });
 
@@ -52,89 +64,15 @@ export const CreateOrUpdateCmsPage = observer<Props>(({ page, cmsConfig }) => {
     updatePageMutation.mutate(store.formDto);
   };
 
-  const showPropertiesPanel = store.blockIdToEdit !== null;
-  const showBlockPalette = !showPropertiesPanel;
-
   return (
-    <Box sx={{ display: "flex", height: "100vh", overflow: "hidden" }}>
-      {/* Left Sidebar - Page Metadata */}
-      <PageMetadataSidebar store={store} />
-
-      {/* Main Canvas Area */}
-      <Box
-        sx={{
-          flex: 1,
-          display: "flex",
-          flexDirection: "column",
-          overflow: "hidden",
-          backgroundColor: "#f5f5f5",
-        }}
-      >
-        {/* Header with Save/Cancel */}
-        <Paper
-          elevation={1}
-          sx={{
-            p: 2,
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            borderRadius: 0,
-            borderBottom: "1px solid",
-            borderColor: "divider",
-          }}
-        >
-          <Typography variant="h6" sx={{ fontWeight: 600 }}>
-            {page ? "Modifier la page" : "Créer une nouvelle page"}
-          </Typography>
-          <Box sx={{ display: "flex", gap: 2 }}>
-            <Link to={ADOMIN_CMS_PAGES_PATH}>
-              <Button variant="outlined">Annuler</Button>
-            </Link>
-            <Button
-              variant="contained"
-              onClick={handleSubmit}
-              disabled={updatePageMutation.isPending}
-            >
-              {updatePageMutation.isPending ? "Sauvegarde..." : "Sauvegarder"}
-            </Button>
-          </Box>
-        </Paper>
-
-        {/* Grid Controls Toolbar */}
-        <Paper
-          elevation={0}
-          sx={{
-            p: 2,
-            borderBottom: "1px solid",
-            borderColor: "divider",
-            backgroundColor: "background.paper",
-          }}
-        >
-          <Box
-            sx={{
-              display: "flex",
-              gap: 3,
-              alignItems: "center",
-              flexWrap: "wrap",
-            }}
-          >
+    <Box sx={{ height: "100vh", display: "flex", flexDirection: "column" }}>
+      {/* Top App Bar */}
+      <AppBar position="static" elevation={1} sx={{ bgcolor: "background.paper" }}>
+        <Toolbar>
+          
+          <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-              <Typography variant="body2" sx={{ minWidth: 120 }}>
-                Colonnes:
-              </Typography>
-              <TextFieldWrapper
-                type="number"
-                label=""
-                value={store.gridStore.activeColumns}
-                onChange={(v) => store.gridStore.setColumns(v)}
-                stringToValue={stringToNumber}
-                valueToString={numberToString}
-                sx={{ width: 80 }}
-              />
-            </Box>
-
-            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-              <Typography variant="body2" sx={{ minWidth: 100 }}>
+              <Typography variant="body2" sx={{ color: "text.secondary" }}>
                 Breakpoint:
               </Typography>
               <ToggleButtonGroup
@@ -154,35 +92,39 @@ export const CreateOrUpdateCmsPage = observer<Props>(({ page, cmsConfig }) => {
                 ))}
               </ToggleButtonGroup>
             </Box>
-
-            {store.gridStore.activeGridLayout === null && (
-              <Button
-                variant="outlined"
-                size="small"
-                onClick={() =>
-                  store.gridStore.addGridLayout(
-                    store.gridStore.activeGridLayoutKey
-                  )
-                }
-              >
-                Ajouter le breakpoint {store.gridStore.activeGridLayoutKey}
+            <IconButton onClick={() => setSettingsOpen(true)}>
+              <Settings />
+            </IconButton>
+            <Link to={ADOMIN_CMS_PAGES_PATH}>
+              <Button variant="outlined" size="small">
+                Annuler
               </Button>
-            )}
+            </Link>
+            <Button
+              variant="contained"
+              onClick={handleSubmit}
+              disabled={updatePageMutation.isPending}
+              size="small"
+            >
+              {updatePageMutation.isPending ? "Sauvegarde..." : "Sauvegarder"}
+            </Button>
           </Box>
-        </Paper>
+        </Toolbar>
+      </AppBar>
 
-        {/* Canvas Area */}
-        <Box
-          sx={{
-            flex: 1,
-            overflow: "auto",
-            p: 4,
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
-
-          <DndContext
+      {/* Canvas Area - Full Screen */}
+      <Box
+        sx={{
+          flex: 1,
+          overflow: "auto",
+          p: 4,
+          display: "flex",
+          justifyContent: "center",
+          backgroundColor: "#f5f5f5",
+          position: "relative",
+        }}
+      >
+        <DndContext
             sensors={sensors}
             collisionDetection={closestCenter}
             onDragStart={handleDragStart}
@@ -248,12 +190,35 @@ export const CreateOrUpdateCmsPage = observer<Props>(({ page, cmsConfig }) => {
               ) : null}
             </DragOverlay>
           </DndContext>
-        </Box>
+
+        {/* Floating Action Button for Adding Blocks */}
+        <Fab
+          color="primary"
+          aria-label="add block"
+          sx={{
+            position: "fixed",
+            bottom: 24,
+            right: 24,
+          }}
+          onClick={() => setBlockPaletteOpen(true)}
+        >
+          <Add />
+        </Fab>
       </Box>
 
-      {/* Right Sidebar - Block Palette or Properties Panel */}
-      {showBlockPalette && <BlockPalette store={store} cmsConfig={cmsConfig} />}
-      {showPropertiesPanel && <BlockPropertiesPanel store={store} />}
+      {/* Drawers */}
+      <PageMetadataDrawer
+        store={store}
+        open={settingsOpen}
+        onClose={() => setSettingsOpen(false)}
+      />
+      <BlockPaletteDrawer
+        store={store}
+        cmsConfig={cmsConfig}
+        open={blockPaletteOpen}
+        onClose={() => setBlockPaletteOpen(false)}
+      />
+      <BlockPropertiesPanel store={store} />
 
       {/* Layout Props Modal (kept as modal for now) */}
       <EditLayoutPropsModal store={store} />

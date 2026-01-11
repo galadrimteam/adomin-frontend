@@ -25,7 +25,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={fr}>
       <QueryClientProvider client={queryClient}>
         <App />
-        <ReactQueryDevtools initialIsOpen={false} />
+        <ReactQueryDevtools initialIsOpen={false} buttonPosition='bottom-left' />
       </QueryClientProvider>
     </LocalizationProvider>
   </React.StrictMode>

@@ -1,5 +1,5 @@
 import { Close } from "@mui/icons-material";
-import { Box, IconButton, Paper, Tooltip, Typography } from "@mui/material";
+import { Box, Drawer, IconButton, Tooltip, Typography } from "@mui/material";
 import { JsonEditor } from "json-edit-react";
 import { observer } from "mobx-react-lite";
 import { CmsPageStore } from "./CmsPageStore";
@@ -9,6 +9,12 @@ interface Props {
 }
 
 export const BlockPropertiesPanel = observer<Props>(({ store }) => {
+  const open = store.blockIdToEdit !== null && store.blockPropsToEdit !== null;
+
+  const handleClose = () => {
+    store.setBlockIdToEdit(null);
+  };
+
   if (!store.blockIdToEdit || !store.blockPropsToEdit) {
     return null;
   }
@@ -18,19 +24,16 @@ export const BlockPropertiesPanel = observer<Props>(({ store }) => {
   );
 
   return (
-    <Paper
-      elevation={2}
-      sx={{
-        width: 360,
-        height: "100vh",
-        overflowY: "auto",
-        p: 3,
-        borderRadius: 0,
-        borderLeft: "1px solid",
-        borderColor: "divider",
-        position: "relative",
-      }}
-    >
+    <Drawer anchor="right" open={open} onClose={handleClose}>
+      <Box
+        sx={{
+          width: 360,
+          p: 3,
+          height: "100%",
+          overflowY: "auto",
+          position: "relative",
+        }}
+      >
       <Box
         sx={{
           display: "flex",
@@ -75,7 +78,8 @@ export const BlockPropertiesPanel = observer<Props>(({ store }) => {
           restrictDelete={({ key }) => key === "gridIdentifier"}
         />
       </Box>
-    </Paper>
+    </Box>
+    </Drawer>
   );
 });
 

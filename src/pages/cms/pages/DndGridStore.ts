@@ -137,7 +137,7 @@ export class DndGridStore {
   }
 
   get activeColumns() {
-    return this.activeGridLayout?.columns ?? 1;
+    return this.activeGridLayout?.columns ?? 5;
   }
 
   setColumns(columns: number) {
