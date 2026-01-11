@@ -30,6 +30,7 @@ import { BlockToolbar } from "./BlockToolbar";
 import { DndGrid } from "./dndUtils/DndGrid";
 import { DndItem } from "./dndUtils/DndItem";
 import { DndSortableItem } from "./dndUtils/DndSortableItem";
+import { BlockResizeHandle } from "./dndUtils/BlockResizeHandle";
 import { useSortBlocs } from "./dndUtils/useSortBlocs";
 import { useCreateOrUpdatePage } from "./hooks/useCreateOrUpdatePage";
 
@@ -52,7 +53,7 @@ export const CreateOrUpdateCmsPage = observer<Props>(({ page, cmsConfig }) => {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [blockPaletteOpen, setBlockPaletteOpen] = useState(false);
 
-  const { sensors, handleDragStart, handleDragEnd, handleDragCancel } =
+  const { sensors, handleDragStart, handleDragMove, handleDragEnd, handleDragCancel } =
     useSortBlocs({ store });
 
   const handleSubmit = () => {
@@ -128,6 +129,7 @@ export const CreateOrUpdateCmsPage = observer<Props>(({ page, cmsConfig }) => {
             sensors={sensors}
             collisionDetection={closestCenter}
             onDragStart={handleDragStart}
+            onDragMove={handleDragMove}
             onDragEnd={handleDragEnd}
             onDragCancel={handleDragCancel}
           >
@@ -159,24 +161,68 @@ export const CreateOrUpdateCmsPage = observer<Props>(({ page, cmsConfig }) => {
                   </Box>
                 )}
                 {(store.gridStore.activeGridLayout?.grid ?? []).map(
-                  ({ id, gridIdentifier }) => (
-                    <Box
-                      key={id}
-                      sx={{
-                        position: "relative",
-                        "&:hover .block-toolbar": {
-                          opacity: 1,
-                        },
-                      }}
-                    >
-                      <BlockToolbar
-                        store={store}
-                        blockId={id}
-                        gridIdentifier={gridIdentifier}
-                      />
-                      <DndSortableItem id={id} displayName={gridIdentifier} />
-                    </Box>
-                  )
+                  ({ id, gridIdentifier }, index, array) => {
+                    // Only render the first item of each group, hide the rest
+                    const isFirstOfGroup =
+                      index === 0 ||
+                      array[index - 1].gridIdentifier !== gridIdentifier;
+
+                    if (!isFirstOfGroup) {
+                      // Hide duplicate items - they're part of the merged block
+                      return (
+                        <Box
+                          key={id}
+                          sx={{
+                            display: "none",
+                          }}
+                        />
+                      );
+                    }
+
+                    // Count how many consecutive items have the same gridIdentifier starting from this index
+                    let span = 1;
+                    let currentIndex = index;
+                    while (
+                      currentIndex < array.length - 1 &&
+                      array[currentIndex + 1].gridIdentifier === gridIdentifier
+                    ) {
+                      span++;
+                      currentIndex++;
+                    }
+
+                    return (
+                      <Box
+                        key={id}
+                        sx={{
+                          position: "relative",
+                          gridColumn: `span ${span}`,
+                          "&:hover .block-toolbar": {
+                            opacity: 1,
+                          },
+                          "&:hover .resize-handle": {
+                            opacity: 0.6,
+                          },
+                        }}
+                      >
+                        <BlockResizeHandle
+                          blockId={id}
+                          side="left"
+                          gridIdentifier={gridIdentifier}
+                        />
+                        <BlockResizeHandle
+                          blockId={id}
+                          side="right"
+                          gridIdentifier={gridIdentifier}
+                        />
+                        <BlockToolbar
+                          store={store}
+                          blockId={id}
+                          gridIdentifier={gridIdentifier}
+                        />
+                        <DndSortableItem id={id} displayName={gridIdentifier} />
+                      </Box>
+                    );
+                  }
                 )}
               </DndGrid>
             </SortableContext>
