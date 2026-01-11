@@ -215,13 +215,48 @@ export class DndGridStore {
   }
 
   remove(idToRemove: string) {
-    const key = this.activeGridLayoutKey;
+    // Find the gridIdentifier for this id in the active layout
+    const activeLayout = this.gridLayouts[this.activeGridLayoutKey];
+    if (!activeLayout) return;
 
-    if (!this.gridLayouts[key]) return;
+    const itemToRemove = activeLayout.grid.find(({ id }) => id === idToRemove);
+    if (!itemToRemove) return;
 
-    this.gridLayouts[key]!.grid = this.gridLayouts[key]!.grid.filter(
-      ({ id }) => id !== idToRemove
-    );
+    const gridIdentifierToRemove = itemToRemove.gridIdentifier;
+
+    // Remove this specific grid item (by id) from all breakpoints
+    // This ensures consistency across all breakpoints
+    for (const breakpoint of BREAKPOINTS) {
+      const layout = this.gridLayouts[breakpoint];
+      if (layout) {
+        layout.grid = layout.grid.filter(({ id }) => id !== idToRemove);
+      }
+    }
+
+    // Check if this was the last grid item with this gridIdentifier
+    // If so, we should also remove the corresponding block
+    let hasOtherInstances = false;
+    for (const breakpoint of BREAKPOINTS) {
+      const layout = this.gridLayouts[breakpoint];
+      if (layout) {
+        if (
+          layout.grid.some(
+            ({ gridIdentifier }) => gridIdentifier === gridIdentifierToRemove
+          )
+        ) {
+          hasOtherInstances = true;
+          break;
+        }
+      }
+    }
+
+    // If no other grid items reference this gridIdentifier, remove the block
+    if (!hasOtherInstances) {
+      this.pageStore.page.config.blocks =
+        this.pageStore.page.config.blocks.filter(
+          (block) => block.props.gridIdentifier !== gridIdentifierToRemove
+        );
+    }
   }
 
   duplicate(idToDuplicate: string) {

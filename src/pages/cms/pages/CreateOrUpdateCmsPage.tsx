@@ -1,24 +1,23 @@
 import { DndContext, DragOverlay, closestCenter } from "@dnd-kit/core";
 import { SortableContext, rectSortingStrategy } from "@dnd-kit/sortable";
-import { ContentCopy, Delete, Edit } from "@mui/icons-material";
-import { Button, IconButton, Typography } from "@mui/material";
+import { Button, Box, Paper, Typography, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import { observer } from "mobx-react-lite";
 import { useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ADOMIN_CMS_PAGES_PATH } from "../../../adominPaths";
-import { CheckboxWrapper } from "../../../components/form/CheckboxRhf";
-import { DoubleFields } from "../../../components/form/MultipleFields";
-import { TextFieldWrapper } from "../../../components/form/TextFieldRhf";
 import {
   numberToString,
   stringToNumber,
 } from "../../../components/form/TextFieldRhfUtils";
-import { BasicSelect } from "../../../components/form/selects/BasicSelect";
+import { TextFieldWrapper } from "../../../components/form/TextFieldRhf";
 import { notifyApiError } from "../../../errors/notifyApiError";
 import { CmsConfig, CmsPage } from "../utils/cms.types";
 import { CmsPageStore } from "./CmsPageStore";
-import { EditBlockPropsModal } from "./EditBlockPropsModal";
 import { EditLayoutPropsModal } from "./EditLayoutPropsModal";
+import { PageMetadataSidebar } from "./PageMetadataSidebar";
+import { BlockPalette } from "./BlockPalette";
+import { BlockPropertiesPanel } from "./BlockPropertiesPanel";
+import { BlockToolbar } from "./BlockToolbar";
 import { DndGrid } from "./dndUtils/DndGrid";
 import { DndItem } from "./dndUtils/DndItem";
 import { DndSortableItem } from "./dndUtils/DndSortableItem";
@@ -44,10 +43,7 @@ export const CreateOrUpdateCmsPage = observer<Props>(({ page, cmsConfig }) => {
   const { sensors, handleDragStart, handleDragEnd, handleDragCancel } =
     useSortBlocs({ store });
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-
+  const handleSubmit = () => {
     if (typeof store.formDto === "string") {
       notifyApiError({ error: store.formDto });
       return;
@@ -56,96 +52,113 @@ export const CreateOrUpdateCmsPage = observer<Props>(({ page, cmsConfig }) => {
     updatePageMutation.mutate(store.formDto);
   };
 
+  const showPropertiesPanel = store.blockIdToEdit !== null;
+  const showBlockPalette = !showPropertiesPanel;
+
   return (
-    <form
-      className="bg-white rounded-md w-[80%] mt-8 p-4 border border-adomin_5"
-      onSubmit={handleSubmit}
-    >
-      <DoubleFields my={2}>
-        <TextFieldWrapper
-          label="Titre (HTML title)"
-          type="text"
-          value={store.page.title}
-          onChange={(v) => store.setStringField("title", v)}
-        />
-        <TextFieldWrapper
-          label="URL"
-          type="text"
-          value={store.page.url}
-          onChange={(v) => store.setStringField("url", v)}
-        />
-      </DoubleFields>
-      <DoubleFields my={2}>
-        <TextFieldWrapper
-          label="Label interne"
-          type="text"
-          value={store.page.internal_label}
-          onChange={(v) => store.setStringField("internal_label", v)}
-        />
-        <CheckboxWrapper
-          label="Publié"
-          value={store.page.is_published}
-          onChange={(v) => store.setBooleanField("is_published", v)}
-        />
-      </DoubleFields>
-      <DoubleFields my={2}>
-        <div className="flex">
-          <BasicSelect
-            options={store.layoutOptions}
-            label="Choisir un layout"
-            value={store.page.config.layout?.name ?? ""}
-            onChange={(v) => store.setLayout(v)}
-          />
-          {store.page.config.layout && (
-            <IconButton
-              className="min-w-[60px]"
-              onClick={() => store.setEditLayoutProps(true)}
-            >
-              <Edit />
-            </IconButton>
-          )}
-        </div>
+    <Box sx={{ display: "flex", height: "100vh", overflow: "hidden" }}>
+      {/* Left Sidebar - Page Metadata */}
+      <PageMetadataSidebar store={store} />
 
-        <BasicSelect
-          options={store.blockOptions}
-          label="Ajouter un bloc"
-          value={""}
-          onChange={(v) => store.addBlock(v)}
-        />
-      </DoubleFields>
-
-      <Typography className="text-center text-lg pt-16">
-        Gestion du layout
-      </Typography>
-
-      <DoubleFields mt={4}>
-        <TextFieldWrapper
-          type="number"
-          label="Nombre de colonnes"
-          value={store.gridStore.activeColumns}
-          onChange={(v) => store.gridStore.setColumns(v)}
-          stringToValue={stringToNumber}
-          valueToString={numberToString}
-        />
-        <BasicSelect
-          options={store.gridStore.gridLayoutsOptions}
-          label="Choisir un breakpoint"
-          value={store.gridStore.activeGridLayoutKey}
-          onChange={(v) => store.gridStore.setActiveGridLayoutKey(v)}
-        />
-      </DoubleFields>
-
-      <DndContext
-        sensors={sensors}
-        collisionDetection={closestCenter}
-        onDragStart={handleDragStart}
-        onDragEnd={handleDragEnd}
-        onDragCancel={handleDragCancel}
+      {/* Main Canvas Area */}
+      <Box
+        sx={{
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+          overflow: "hidden",
+          backgroundColor: "#f5f5f5",
+        }}
       >
-        <SortableContext items={store.blocks} strategy={rectSortingStrategy}>
-          <DndGrid columns={store.gridStore.activeColumns}>
+        {/* Header with Save/Cancel */}
+        <Paper
+          elevation={1}
+          sx={{
+            p: 2,
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            borderRadius: 0,
+            borderBottom: "1px solid",
+            borderColor: "divider",
+          }}
+        >
+          <Typography variant="h6" sx={{ fontWeight: 600 }}>
+            {page ? "Modifier la page" : "Créer une nouvelle page"}
+          </Typography>
+          <Box sx={{ display: "flex", gap: 2 }}>
+            <Link to={ADOMIN_CMS_PAGES_PATH}>
+              <Button variant="outlined">Annuler</Button>
+            </Link>
+            <Button
+              variant="contained"
+              onClick={handleSubmit}
+              disabled={updatePageMutation.isPending}
+            >
+              {updatePageMutation.isPending ? "Sauvegarde..." : "Sauvegarder"}
+            </Button>
+          </Box>
+        </Paper>
+
+        {/* Grid Controls Toolbar */}
+        <Paper
+          elevation={0}
+          sx={{
+            p: 2,
+            borderBottom: "1px solid",
+            borderColor: "divider",
+            backgroundColor: "background.paper",
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              gap: 3,
+              alignItems: "center",
+              flexWrap: "wrap",
+            }}
+          >
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <Typography variant="body2" sx={{ minWidth: 120 }}>
+                Colonnes:
+              </Typography>
+              <TextFieldWrapper
+                type="number"
+                label=""
+                value={store.gridStore.activeColumns}
+                onChange={(v) => store.gridStore.setColumns(v)}
+                stringToValue={stringToNumber}
+                valueToString={numberToString}
+                sx={{ width: 80 }}
+              />
+            </Box>
+
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <Typography variant="body2" sx={{ minWidth: 100 }}>
+                Breakpoint:
+              </Typography>
+              <ToggleButtonGroup
+                value={store.gridStore.activeGridLayoutKey}
+                exclusive
+                onChange={(_, value) => {
+                  if (value !== null) {
+                    store.gridStore.setActiveGridLayoutKey(value);
+                  }
+                }}
+                size="small"
+              >
+                {store.gridStore.gridLayoutsOptions.map((option) => (
+                  <ToggleButton key={option.value} value={option.value}>
+                    {option.label}
+                  </ToggleButton>
+                ))}
+              </ToggleButtonGroup>
+            </Box>
+
             {store.gridStore.activeGridLayout === null && (
               <Button
+                variant="outlined"
+                size="small"
                 onClick={() =>
                   store.gridStore.addGridLayout(
                     store.gridStore.activeGridLayoutKey
@@ -155,64 +168,95 @@ export const CreateOrUpdateCmsPage = observer<Props>(({ page, cmsConfig }) => {
                 Ajouter le breakpoint {store.gridStore.activeGridLayoutKey}
               </Button>
             )}
-            {(store.gridStore.activeGridLayout?.grid ?? []).map(
-              ({ id, gridIdentifier }) => (
-                <div key={id}>
-                  <IconButton
-                    sx={{
-                      position: "relative",
-                      top: 40,
-                      right: 0,
-                    }}
-                    onClick={() => store.gridStore.remove(id)}
-                  >
-                    <Delete />
-                  </IconButton>
-                  <IconButton
-                    sx={{
-                      position: "relative",
-                      top: 40,
-                    }}
-                    onClick={() => store.gridStore.duplicate(id)}
-                  >
-                    <ContentCopy />
-                  </IconButton>
-                  <IconButton
-                    sx={{
-                      position: "relative",
-                      top: 40,
-                    }}
-                    onClick={() => store.gridStore.setBlockIdToEdit(id)}
-                  >
-                    <Edit />
-                  </IconButton>
-                  <DndSortableItem id={id} displayName={gridIdentifier} />
-                </div>
-              )
-            )}
-          </DndGrid>
-        </SortableContext>
-        <DragOverlay adjustScale style={{ transformOrigin: "0 0 " }}>
-          {store.gridStore.activeId ? (
-            <DndItem
-              id={store.gridStore.activeId}
-              isDragging
-              displayName={store.gridStore.activeGridIdentifier}
-            />
-          ) : null}
-        </DragOverlay>
-      </DndContext>
+          </Box>
+        </Paper>
 
-      <div className="flex justify-center gap-4">
-        <Link to={ADOMIN_CMS_PAGES_PATH}>
-          <Button>Annuler</Button>
-        </Link>
-        <Button loading={false} type="submit" variant="contained">
-          Sauvegarder
-        </Button>
-      </div>
-      <EditBlockPropsModal store={store} />
+        {/* Canvas Area */}
+        <Box
+          sx={{
+            flex: 1,
+            overflow: "auto",
+            p: 4,
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            onDragStart={handleDragStart}
+            onDragEnd={handleDragEnd}
+            onDragCancel={handleDragCancel}
+          >
+            <SortableContext
+              items={
+                store.gridStore.activeGridLayout?.grid.map(({ id }) => id) ?? []
+              }
+              strategy={rectSortingStrategy}
+            >
+              <DndGrid columns={store.gridStore.activeColumns}>
+                {store.gridStore.activeGridLayout === null && (
+                  <Box
+                    sx={{
+                      gridColumn: `1 / -1`,
+                      textAlign: "center",
+                      py: 4,
+                    }}
+                  >
+                    <Button
+                      variant="outlined"
+                      onClick={() =>
+                        store.gridStore.addGridLayout(
+                          store.gridStore.activeGridLayoutKey
+                        )
+                      }
+                    >
+                      Ajouter le breakpoint {store.gridStore.activeGridLayoutKey}
+                    </Button>
+                  </Box>
+                )}
+                {(store.gridStore.activeGridLayout?.grid ?? []).map(
+                  ({ id, gridIdentifier }) => (
+                    <Box
+                      key={id}
+                      sx={{
+                        position: "relative",
+                        "&:hover .block-toolbar": {
+                          opacity: 1,
+                        },
+                      }}
+                    >
+                      <BlockToolbar
+                        store={store}
+                        blockId={id}
+                        gridIdentifier={gridIdentifier}
+                      />
+                      <DndSortableItem id={id} displayName={gridIdentifier} />
+                    </Box>
+                  )
+                )}
+              </DndGrid>
+            </SortableContext>
+            <DragOverlay adjustScale style={{ transformOrigin: "0 0 " }}>
+              {store.gridStore.activeId ? (
+                <DndItem
+                  id={store.gridStore.activeId}
+                  isDragging
+                  displayName={store.gridStore.activeGridIdentifier}
+                />
+              ) : null}
+            </DragOverlay>
+          </DndContext>
+        </Box>
+      </Box>
+
+      {/* Right Sidebar - Block Palette or Properties Panel */}
+      {showBlockPalette && <BlockPalette store={store} cmsConfig={cmsConfig} />}
+      {showPropertiesPanel && <BlockPropertiesPanel store={store} />}
+
+      {/* Layout Props Modal (kept as modal for now) */}
       <EditLayoutPropsModal store={store} />
-    </form>
+    </Box>
   );
 });

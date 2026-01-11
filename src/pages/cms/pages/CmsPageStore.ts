@@ -202,6 +202,43 @@ export class CmsPageStore {
       return "Le layout est requis";
     }
 
+    const gridLayout = this.gridStore.generateAreas();
+
+    // Collect all unique gridIdentifiers from all breakpoints
+    const gridIdentifiersInLayout = new Set<string>();
+    
+    // Check all breakpoints (sm, medium, large, xl)
+    const breakpoints: Array<keyof typeof gridLayout> = ["sm", "medium", "large", "xl"];
+    for (const breakpoint of breakpoints) {
+      const areas = gridLayout[breakpoint];
+      if (areas) {
+        for (const row of areas) {
+          for (const gridIdentifier of row) {
+            gridIdentifiersInLayout.add(gridIdentifier);
+          }
+        }
+      }
+    }
+
+    // Get all gridIdentifiers from blocks
+    const blockGridIdentifiers = new Set(
+      this.page.config.blocks.map((block) => block.props.gridIdentifier)
+    );
+
+    // Check that every gridIdentifier in the layout has a corresponding block
+    const missingIdentifiers: string[] = [];
+    for (const gridIdentifier of gridIdentifiersInLayout) {
+      if (!blockGridIdentifiers.has(gridIdentifier)) {
+        missingIdentifiers.push(gridIdentifier);
+      }
+    }
+
+    if (missingIdentifiers.length > 0) {
+      return `Les identifiants suivants dans le layout n'ont pas de bloc correspondant: ${missingIdentifiers.join(", ")}`;
+    }
+
+    // Send all blocks - the validation above ensures that every gridIdentifier in the layout has a block
+    // We send all blocks to allow for blocks that might be added but not yet placed in the grid
     return {
       id: this.page.id ?? -1,
       title: this.page.title,
@@ -211,7 +248,7 @@ export class CmsPageStore {
       config: {
         layout: this.page.config.layout,
         blocks: this.page.config.blocks,
-        gridLayout: this.gridStore.generateAreas(),
+        gridLayout,
       },
     };
   }
